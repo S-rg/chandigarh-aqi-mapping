@@ -1,17 +1,17 @@
 DEBUG = True
 
-
-
-
-
 import serial
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 conn = mysql.connector.connect(
-    host="localhost",
-    user="",
-    password="",
-    database="aqi_monitoring"
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
 )
 
 ser = serial.Serial('COM11', 9600, timeout=1)

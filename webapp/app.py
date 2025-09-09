@@ -9,10 +9,6 @@ app = Flask(__name__)
 def hello():            
     return "WHEEEEEEEEEEEEEE SERVER WOOOOOOOOOOOOOOOO"
 
-@app.route('/dotenvtest')
-def dotenvtest():
-    return os.getenv("DB_HOST", "NOPE")
-
 load_dotenv()
 
 def get_connection():
