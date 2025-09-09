@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from mysql.connector import connect, Error
 import os
 from dotenv import load_dotenv
@@ -12,6 +12,10 @@ import api_routes
 @app.route("/")
 def hello():            
     return "WHEEEEEEEEEEEEEE SERVER WOOOOOOOOOOOOOOOO"
+
+@app.route('/winsen')
+def winsen():
+    return render_template('winsen.html')
 
 load_dotenv()
 
