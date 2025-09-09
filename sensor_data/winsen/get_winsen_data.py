@@ -4,6 +4,7 @@ import serial
 import mysql.connector
 from dotenv import load_dotenv
 import os
+import sys
 
 load_dotenv()
 
@@ -14,7 +15,12 @@ conn = mysql.connector.connect(
     database=os.getenv("DB_NAME")
 )
 
-ser = serial.Serial('COM11', 9600, timeout=1)
+if DEBUG:
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        print(port.description, port.device)
+
+ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 
 def get_int(byte1, byte2):
     return byte1 * 256 + byte2
