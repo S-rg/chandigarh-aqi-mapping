@@ -28,7 +28,10 @@ def get_sensor_data(table, sensor):
         if not result:
             return {"error": "No data found"}, 404
 
-        data = [{"sensor_value": row[0], "timestamp": row[1].isoformat()} for row in result]
+        data = [
+            {"sensor_value": row[0], "timestamp": row[1].isoformat()}
+            for row in result if row[0] is not None and row[0] <= 65000
+        ]
         return {"data": data}, 200
 
     except Error as e:
