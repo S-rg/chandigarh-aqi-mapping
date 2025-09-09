@@ -20,10 +20,10 @@ def get_sensor_data(table, sensor):
 
     connection = get_connection()
     try:
-        cursor = connection.cursor()
+        cursor = connection.cursor(buffered=True)
         query = f"SELECT {sensor}, timestamp FROM {table};"
         cursor.execute(query)
-        result = cursor.fetchmany(size=100)
+        result = cursor.fetchall()
 
         if not result:
             return {"error": "No data found"}, 404
