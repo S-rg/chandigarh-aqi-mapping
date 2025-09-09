@@ -30,7 +30,7 @@ def get_sensor_data(table, sensor):
 
         data = [
             {"sensor_value": row[0], "timestamp": row[1].isoformat()}
-            for row in result if row[0] is not None and row[0] <= 65000
+            for row in result if row[0] is not None and row[0] <= 4000
         ]
         return {"data": data}, 200
 
