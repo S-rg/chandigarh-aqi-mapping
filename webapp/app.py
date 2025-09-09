@@ -1,8 +1,7 @@
 from flask import Flask
 from mysql.connector import connect, Error
-
-
-
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -10,15 +9,20 @@ app = Flask(__name__)
 def hello():            
     return "WHEEEEEEEEEEEEEE SERVER WOOOOOOOOOOOOOOOO"
 
+load_dotenv()
+
+def get_connection():
+    return connect(
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", ""),
+        password=os.getenv("DB_PASSWORD", ""),
+        database=os.getenv("DB_NAME", "aqi_monitoring")
+    )
+
 @app.route("/winsen1")
 def winsen1():
     try:
-        connection = connect(
-            host="localhost",
-            user="",
-            password="",
-            database="aqi_monitoring"
-        )
+        connection = get_connection()
 
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM winsen1 ORDER BY id DESC LIMIT 1")
@@ -40,12 +44,7 @@ def winsen1():
 @app.route("/winsen2")
 def winsen2():
     try:
-        connection = connect(
-            host="localhost",
-            user="",
-            password="",
-            database="aqi_monitoring"
-        )
+        connection = get_connection()
 
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM winsen2 ORDER BY id DESC LIMIT 1")

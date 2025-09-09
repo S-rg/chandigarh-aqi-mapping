@@ -6,4 +6,4 @@ DEPLOY_DIR="/var/www/flaskapp"
 cd "$REPO_DIR" || exit
 git pull origin main
 
-rsync -av --delete "$REPO_DIR/webapp/" "$DEPLOY_DIR/"
+rsync -av --delete --exclude='.env' "$REPO_DIR/webapp/" "$DEPLOY_DIR/"
