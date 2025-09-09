@@ -4,6 +4,7 @@ REPO_DIR="/Desktop/chandigarh-aqi-mapping"
 DEPLOY_DIR="/var/www/flaskapp"
 
 cd "$REPO_DIR" || exit
-git pull origin main
+git fetch origin main
+git reset --hard origin/main
 
 rsync -av --delete --exclude='.env' "$REPO_DIR/webapp/" "$DEPLOY_DIR/"
