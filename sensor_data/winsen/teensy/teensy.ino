@@ -48,7 +48,7 @@ void debug_print(byte* response) {
   Serial.print("Humidity: ");  Serial.println(humidity);
   Serial.print("CH2O: ");      Serial.println(ch2o);
   Serial.print("CO: ");        Serial.println(co);
-  Serial.print("O3: ");        Serial.println(o3);
+  Serial.print("O3: ");        Serial.println(o3);ho
   Serial.print("NO2: ");       Serial.println(no2);
   Serial.println("===================");
 }

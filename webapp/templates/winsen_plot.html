@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Selection</title>
+</head>
+<body>
+
+    <h1>Select Table</h1>
+    <form id="sensorForm">
+        <fieldset>
+            <legend>Choose Table</legend>
+            <label>
+                <input type="radio" name="table" value="winsen1" checked> Winsen1
+            </label>
+            <label>
+                <input type="radio" name="table" value="winsen2"> Winsen2
+            </label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Choose Sensor</legend>
+            <label><input type="radio" name="sensor" value="pm1" checked> PM1</label>
+            <label><input type="radio" name="sensor" value="pm25"> PM2.5</label>
+            <label><input type="radio" name="sensor" value="pm10"> PM10</label>
+            <label><input type="radio" name="sensor" value="co2"> CO2</label>
+            <label><input type="radio" name="sensor" value="voc"> VOC</label>
+            <label><input type="radio" name="sensor" value="temp"> Temperature</label>
+            <label><input type="radio" name="sensor" value="humidity"> Humidity</label>
+            <label><input type="radio" name="sensor" value="ch2o"> CH2O</label>
+            <label><input type="radio" name="sensor" value="co"> CO</label>
+            <label><input type="radio" name="sensor" value="o3"> O3</label>
+            <label><input type="radio" name="sensor" value="no2"> NO2</label>
+        </fieldset>
+
+        <button type="submit" id="graf" onclick="make_graph()">Make Graf</button>
+    </form>
+</body>
+</html>
