@@ -2,8 +2,10 @@
 <html>
 <head>
     <title>Sensor Selection</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    
 
     <h1>Select Table</h1>
     <form id="sensorForm">
@@ -34,7 +36,6 @@
 
         <button type="button" id="graf" onclick="make_graph()">Make Graf</button>
     </form>
-
     <script src="{{ url_for('static', filename='winsen_plot.js') }}"></script>
 </body>
 </html>
