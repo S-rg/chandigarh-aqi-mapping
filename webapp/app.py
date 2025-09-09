@@ -15,7 +15,7 @@ def hello():
 
 @app.route('/winsen')
 def winsen():
-    return render_template('winsen.html')
+    return render_template('winsen_plot.html')
 
 load_dotenv()
 
