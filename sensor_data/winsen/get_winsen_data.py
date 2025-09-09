@@ -15,11 +15,6 @@ conn = mysql.connector.connect(
     database=os.getenv("DB_NAME")
 )
 
-if DEBUG:
-    ports = serial.tools.list_ports.comports()
-    for port in ports:
-        print(port.description, port.device)
-
 ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
 
 def get_int(byte1, byte2):
