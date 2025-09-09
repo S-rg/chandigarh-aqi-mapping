@@ -10,3 +10,6 @@ git reset --hard origin/main
 sudo chmod +x ./update-webpage.sh
 
 rsync -av --delete --exclude='.env' "$REPO_DIR/webapp/" "$DEPLOY_DIR/"
+
+sudo systemctl restart flaskapp
+sudo systemctl restart apache2

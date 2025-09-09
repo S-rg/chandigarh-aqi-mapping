@@ -21,9 +21,8 @@ def get_connection():
 
 @app.route("/winsen1")
 def winsen1():
+    connection = get_connection()
     try:
-        connection = get_connection()
-
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM winsen1 ORDER BY id DESC LIMIT 1")
         result = cursor.fetchone()
@@ -43,9 +42,9 @@ def winsen1():
 
 @app.route("/winsen2")
 def winsen2():
-    try:
-        connection = get_connection()
+    connection = get_connection()
 
+    try:
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM winsen2 ORDER BY id DESC LIMIT 1")
         result = cursor.fetchone()
