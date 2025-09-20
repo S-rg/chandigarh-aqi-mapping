@@ -14,6 +14,7 @@ public:
     virtual String getName() = 0;
 };
 
+
 class SerialSensor: public SensorBase {
 public:
     enum serialType {HARDWARE_SERIAL, SOFTWARE_SERIAL};
@@ -56,5 +57,28 @@ public:
             response[bytesRead] = _serialStream.read();
             bytesRead++;
         }
+    }
+};
+
+
+class I2CSensor : public SensorBase {
+public:
+    uint8_t _address;
+    TwoWire& _wire;
+    uint32_t _clockSpeed;
+    
+    I2CSensor(uint8_t address, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) 
+        : _address(address), _wire(wire), _clockSpeed(clockSpeed) {
+    }
+
+    ~I2CSensor() override {}
+
+    bool initialize() override {
+        _wire.begin();
+        _wire.setClock(_clockSpeed);
+        
+        // Test communication by attempting to contact the device
+        _wire.beginTransmission(_address);
+        return (_wire.endTransmission() == 0);
     }
 };
