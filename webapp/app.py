@@ -17,6 +17,10 @@ def hello():
 def winsen():
     return render_template('winsen_plot.html')
 
+@app.route('/plot')
+def plot():
+    return render_template('plot.html') 
+
 load_dotenv()
 
 if __name__ == "__main__":
