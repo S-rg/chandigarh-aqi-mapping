@@ -12,16 +12,16 @@
 uint8_t pmsData[PMS_FRAME_LENGTH];
 
 void setup() {
-  Serial.begin(115200);   // For debug monitor
-  Serial2.begin(9600, SERIAL_8N1, 16, 17); // UART0: RX=GPI17, TX=GPI17
+  Serial.begin(9600);   // For debug monitor
+  Serial5.begin(9600);
   Serial.println("PMS7003 Reader Initialized...");
 }
 
 void loop() {
-  if (Serial2.available() >= PMS_FRAME_LENGTH) {
+  if (Serial5.available() >= PMS_FRAME_LENGTH) {
     // Look for frame header 0x42 0x4D
-    if (Serial2.peek() == START1) {
-      Serial2.readBytes(pmsData, PMS_FRAME_LENGTH);
+    if (Serial5.peek() == START1) {
+      Serial5.readBytes(pmsData, PMS_FRAME_LENGTH);
 
       if (pmsData[0] == START1 && pmsData[1] == START2) {
         // Verify checksum
@@ -56,7 +56,7 @@ void loop() {
         }
       }
     } else {
-      Serial2.read(); // discard one byte if no header match
+      Serial5.read(); // discard one byte if no header match
     }
   }
 }
