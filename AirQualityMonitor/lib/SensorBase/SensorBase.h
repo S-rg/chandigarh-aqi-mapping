@@ -51,6 +51,29 @@ public:
         _serialStream.write(command, commandSize);
     }
 
+    int checksum(byte command[], int n) {
+        int sum = 0;
+        for (int i = 1; i < n; i++) {
+            sum += command[i];
+        }
+
+        sum = (~sum) + 1;
+
+        return sum
+    }
+
+    bool check_valid_command(byte command[], int n) {
+        if (command[0] != 255) {
+            return false;
+        }
+
+        if (checksum(command, n-1) != command[n]) {
+            return false;
+        }
+
+        return true;
+    }
+
     void receiveBytes(byte response[], int responseSize, bool DEBUG = false) {
         int bytesRead = 0;
         
