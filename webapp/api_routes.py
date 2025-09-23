@@ -55,12 +55,89 @@ def get_data(table: str, cols: List[str]):
         cursor.close()
         connection.close()
 
+# NEW: Gas-specific endpoint for latest reading (replaces sensor ID mapping)
+@app.route("/api/gas/<string:table>/<string:gas>/latest")
+def get_gas_latest_reading(table, gas):
+    """Get latest reading for a specific gas from a specific table"""
+    # Validate inputs
+    is_valid, error_msg = validate_table_sensor_names(table, gas)
+    if not is_valid:
+        return {"error": error_msg}, 400
+    
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        
+        # Get the latest gas reading
+        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 1".format(
+            gas, table, gas
+        )
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        if not result:
+            return {"error": "No data found"}, 404
+
+        return {
+            "value": float(result[0]) if result[0] is not None else 0,
+            "unit": get_sensor_unit(gas),
+            "timestamp": result[1].isoformat() if result[1] else None,
+            "gas": gas,
+            "table": table
+        }, 200
+
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    finally:
+        cursor.close()
+        connection.close()
+
+# NEW: Gas-specific endpoint for historical data
+@app.route("/api/gas/<string:table>/<string:gas>/history")
+def get_gas_history(table, gas):
+    """Get historical data for a specific gas from a specific table"""
+    # Validate inputs
+    is_valid, error_msg = validate_table_sensor_names(table, gas)
+    if not is_valid:
+        return {"error": error_msg}, 400
+    
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        
+        # Get recent gas data (last 100 readings)
+        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 100".format(
+            gas, table, gas
+        )
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        if not result:
+            return {"error": "No data found"}, 404
+
+        data = [
+            {"sensor_value": row[0], "timestamp": row[1].isoformat()}
+            for row in result if row[0] is not None
+        ]
+        return {
+            "data": data,
+            "gas": gas,
+            "table": table
+        }, 200
+
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    finally:
+        cursor.close()
+        connection.close()
+
 @app.route("/api/tvoc")
 def get_tvoc_data():
     cols = ["val", "ts"]
     data, status_code = get_data("tvoc_data", cols)
     return data, status_code
-
 
 @app.route("/api/temp/<string:table>/<string:sensor>")
 def get_sensor_data(table, sensor):
@@ -96,110 +173,18 @@ def get_sensor_data(table, sensor):
         cursor.close()
         connection.close()
 
-# Fix: Add missing route for main dashboard (plot.js calls /api/sensor{sensorId})
+# LEGACY: Keep old sensor ID route for backward compatibility (can be removed later)
 @app.route("/api/sensor<int:sensor_id>")
 def get_sensor_data_by_id(sensor_id):
-    """Route for individual sensor data (used by plot.js)"""
-    # Map sensor_id to actual sensor data based on your sensor configuration
-    # For now, we'll use a generic approach that can be customized
-    
-    # Define sensor mappings (customize based on your actual sensor setup)
-    sensor_mappings = {
-        1: {"table": "winsen1", "sensor": "pm25"},
-        2: {"table": "winsen1", "sensor": "pm10"},
-        3: {"table": "winsen1", "sensor": "co2"},
-        4: {"table": "winsen1", "sensor": "temp"},
-        5: {"table": "winsen1", "sensor": "humidity"},
-        6: {"table": "winsen1", "sensor": "voc"},
-        7: {"table": "winsen2", "sensor": "pm25"},
-        8: {"table": "winsen2", "sensor": "pm10"},
-        9: {"table": "winsen2", "sensor": "co2"},
-        10: {"table": "winsen2", "sensor": "temp"},
-        11: {"table": "winsen2", "sensor": "humidity"},
-        12: {"table": "winsen2", "sensor": "voc"},
-        # Extended mappings for sensors 13-20
-        13: {"table": "winsen1", "sensor": "pm1"},
-        14: {"table": "winsen1", "sensor": "ch2o"},
-        15: {"table": "winsen1", "sensor": "co"},
-        16: {"table": "winsen1", "sensor": "o3"},
-        17: {"table": "winsen1", "sensor": "no2"},
-        18: {"table": "winsen2", "sensor": "pm1"},
-        19: {"table": "winsen2", "sensor": "ch2o"},
-        20: {"table": "winsen2", "sensor": "co"},
-        # Add more mappings as needed for additional sensors
-    }
-    
-    if sensor_id not in sensor_mappings:
-        return {"error": f"Sensor {sensor_id} not configured"}, 404
-    
-    mapping = sensor_mappings[sensor_id]
-    table = mapping["table"]
-    sensor = mapping["sensor"]
-    
-    connection = get_connection()
-    try:
-        cursor = connection.cursor(buffered=True)
-        
-        # Get the latest sensor reading
-        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 1".format(
-            sensor, table, sensor
-        )
-        cursor.execute(query)
-        result = cursor.fetchone()
+    """LEGACY: Route for individual sensor data (will be deprecated)"""
+    # This route will be removed once frontend is updated
+    return {"error": "This endpoint is deprecated. Use /api/gas/{table}/{gas}/latest instead"}, 410
 
-        if not result:
-            return {"error": "No data found"}, 404
-
-        # Fix: Return format that matches frontend expectations
-        return {
-            "value": float(result[0]) if result[0] is not None else 0,
-            "unit": get_sensor_unit(sensor),
-            "timestamp": result[1].isoformat() if result[1] else None
-        }, 200
-
-    except Error as e:
-        print(e)
-        return {"error": str(e)}, 500
-    finally:
-        cursor.close()
-        connection.close()
-
-# Fix: Add missing route for winsen plot page (winsen_plot.js calls /api/{table}/{sensor})
+# LEGACY: Keep old winsen route for backward compatibility
 @app.route("/api/<string:table>/<string:sensor>")
 def get_winsen_sensor_data(table, sensor):
-    """Route for winsen sensor data (used by winsen_plot.js)"""
-    allowed_tables = ["winsen1", "winsen2"]
-    allowed_sensors = ["pm1", "pm25", "pm10", "co2", "voc", "temp", "humidity", "ch2o", "co", "o3", "no2"]
-
-    if table not in allowed_tables or sensor not in allowed_sensors:
-        return {"error": "Invalid table or sensor name"}, 400
-
-    connection = get_connection()
-    try:
-        cursor = connection.cursor(buffered=True)
-        
-        # Get recent sensor data (last 100 readings)
-        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 100".format(
-            sensor, table, sensor
-        )
-        cursor.execute(query)
-        result = cursor.fetchall()
-
-        if not result:
-            return {"error": "No data found"}, 404
-
-        data = [
-            {"sensor_value": row[0], "timestamp": row[1].isoformat()}
-            for row in result if row[0] is not None
-        ]
-        return {"data": data}, 200
-
-    except Error as e:
-        print(e)
-        return {"error": str(e)}, 500
-    finally:
-        cursor.close()
-        connection.close()
+    """LEGACY: Route for winsen sensor data (will be deprecated)"""
+    return {"error": "This endpoint is deprecated. Use /api/gas/{table}/{sensor}/history instead"}, 410
 
 def validate_table_sensor_names(table, sensor):
     """Validate table and sensor names for security"""
@@ -233,5 +218,3 @@ def get_sensor_unit(sensor_type):
         "tvoc": "ppb"
     }
     return units.get(sensor_type, "units")
-    
-
