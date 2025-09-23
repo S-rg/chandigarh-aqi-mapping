@@ -20,8 +20,8 @@ public:
         : SerialSensor(serialStream, type, baudRate) {
     }
 
-    bool read() override {
-        receiveBytes(response, commandSize);
+    bool read(bool DEBUG = false) override {
+        receiveBytes(response, commandSize, DEBUG);
 
         processResponse();
         return true;
