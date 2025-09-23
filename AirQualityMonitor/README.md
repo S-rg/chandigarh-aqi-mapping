@@ -11,6 +11,7 @@
 - [ ] Handle proper serial reading with checksum and frame start byte check
 - [ ] Create proper `I2CSensor` class.
     - All I2C sensors have libraries, but need to integrate into current convention.
+- [ ] Extend the base class so that `read()` can be implemented into `readTemp()`, `readPressure()`, etc.
 
 ### Sensor Manager
 #### Functionality
@@ -44,3 +45,7 @@
 ## O2
 - **Comms:** I2C
 - Has library, but needs integration with our commands
+
+## Pressure Sensor
+- I2C
+- All values showing up as max or very high + comp. temp as -48 •C 

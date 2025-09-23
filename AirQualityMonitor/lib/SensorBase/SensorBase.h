@@ -8,10 +8,13 @@ class SensorBase {
 public:
     virtual ~SensorBase() {}
     virtual bool initialize() = 0;
-    virtual bool read(bool DEBUG = false) = 0;
-    virtual bool processResponse() = 0;
-    virtual float getValue() = 0;
+    virtual bool read(bool DEBUG = false) { return false; }
+    virtual bool processResponse() { return false; }
+    virtual float getValue() { return -1.0; }
     virtual String getName() = 0;
+
+// Utility Functions
+// TODO: Implement I2C sweep function to check addrs
 };
 
 
@@ -79,8 +82,9 @@ public:
     TwoWire& _wire;
     uint32_t _clockSpeed;
     
-    I2CSensor(uint8_t address, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) 
+    I2CSensor(uint8_t address, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) // Hz 
         : _address(address), _wire(wire), _clockSpeed(clockSpeed) {
+            this->initialize();
     }
 
     ~I2CSensor() override {}
@@ -92,5 +96,30 @@ public:
         // Test communication by attempting to contact the device
         _wire.beginTransmission(_address);
         return (_wire.endTransmission() == 0);
+    }
+
+    void writeRegister(uint8_t reg, uint8_t value) {
+        _wire.beginTransmission(_address);
+        _wire.write(reg);
+        _wire.write(value);
+        _wire.endTransmission();
+    }
+
+    uint8_t readRegister8(uint8_t reg) {
+        _wire.beginTransmission(_address);
+        _wire.write(reg);
+        _wire.endTransmission(false);
+        _wire.requestFrom(_address, (uint8_t)1);
+        return _wire.read();
+    }
+
+    uint16_t readRegister16(uint8_t reg) {
+        _wire.beginTransmission(_address);
+        _wire.write(reg);
+        _wire.endTransmission(false);
+        _wire.requestFrom(_address, (uint8_t)2);
+        uint16_t msb = _wire.read();
+        uint16_t lsb = _wire.read();
+        return (msb << 8) | lsb;
     }
 };
