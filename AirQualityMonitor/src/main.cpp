@@ -1,23 +1,23 @@
 #include <Arduino.h>
 #include <SensorBase.h>
-#include <FormaldehydeSensor.h>
+#include <SO2Sensor.h>
 
 
-// CH2O Sensor in active upload mode 
+// SO2 Sensor in active upload mode 
 HardwareSerial& formalSerial = Serial1;
-CH2O formalSensor(formalSerial, SerialSensor::HARDWARE_SERIAL, 9600, true);
+SO2 SO2Sensor(formalSerial, SerialSensor::HARDWARE_SERIAL, 9600, false);
+// Initialize is called within the parent class contructor
 
 void setup() {
-  Serial.println("setup started");
-  formalSensor.initialize();
+
 }
 
 void loop() {
-  formalSensor.sendCommand(CH2O::getValueCommand, CH2O::commandSize);
+  SO2Sensor.sendCommand(SO2::getValueCommand, SO2::commandSize);
   delay(1000);
-  formalSensor.read(true);
-  float tvoc_val = formalSensor.getValue();
-  Serial.print(tvoc_val); Serial.println(" ppb");
+  SO2Sensor.read(true);
+  float tvoc_val = SO2Sensor.getValue();
+  Serial.print(tvoc_val); Serial.println(" ppm");
 
   delay(100);
 }
