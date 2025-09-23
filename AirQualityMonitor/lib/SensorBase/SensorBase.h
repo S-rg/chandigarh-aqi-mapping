@@ -8,11 +8,12 @@ class SensorBase {
 public:
     virtual ~SensorBase() {}
     virtual bool initialize() = 0;
-    virtual bool read() = 0;
+    virtual bool read(bool DEBUG = false) = 0;
     virtual bool processResponse() = 0;
     virtual float getValue() = 0;
     virtual String getName() = 0;
 };
+
 
 class SerialSensor: public SensorBase {
 public:
@@ -25,6 +26,7 @@ public:
     SerialSensor(Stream& serialStream, serialType type, int baudRate) 
         : _serialStream(serialStream), _serialType(type) {
             _baudRate = baudRate;
+            this->initialize();
     }
 
     ~SerialSensor() override {}
@@ -49,12 +51,46 @@ public:
         _serialStream.write(command, commandSize);
     }
 
-    void receiveBytes(byte response[], int responseSize) {
+    void receiveBytes(byte response[], int responseSize, bool DEBUG = false) {
         int bytesRead = 0;
         
         while (_serialStream.available() > 0 && bytesRead < responseSize) {
             response[bytesRead] = _serialStream.read();
             bytesRead++;
         }
+
+        if (DEBUG) {
+            for (int i = 0; i < responseSize; i++) {
+                Serial.print(response[i]); Serial.print(" ");
+            }
+            Serial.print("| ");
+            for (int i = 0; i < responseSize; i++) {
+                Serial.print(response[i], HEX); Serial.print(" ");
+            }
+            Serial.println();
+        }
+    }
+};
+
+
+class I2CSensor : public SensorBase {
+public:
+    uint8_t _address;
+    TwoWire& _wire;
+    uint32_t _clockSpeed;
+    
+    I2CSensor(uint8_t address, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) 
+        : _address(address), _wire(wire), _clockSpeed(clockSpeed) {
+    }
+
+    ~I2CSensor() override {}
+
+    bool initialize() override {
+        _wire.begin();
+        _wire.setClock(_clockSpeed);
+        
+        // Test communication by attempting to contact the device
+        _wire.beginTransmission(_address);
+        return (_wire.endTransmission() == 0);
     }
 };
