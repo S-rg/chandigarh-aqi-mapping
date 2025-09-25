@@ -1,5 +1,8 @@
 # Sensors
 
+## Common Mistakes
+- Not initializaing your comms method [wire / stream]
+
 ## TODO
 
 ### Sensors
