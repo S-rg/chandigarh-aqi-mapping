@@ -8,7 +8,7 @@ BMP180 pressureSensor(Wire);
 
 void setup() {
   delay(1000);
-  // I2CSensor::sweepDevices(Wire);
+  I2CSensor::sweepDevices(Wire);
   pressureSensor.initialize();
   delay(100);
   pressureSensor.printCalibrationData();

@@ -53,3 +53,4 @@
 - I2C
 - All values showing up as max or very high + comp. temp as -48 •C 
 - Upon checking further, all the calibration values were either 65k or -1. The problem is the data fetching with the sensor.
+- Tried unit tests to find what the problem was, still do not know or understand why no data is coming through.
