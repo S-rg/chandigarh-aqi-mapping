@@ -52,3 +52,4 @@
 ## Pressure Sensor
 - I2C
 - All values showing up as max or very high + comp. temp as -48 •C 
+- Upon checking further, all the calibration values were either 65k or -1. The problem is the data fetching with the sensor.

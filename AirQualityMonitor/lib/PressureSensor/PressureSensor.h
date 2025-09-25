@@ -16,9 +16,9 @@ private:
 
     // Private method to read calibration data
     void readCalibrationData() {
-        AC1 = (int16_t)this->readRegister16(0xaa);
-        AC2 = (int16_t)this->readRegister16(0xac);
-        AC3 = (int16_t)this->readRegister16(0xae);
+        AC1 = (int16_t)((readRegister8(0xaa) << 8) | readRegister8(0xab));
+        AC2 = (int16_t)((readRegister8(0xac) << 8) | readRegister8(0xad));
+        AC3 = (int16_t)((readRegister8(0xae) << 8) | readRegister8(0xaf));
         AC4 = this->readRegister16(0xb0);
         AC5 = this->readRegister16(0xb2);
         AC6 = this->readRegister16(0xb4);
@@ -28,72 +28,47 @@ private:
         MC = (int16_t)this->readRegister16(0xbc);
         MD = (int16_t)this->readRegister16(0xbe);
     }
-
+    
 public:
     BMP180(TwoWire& wire = Wire, uint8_t address = 0x77, uint32_t clockSpeed = 100000) 
-        : I2CSensor(address, wire, clockSpeed) {
-            readCalibrationData();
-        }
+    : I2CSensor(address, wire, clockSpeed) {
+        readCalibrationData();
+    }
+    
+    String getName() {
+        return String("Bosch BMP180");
+    }
+
+    void printCalibrationData() {
+        Serial.println("--- Calibration Data ---");
+        Serial.print("AC1: "); Serial.println(AC1);
+        Serial.print("AC2: "); Serial.println(AC2);
+        Serial.print("AC3: "); Serial.println(AC3);
+        Serial.print("AC4: "); Serial.println(AC4);
+        Serial.print("AC5: "); Serial.println(AC5);
+        Serial.print("AC6: "); Serial.println(AC6);
+        Serial.print("B1:  "); Serial.println(B1_);
+        Serial.print("B2:  "); Serial.println(B2);
+        Serial.print("MB:  "); Serial.println(MB);
+        Serial.print("MC:  "); Serial.println(MC);
+        Serial.print("MD:  "); Serial.println(MD);
+        Serial.print("OSS: "); Serial.println(oss);
+        Serial.println("------------------------");
+    }
 
     float readRawTemp(bool DEBUG = false) {
-        this->writeRegister(CONTROL_REGISTER, TEMP_MEASURE_CMD);
-        delay(5);
-        uint16_t ut = (this->readRegister16(0xf6));
-        if (DEBUG) Serial.println(ut);
-        return (float)ut;
+    return -1;
     }
 
     float readCompensatedTemp(bool DEBUG = false) {
-        int32_t ut = (int32_t)readRawTemp();
-
-        int32_t X1 = ((ut - AC6) * AC5) >> 15;
-        int32_t X2 = ((int32_t)MC << 11) / (X1 + MD);
-        int32_t B5 = X1 + X2;
-        float t = (B5 + 8) >> 4;
-        t /= 10.0;
-        if (DEBUG) Serial.println(t);
-        return t;
+        return -1;
     }
 
     float readRawPressure(bool DEBUG = false) {
-        this->writeRegister(CONTROL_REGISTER, PRESSURE_MEASURE_CMD);
-        delay(5);
-        uint32_t up = 0;
-        up = ((uint32_t)this->readRegister8(0xf6) << 16) | ((uint32_t)this->readRegister8(0xf7) << 8) | (uint32_t)this->readRegister8(0xf8);
-        up >>= (8 - 0);
-        if (DEBUG) Serial.println(up);
-        return (float)up;
+        return -1;
     }
 
     float readCompensatedPressure(bool DEBUG = false) {
-        int32_t ut = (int32_t)readRawTemp();
-        int32_t up = (int32_t)readRawPressure();
-        
-        int32_t X1 = ((ut - AC6) * AC5) >> 15;
-        int32_t X2 = ((int32_t)MC << 11) / (X1 + MD);
-        int32_t B5 = X1 + X2;
-        int32_t B6 = B5 - 4000;
-        X1 = (B2 * (B6 * B6 >> 12)) >> 11;
-        X2 = (AC2 * B6) >> 11;
-        int32_t X3 = X1 + X2;
-        int32_t B3 = (((((int32_t)AC1) * 4 + X3) << 0) + 2) >> 2;
-        X1 = (AC3 * B6) >> 13;
-        X2 = (B1_ * ((B6 * B6) >> 12)) >> 16;
-        X3 = ((X1 + X2) + 2) >> 2;
-        uint32_t B4 = (AC4 * (uint32_t)(X3 + 32768)) >> 15;
-        uint32_t B7 = ((uint32_t)up - B3) * (50000 >> 0);
-        int32_t p;
-        if (B7 < 0x80000000) p = (B7 << 1) / B4;
-        else p = (B7 / B4) << 1;
-        X1 = (p >> 8) * (p >> 8);
-        X1 = (X1 * 3038) >> 16;
-        X2 = (-7357 * p) >> 16;
-        p = p + ((X1 + X2 + 3791) >> 4);
-        if (DEBUG) Serial.println(p);
-        return (float)p;
-    }
-
-    String getName() {
-        return String("Bosch BMP180");
+        return -1;
     }
 };
