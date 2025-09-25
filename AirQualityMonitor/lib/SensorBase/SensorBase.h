@@ -13,8 +13,6 @@ public:
     virtual float getValue() { return -1.0; }
     virtual String getName() = 0;
 
-// Utility Functions
-// TODO: Implement I2C sweep function to check addrs
 };
 
 
@@ -121,5 +119,51 @@ public:
         uint16_t msb = _wire.read();
         uint16_t lsb = _wire.read();
         return (msb << 8) | lsb;
+    }
+
+    // Utils
+    static bool sweepDevices(TwoWire& wire) {
+        wire.begin();
+
+        const uint8_t firstAddr = 0x08;  // skip 0x00–0x07
+        const uint8_t lastAddr  = 0x77;  // skip 0x78–0x7F
+        bool deviceFound = false;
+
+        Serial.println("Scanning I2C bus (0x08–0x77)...");
+        Serial.print("    ");
+        // Print header row
+        for (int col = 0; col < 16; col++) {
+        Serial.printf("%3X", col);
+        }
+        Serial.println();
+
+        // Table rows
+        for (uint8_t row = 0; row < 8; row++) { // 0x00–0x7F in 16-wide rows
+        uint8_t baseAddr = row * 16;
+        Serial.printf("%02X: ", baseAddr);
+
+        for (uint8_t col = 0; col < 16; col++) {
+            uint8_t address = baseAddr + col;
+
+            if (address < firstAddr || address > lastAddr) {
+            Serial.print(" --");
+            continue;
+            }
+
+            wire.beginTransmission(address);
+            byte error = wire.endTransmission();
+
+            if (error == 0) {
+            Serial.printf(" %02X", address);
+            deviceFound = true;
+            } else {
+            Serial.print(" ..");
+            }
+        }
+        Serial.println();
+        }
+
+        Serial.println("Scan complete.");
+        return deviceFound;
     }
 };
