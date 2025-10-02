@@ -1,23 +1,37 @@
 #include <Arduino.h>
 #include <SensorBase.h>
-#include <FormaldehydeSensor.h>
+#include <PressureSensor.h>
 
 
-// CH2O Sensor in active upload mode 
-HardwareSerial& formalSerial = Serial1;
-CH2O formalSensor(formalSerial, SerialSensor::HARDWARE_SERIAL, 9600, true);
+// BMP180 
+BMP180 pressureSensor(Wire);
 
 void setup() {
-  Serial.println("setup started");
-  formalSensor.initialize();
+  delay(1000);
+  I2CSensor::sweepDevices(Wire);
+  pressureSensor.initialize();
+  delay(100);
+  pressureSensor.printCalibrationData();
 }
 
 void loop() {
-  formalSensor.sendCommand(CH2O::getValueCommand, CH2O::commandSize);
-  delay(1000);
-  formalSensor.read(true);
-  float tvoc_val = formalSensor.getValue();
-  Serial.print(tvoc_val); Serial.println(" ppb");
+  // float rT = pressureSensor.readRawTemp(true);
+  // float cT = pressureSensor.readCompensatedTemp();
+
+  // float rP = pressureSensor.readRawPressure();
+  // float cP = pressureSensor.readCompensatedPressure();
+
+  // Serial.print("Raw Temp: ");
+  // Serial.print(rT);
+  // Serial.print(" | Compensated Temp: ");
+  // Serial.print(cT);
+  // Serial.println(" °C");
+
+  // Serial.print("Raw Pressure: ");
+  // Serial.print(rP);
+  // Serial.print(" | Compensated Pressure: ");
+  // Serial.print(cP);
+  // Serial.println(" Pa");
 
   delay(100);
 }

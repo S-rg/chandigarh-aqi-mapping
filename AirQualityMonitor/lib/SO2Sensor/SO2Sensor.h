@@ -1,7 +1,7 @@
 #pragma once
 #include "SensorBase.h"
 
-class CH2O : public SerialSensor {
+class SO2 : public SerialSensor {
 private:
     bool isQAMode = false;
     float _lastValue = 0.0;
@@ -17,7 +17,7 @@ public:
     static const int responseSize = 9;
     byte response[responseSize];
 
-    CH2O(Stream& serialStream, serialType type, int baudRate, bool qaMode)
+    SO2(Stream& serialStream, serialType type, int baudRate, bool qaMode)
         : SerialSensor(serialStream, type, baudRate) {
 
             if (qaMode) {
@@ -53,14 +53,13 @@ public:
 
     bool processResponse() {
         if (isQAMode) {
-            // Conc values in 6th byte [HIGH] and 7th byte [LOW]
-            uint16_t conc = (response[6] << 8) | response[7]; // Units: ppb
+            uint16_t conc = (response[2] << 8) | response[3]; // Units: ppm
             _lastValue = static_cast<float>(conc);
             return true;
         }
 
         // Active Mode
-        uint16_t conc = (response[4] << 8) | response[5];
+        uint16_t conc = (response[2] << 8) | response[3]; // Units: ppm
         _lastValue = static_cast<float>(conc);
         return true;
     }
@@ -70,10 +69,10 @@ public:
     }
 
     String getName() {
-        return String("Dart Sensors WZ-S-K formaldehyde module");
+        return String("Winsen ZE03 SO2");
     }
 };
 
-byte CH2O::qaModeOnCommand[CH2O::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};
-byte CH2O::activeUploadModeOnCommand[CH2O::commandSize] = {0xff, 0x01, 0x78, 0x40, 0x00, 0x00, 0x00, 0x00, 0x47};
-byte CH2O::getValueCommand[CH2O::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+byte SO2::qaModeOnCommand[SO2::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
+byte SO2::activeUploadModeOnCommand[SO2::commandSize] = {0xff, 0x01, 0x78, 0x03, 0x00, 0x00, 0x00, 0x00, 0x84};
+byte SO2::getValueCommand[SO2::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};

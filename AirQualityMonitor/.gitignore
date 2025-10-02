@@ -3,3 +3,23 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+.vscode/
+
+# Doxygen output
+/deoxy_output
+/html/
+/latex/
+/rtf/
+/xml/
+/man/
+/doc/
+/docs/
+/doxygen/
+
+# Logs
+*.log
+
+# If you export graphs/images
+*.dot
+*.png
+*.svg
