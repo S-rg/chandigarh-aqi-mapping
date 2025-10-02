@@ -3,6 +3,30 @@ let updateIntervalId = null;
 let sensorData = {};
 let maxDataPoints = 50;
 
+// NEW: Sensor mapping moved to frontend
+const sensorMappings = {
+    1: {table: "winsen1", gas: "pm25"},
+    2: {table: "winsen1", gas: "pm10"},
+    3: {table: "winsen1", gas: "co2"},
+    4: {table: "winsen1", gas: "temp"},
+    5: {table: "winsen1", gas: "humidity"},
+    6: {table: "winsen1", gas: "voc"},
+    7: {table: "winsen2", gas: "pm25"},
+    8: {table: "winsen2", gas: "pm10"},
+    9: {table: "winsen2", gas: "co2"},
+    10: {table: "winsen2", gas: "temp"},
+    11: {table: "winsen2", gas: "humidity"},
+    12: {table: "winsen2", gas: "voc"},
+    13: {table: "winsen1", gas: "pm1"},
+    14: {table: "winsen1", gas: "ch2o"},
+    15: {table: "winsen1", gas: "co"},
+    16: {table: "winsen1", gas: "o3"},
+    17: {table: "winsen1", gas: "no2"},
+    18: {table: "winsen2", gas: "pm1"},
+    19: {table: "winsen2", gas: "ch2o"},
+    20: {table: "winsen2", gas: "co"}
+};
+
 for (let i = 1; i <= 20; i++) {
     sensorData[i] = {
         timestamps: [],
@@ -55,9 +79,17 @@ function initializePlots() {
     }
 }
 
+// NEW: Updated fetch function to use gas endpoints
 async function fetchSensorData(sensorId) {
     try {
-        const response = await fetch(`/api/sensor${sensorId}`);
+        // Get mapping from frontend
+        const mapping = sensorMappings[sensorId];
+        if (!mapping) {
+            throw new Error(`Sensor ${sensorId} not configured`);
+        }
+        
+        // Call new gas-specific endpoint
+        const response = await fetch(`/api/gas/${mapping.table}/${mapping.gas}/latest`);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
