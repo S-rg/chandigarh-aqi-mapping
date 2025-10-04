@@ -6,14 +6,6 @@
 
 #define SENSORS_DEBUG 0
 
-// Communication types (generated)
-typedef enum {
-  COMM_HARDWARE_SERIAL = 0,
-  COMM_I2C = 1,
-  COMM_SOFTWARE_SERIAL = 2,
-  COMM_UNKNOWN = 3
-} CommsType;
-
 typedef struct {
   uint8_t measurement_id;
   const char* name;

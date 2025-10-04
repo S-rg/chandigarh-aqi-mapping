@@ -18,6 +18,18 @@ from collections import OrderedDict
 CONFIG_FILE = "config/sensors.yaml"
 OUTPUT_FILE = "include/SensorsConfig.h"
 
+def comms_name_to_key_map(name):
+    if name == "COMM_HARDWARE_SERIAL":
+        return 0
+    elif name == "COMM_SOFTWARE_SERIAL":
+        return 1
+    elif name == "COMM_I2C":
+        return 2
+    elif name == "COMM_UNKNOWN":
+        return 3
+    else:
+        return 3
+
 # helpers
 def sanitize_ident(s: str) -> str:
     # produce an identifier safe for macros: uppercase, letters/digits/_ only
@@ -75,21 +87,9 @@ def generate_header(data, out_path):
         w(f"#define {guard}")
         w("")
         w("#include <stdint.h>")
+        w('#include "DataTypes.h"')
         w("")
         w(f"#define SENSORS_DEBUG {1 if debug else 0}")
-        w("")
-        # Comms enum
-        w("// Communication types (generated)")
-        w("typedef enum {")
-        idx = 0
-        comm_map = {}
-        for k in comm_set.keys():
-            name = sanitize_ident("COMM_" + k)
-            comm_map[k] = name
-            w(f"  {name} = {idx},")
-            idx += 1
-        w(f"  COMM_UNKNOWN = {idx}")
-        w("} CommsType;")
         w("")
         # Measurement info
         w("typedef struct {")
@@ -143,7 +143,7 @@ def generate_header(data, out_path):
             arr_name = sanitize_ident(f"{key}_MEASUREMENTS")
             meas_list = ensure_list(s.get("measurements", []))
             count = len(meas_list)
-            w(f"  {{ (uint16_t){sid}, {cstr(key)}, {cstr(part)}, {cstr(stype)}, {comm_map.get(comms,'COMM_UNKNOWN')}, (int32_t){port_no}, (int16_t){rx_pin}, (int16_t){tx_pin}, {arr_name}, (uint8_t){count} }},")
+            w(f"  {{ (uint16_t){sid}, {cstr(key)}, {cstr(part)}, {cstr(stype)}, {comms_name_to_key_map(comms)}, (int32_t){port_no}, (int16_t){rx_pin}, (int16_t){tx_pin}, {arr_name}, (uint8_t){count} }},")
         w("};")
         w("")
         w(f"#define SENSOR_COUNT {(len(sensors))}")
