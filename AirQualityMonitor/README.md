@@ -5,9 +5,32 @@
 - Not initializaing your comms method [wire / stream]
 
 ## TODO
-- [ ] Redo the whole library with better anstraction for units, multiple measurements, etc.
-  - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9). 
 
+- [ ] Redo the whole library with better anstraction for units, multiple measurements, etc.
+  - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
+  - [ ] Decide on dynamic or static arrays to store Measurements (per sensor basis)
+
+
+## Library Design
+Initial Plan:
+- Inside of each sensor class have an array of `Measurement` which is a struct containing the values, units, timestamp, etc.
+- `SensorManager` polls all the sensors to update their measurements, reads them into a buffer and based on some logic, offloads that buffer.
+- Problems with this design:
+  - Too much redunduncy and memory overhead.
+  - Things like units, number of measurements, etc. can be statically defined.
+
+### **DESIGN PHILOSOPHY**
+- For a given sensor, constants like comms interface, pin numbers, measurement properties (how many #?, units, measurement name, etc.) would be defined in a yaml config file.
+- A config loader would go through the config to initialize the sensors.
+- `SensorManager` polls all the sensors, and adds a `Measurement` inside of a static buffer. This measurement only includes the `sensorID`, `measurementID`, `measurementValue`, `timeStamp`.
+- For the actual `Sensor` itself, it would have a `CommsInterface` and `ParserInterface`.
+- Benefits:
+  - Effectively half the memory overhead as last approach.
+  - Config file to activate and disable sensors / change parameters
+  - Only one way to get data (through `SensorManager`)
+- Downsides:
+  - The code would be slightly harder to read
+  - Having to create a config, config loader, and manager to interface with even a single sensor.
 
 ### Sensors
 
@@ -64,6 +87,8 @@
       - This was fixed by called `sensor.initialize()` in the parent class constructor.
 
     - Also added a delay after setting switching the mode of the sensor
+
+
 
 
 
