@@ -3,6 +3,7 @@
 #define SENSORSCONFIG_H_H
 
 #include <stdint.h>
+#include "DataTypes.h"
 
 #define SENSORS_DEBUG 0
 

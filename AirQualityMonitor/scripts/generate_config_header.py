@@ -143,7 +143,7 @@ def generate_header(data, out_path):
             arr_name = sanitize_ident(f"{key}_MEASUREMENTS")
             meas_list = ensure_list(s.get("measurements", []))
             count = len(meas_list)
-            w(f"  {{ (uint16_t){sid}, {cstr(key)}, {cstr(part)}, {cstr(stype)}, {comms_name_to_key_map(comms)}, (int32_t){port_no}, (int16_t){rx_pin}, (int16_t){tx_pin}, {arr_name}, (uint8_t){count} }},")
+            w(f"  {{ (uint16_t){sid}, {cstr(key)}, {cstr(part)}, {cstr(stype)}, COMM_{comms}, (int32_t){port_no}, (int16_t){rx_pin}, (int16_t){tx_pin}, {arr_name}, (uint8_t){count} }},")
         w("};")
         w("")
         w(f"#define SENSOR_COUNT {(len(sensors))}")
