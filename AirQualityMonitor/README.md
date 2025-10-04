@@ -32,6 +32,9 @@ Initial Plan:
   - The code would be slightly harder to read
   - Having to create a config, config loader, and manager to interface with even a single sensor.
 
+#### Notes:
+- The `measurement_id` for each unit of each measurement of a sensor should remain constant.
+
 ### Sensors
 
 - [x] Add `DEBUG` mode in SerialSensor to see the raw output of sensor.
