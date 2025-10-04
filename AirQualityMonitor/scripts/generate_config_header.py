@@ -16,7 +16,7 @@ import yaml, os, re, sys
 from collections import OrderedDict
 
 CONFIG_FILE = "config/sensors.yaml"
-OUTPUT_FILE = "include/sensors_config.h"
+OUTPUT_FILE = "include/SensorsConfig.h"
 
 # helpers
 def sanitize_ident(s: str) -> str:
