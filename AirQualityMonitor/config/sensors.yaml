@@ -6,8 +6,8 @@ Sensors:
     type: "TVOCSensor"
     part_name : "ZE40A-TVOC"
     comms: "HARDWARE_SERIAL"
-    port_no: 0 # or 2, 3,.. depending on which hardware serial port it is
-    # or rx_pin = 2, tx_pin = 3 in case user wants to do it that way. (or if using SOFTWARE_SERIAL)
+    port_no: 0 
+    baud_rate: 9600
     measurements:
         measurement_id: 1
         name: "tvoc"
@@ -30,6 +30,7 @@ Sensors:
     type: "CH2OSensor"
     part_name : "DARTSENSORS WZ-S-K"
     comms: "SOFTWARE_SERIAL"
+    baud_rate: 9600
     rx_pin: 12
     tx_pin: 13
     measurements:
