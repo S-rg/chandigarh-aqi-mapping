@@ -5,10 +5,10 @@
 - Not initializaing your comms method [wire / stream]
 
 ## TODO
-
-- [ ] Redo the whole library with better anstraction for units, multiple measurements, etc.
+- [ ] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
+- [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
-  - [ ] Decide on dynamic or static arrays to store Measurements (per sensor basis)
+  - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
 
 
 ## Library Design

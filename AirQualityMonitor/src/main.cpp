@@ -1,10 +1,33 @@
 #include <Arduino.h>
-#include <SensorBase.h>
-#include <PressureSensor.h>
+#include "SensorsConfig.h"
+#include "Base.h"
+#include "Sensors.h"
 
-void setup() {
+const SensorInfo *tvoc_cfg = &sensors_config[0];
+SensorBase *tvoc;
+RuntimeMeasurement measurement;
+
+void setup()
+{
+	// Create a TVOC Sensor
+	tvoc = new TVOCSensor((SensorInfo *)tvoc_cfg);
+	Serial.printf("Created sensor: %s (%s)\n",
+				  tvoc_cfg->part_name, tvoc_cfg->type);
+
+	// Init sensor
+	tvoc->begin();
+	delay(200);
+
+	measurement.sensor_id = SENSOR_ID_TVOCSENSOR;
+	measurement.measurement_id = MEAS_TVOCSENSOR_TVOC;
 }
 
-void loop() {
-  delay(100);
+void loop()
+{
+	tvoc->read(1, &measurement);
+	Serial.printf("Measurement from sensor %u: value=%.2f, timestamp=%lu\n",
+                measurement.sensor_id,
+                measurement.value,
+                measurement.timestamp);
+	delay(1000);
 }

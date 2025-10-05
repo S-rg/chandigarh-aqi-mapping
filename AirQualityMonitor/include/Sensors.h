@@ -9,13 +9,15 @@ public:
 
 	TVOCSensor(SensorInfo *cfg) : SensorBase(cfg) {}
 
-	bool begin()
+	bool begin() override
 	{
 		_comm->begin();
 		_startQAMode();
+
+		return true;
 	}
 
-	const SensorInfo *info()
+	const SensorInfo* info() const override
 	{
 		if (_cfg != nullptr)
 		{
@@ -24,7 +26,7 @@ public:
 		return nullptr;
 	}
 
-	void read(uint8_t measurement_id, RuntimeMeasurement *buffer)
+	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
 	{
 		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
 		{
@@ -39,7 +41,7 @@ public:
 		}
 	}
 
-	float read_measurement_1(SerialInterface *commInterface, RuntimeMeasurement *buffer)
+	void read_measurement_1(SerialInterface *commInterface, RuntimeMeasurement *buffer)
 	{
 		commInterface->sendBuffer(getValueCommand, commandSize);
 		delay(delayTime);
@@ -58,6 +60,8 @@ public:
 
 		buffer->timestamp = SensorBase::getCurrentTime();
 		buffer->value = static_cast<float>(conc);
+
+		return;
 	}
 
 private:
@@ -77,6 +81,10 @@ private:
 
 	uint8_t _verifyChecksum(byte *responseBuffer)
 	{
+		// TODO: Implement this
 		return 1; // true
 	}
 };
+
+byte TVOCSensor::qaModeOnCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};
+byte TVOCSensor::getValueCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
