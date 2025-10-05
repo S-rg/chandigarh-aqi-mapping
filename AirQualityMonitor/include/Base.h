@@ -1,3 +1,9 @@
+/*
+Base Classes for
+- Sensors
+- Comms Interfaces
+*/
+
 #pragma once
 #include "DataTypes.h"
 #include "SensorsConfig.h"
@@ -98,19 +104,30 @@ class I2CInterface : public CommsInterface {
 	}
 };
 
-class ParserInterface {
-	// TODO: Make this
-};
-
 class SensorBase {
+protected:
+	SensorInfo* _cfg;
+	CommsInterface* _comm;
+	
+	static uint32_t getCurrentTime();
+	
 public:
+	uint32_t delayTime = 100; // ms
+	
+	SensorBase(SensorInfo* cfg) : _cfg(cfg) {}
+
 	virtual ~SensorBase() = default;
 
 	virtual bool begin() = 0;
 
-	// Read available measurements; write up to outcap measurements into out array.
-	// Return number of measurements written.
-	virtual size_t read(RuntimeMeasurement* out, size_t outcap) = 0;
+	virtual void read(uint8_t measurement_id, RuntimeMeasurement* buffer) = 0;
+	/* If commsType for the sensors is Serial, call one set of functions
+	If it is I2C, call another set of funcs for same measurements
+	This is to provide functionality for 1 sensor having both comms*/
 
 	virtual const SensorInfo* info() const = 0;
 };
+
+uint32_t SensorBase::getCurrentTime() {
+	return (uint32_t)millis();
+}
