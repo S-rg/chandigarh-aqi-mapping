@@ -7,7 +7,15 @@ public:
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 
-	TVOCSensor(SensorInfo *cfg) : SensorBase(cfg) {}
+	TVOCSensor(SensorInfo *cfg) : SensorBase(cfg) {
+		// Set _comm pointer
+		if (_cfg->comms == COMM_HARDWARE_SERIAL) {
+			switch (_cfg->port_no) {
+				case 1:
+					_comm = new SerialInterface(_cfg, Serial1);
+			}
+		}
+	}
 
 	bool begin() override
 	{
@@ -51,7 +59,7 @@ public:
 
 		if (_verifyChecksum(responseBuffer) != true)
 		{
-			return -1;
+			return;
 		}
 
 		// Process response and store in runtime measurement 'buffer'

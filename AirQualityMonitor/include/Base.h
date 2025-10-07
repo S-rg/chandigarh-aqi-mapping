@@ -30,8 +30,10 @@ private:
 	int _baudRate;
 
 public:
-	SerialInterface(SensorInfo* cfg, Stream& serialStream, int baudRate) 
-		: CommsInterface(cfg), _serialStream(serialStream), _baudRate(baudRate) {}
+	SerialInterface(SensorInfo* cfg, Stream& serialStream) 
+		: CommsInterface(cfg), _serialStream(serialStream) {
+			_baudRate = _cfg->baud_rate;
+		}
 
 	void begin() {
 		if (_type == COMM_HARDWARE_SERIAL) {
@@ -116,7 +118,10 @@ public:
 	
 	SensorBase(SensorInfo* cfg) : _cfg(cfg) {}
 
-	virtual ~SensorBase() = default;
+	virtual ~SensorBase() {
+		delete _cfg;
+		delete _comm;
+	};
 
 	virtual bool begin() = 0;
 

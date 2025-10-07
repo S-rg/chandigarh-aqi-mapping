@@ -6,7 +6,7 @@ Sensors:
     type: "TVOCSensor"
     part_name : "ZE40A-TVOC"
     comms: "HARDWARE_SERIAL"
-    port_no: 0 
+    port_no: 1 
     baud_rate: 9600
     measurements:
         measurement_id: 1

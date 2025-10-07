@@ -9,17 +9,19 @@ RuntimeMeasurement measurement;
 
 void setup()
 {
+	delay(1000);
 	// Create a TVOC Sensor
 	tvoc = new TVOCSensor((SensorInfo *)tvoc_cfg);
 	Serial.printf("Created sensor: %s (%s)\n",
 				  tvoc_cfg->part_name, tvoc_cfg->type);
 
-	// Init sensor
+	// // Init sensor
 	tvoc->begin();
-	delay(200);
+	// delay(200);
 
-	measurement.sensor_id = SENSOR_ID_TVOCSENSOR;
-	measurement.measurement_id = MEAS_TVOCSENSOR_TVOC;
+	// measurement.sensor_id = SENSOR_ID_TVOCSENSOR;
+	// measurement.measurement_id = MEAS_TVOCSENSOR_TVOC;
+	Serial.printf("Hello This is a test\n");
 }
 
 void loop()

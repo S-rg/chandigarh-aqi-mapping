@@ -42,7 +42,7 @@ static const MeasurementInfo FORMALDEHYDESENSOR_MEASUREMENTS[] = {
 
 // Sensor table
 static const SensorInfo sensors_config[] = {
-  { (uint16_t)1, "TVOCSensor", "ZE40A-TVOC", "TVOCSensor", COMM_HARDWARE_SERIAL, (int32_t)0, (int16_t)-1, (int16_t)-1, (int32_t)9600, TVOCSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)1, "TVOCSensor", "ZE40A-TVOC", "TVOCSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (int16_t)-1, (int16_t)-1, (int32_t)9600, TVOCSENSOR_MEASUREMENTS, (uint8_t)1 },
   { (uint16_t)2, "PMSensor", "Plantower PMS7003", "PMSensor", COMM_I2C, (int32_t)1, (int16_t)-1, (int16_t)-1, (int32_t)-1, PMSENSOR_MEASUREMENTS, (uint8_t)1 },
   { (uint16_t)3, "FormaldehydeSensor", "DARTSENSORS WZ-S-K", "CH2OSensor", COMM_SOFTWARE_SERIAL, (int32_t)-1, (int16_t)12, (int16_t)13, (int32_t)9600, FORMALDEHYDESENSOR_MEASUREMENTS, (uint8_t)1 },
 };
