@@ -17,7 +17,8 @@ Sensors:
     type: "PMSensor"
     part_name: "Plantower PMS7003"
     comms: "I2C"
-    port_no: 1 # or 2 or 3 depending on which i2c it is
+    port_no: 1 # 0 or 1 or 2 or 3 depending on which i2c it is
+    i2c_address: 0x78
     measurements:
         measurement_id: 1
         name: "pm1"

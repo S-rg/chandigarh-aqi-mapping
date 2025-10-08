@@ -5,9 +5,11 @@
 - Not initializaing your comms method [wire / stream]
 
 ## TODO
-- [ ] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
+- [x] Fix: Config file's sensor table should have an i2c address for each sensor.
+- [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
 - [ ] FUNC: Sensor Factory
 - [ ] FUNC: Sensor Manager
+- [ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory
 - [ ] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
 - [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
@@ -63,8 +65,9 @@ Initial Plan:
 
 ### Database
 
-- [ ] Figure out proper schema for database
-- [ ] Handle multiple sensors of same kind
+- [x] Figure out proper schema for database
+- [x] Handle multiple sensors of same kind
+  - Would be done using the same config file
 
 ### Casing
 
