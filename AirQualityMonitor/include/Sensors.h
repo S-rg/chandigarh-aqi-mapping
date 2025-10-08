@@ -7,14 +7,8 @@ public:
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 
-	TVOCSensor(SensorInfo *cfg) : SensorBase(cfg) {
-		// Set _comm pointer
-		if (_cfg->comms == COMM_HARDWARE_SERIAL) {
-			switch (_cfg->port_no) {
-				case 1:
-					_comm = new SerialInterface(_cfg, Serial1);
-			}
-		}
+	TVOCSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
+		_comm = comm;
 	}
 
 	bool begin() override

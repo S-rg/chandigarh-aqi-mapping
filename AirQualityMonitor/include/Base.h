@@ -4,6 +4,11 @@ Base Classes for
 - Comms Interfaces
 */
 
+/*
+	TODO: change serialStream to a pointer so you can set it to nullptr in case of problems
+	TODO: not return nullptr in I2C begin
+*/
+
 #pragma once
 #include "DataTypes.h"
 #include "SensorsConfig.h"
@@ -21,7 +26,7 @@ public:
 		_type = _cfg->comms;
 	}
 	virtual ~CommsInterface() {}
-	virtual void begin() = 0;
+	virtual CommsInterface* begin() = 0;
 };
 
 class SerialInterface : public CommsInterface {
@@ -35,17 +40,21 @@ public:
 			_baudRate = _cfg->baud_rate;
 		}
 
-	void begin() {
+	CommsInterface* begin() {
 		if (_type == COMM_HARDWARE_SERIAL) {
 			HardwareSerial& hw = static_cast<HardwareSerial&>(_serialStream);
 			hw.begin(_baudRate);
 			_serialStream = hw;
+			return this;
 		}
 		else if (_type == COMM_SOFTWARE_SERIAL) {
+			_serialStream = SoftwareSerial(_cfg->rx_pin, _cfg->tx_pin);
 			SoftwareSerial& sw = static_cast<SoftwareSerial&>(_serialStream);
 			sw.begin(_baudRate);
 			_serialStream = sw;
+			return this;
 		}
+		return nullptr;
 	}
 
 	void sendBuffer(byte* buffer, int bufferSize) {
@@ -74,20 +83,25 @@ public:
 };
 
 class I2CInterface : public CommsInterface {
-	uint8_t _address;
+private:
+	uint16_t _address;
 	TwoWire& _wire;
 	uint32_t _clockSpeed;
 
-	I2CInterface(SensorInfo* cfg, uint8_t address, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) // Hz
-		: CommsInterface(cfg), _address(address), _wire(wire), _clockSpeed(clockSpeed) {}
+public:
+	I2CInterface(SensorInfo* cfg, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) // Hz
+		: CommsInterface(cfg), _wire(wire), _clockSpeed(clockSpeed) {
+			_address = _cfg->i2c_address;
+		}
 
-	void begin() override {
+	CommsInterface* begin() override {
 		_wire.begin();
 		_wire.setClock(_clockSpeed);
 
 		// Test communication by attempting to contact the device
 		// _wire.beginTransmission(_address);
 		// return (_wire.endTransmission() == 0);
+		return nullptr;
 	}
 	
 	void writeRegister(uint8_t reg, uint8_t value) {
@@ -101,7 +115,7 @@ class I2CInterface : public CommsInterface {
 		_wire.beginTransmission(_address);
 		_wire.write(reg);
 		_wire.endTransmission(false);
-		_wire.requestFrom(_address, (uint8_t)1);
+		_wire.requestFrom(_address, static_cast<size_t>(1)); // There was a warning if i just did (uint_8), gpt did this fix
 		return _wire.read();
 	}
 };
