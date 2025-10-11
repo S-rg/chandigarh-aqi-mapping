@@ -33,51 +33,29 @@ static const MeasurementInfo TVOCSENSOR_MEASUREMENTS[] = {
   { (uint8_t)1, "tvoc", "ppb" },
 };
 
-static const MeasurementInfo PMSENSOR_MEASUREMENTS[] = {
-  { (uint8_t)2, "pm2.5", "ppm" },
-};
-
-static const MeasurementInfo FORMALDEHYDESENSOR_MEASUREMENTS[] = {
-  { (uint8_t)1, "tvoc", "ppb" },
-};
-
 // Sensor table
 static const SensorInfo sensors_config[] = {
   { (uint16_t)1, "TVOCSensor", "ZE40A-TVOC", "TVOCSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, TVOCSENSOR_MEASUREMENTS, (uint8_t)1 },
-  { (uint16_t)2, "PMSensor", "Plantower PMS7003", "PMSensor", COMM_I2C, (int32_t)1, (uint16_t)120, (int16_t)-1, (int16_t)-1, (int32_t)-1, PMSENSOR_MEASUREMENTS, (uint8_t)1 },
-  { (uint16_t)3, "FormaldehydeSensor", "DARTSENSORS WZ-S-K", "CH2OSensor", COMM_SOFTWARE_SERIAL, (int32_t)-1, (uint16_t)-1, (int16_t)12, (int16_t)13, (int32_t)9600, FORMALDEHYDESENSOR_MEASUREMENTS, (uint8_t)1 },
 };
 
-#define SENSOR_COUNT 3
+#define SENSOR_COUNT 1
 
 // Convenience macros for sensor IDs and measurement IDs
 #define SENSOR_ID_TVOCSENSOR 1
 #define MEAS_TVOCSENSOR_TVOC 1
 
-#define SENSOR_ID_PMSENSOR 2
-#define MEAS_PMSENSOR_PM2_5 2
-
-#define SENSOR_ID_FORMALDEHYDESENSOR 3
-#define MEAS_FORMALDEHYDESENSOR_TVOC 1
-
 // Debug helpers: arrays of names (useful when SENSORS_DEBUG == 1)
 static const char* const sensor_config_key[] = {
   "TVOCSensor",
-  "PMSensor",
-  "FormaldehydeSensor",
 };
 
 static const char* const sensor_part_name[] = {
   "ZE40A-TVOC",
-  "Plantower PMS7003",
-  "DARTSENSORS WZ-S-K",
 };
 
 // For debug: measurement names by sensor (array of arrays).
 static const MeasurementInfo* const sensor_measurements[] = {
   TVOCSENSOR_MEASUREMENTS,
-  PMSENSOR_MEASUREMENTS,
-  FORMALDEHYDESENSOR_MEASUREMENTS,
 };
 
 /*

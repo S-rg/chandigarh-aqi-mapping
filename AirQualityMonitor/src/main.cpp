@@ -2,34 +2,38 @@
 #include "SensorsConfig.h"
 #include "Base.h"
 #include "Sensors.h"
+#include "Manager.h"
 
-const SensorInfo *tvoc_cfg = &sensors_config[0];
-SensorBase *tvoc;
-RuntimeMeasurement measurement;
+Manager manager;
 
-void setup()
-{
+void setup() {
 	delay(1000);
-	// Create a TVOC Sensor
-	tvoc = new TVOCSensor((SensorInfo *)tvoc_cfg);
-	Serial.printf("Created sensor: %s (%s)\n",
-				  tvoc_cfg->part_name, tvoc_cfg->type);
+	Serial.begin(115200);
 
-	// // Init sensor
-	tvoc->begin();
-	// delay(200);
+	// Create and start sensors
+	manager.createSensors();
+	manager.beginSensors();
 
-	// measurement.sensor_id = SENSOR_ID_TVOCSENSOR;
-	// measurement.measurement_id = MEAS_TVOCSENSOR_TVOC;
-	Serial.printf("Hello This is a test\n");
+	Serial.println("Manager and sensors initialized\n");
+
+	// Do a single poll and print results
+	manager.poll_once();
+
+	const int BUF = 16;
+	RuntimeMeasurement out[BUF];
+	uint16_t n = manager.getRecentMeasurements(out, BUF);
+
+	for (uint16_t i = 0; i < n; ++i) {
+		Serial.printf("Measurement[%u]: sensor=%u, measurement=%u, value=%.2f, ts=%lu\n",
+					  i,
+					  out[i].sensor_id,
+					  out[i].measurement_id,
+					  out[i].value,
+					  out[i].timestamp);
+	}
 }
 
-void loop()
-{
-	tvoc->read(1, &measurement);
-	Serial.printf("Measurement from sensor %u: value=%.2f, timestamp=%lu\n",
-                measurement.sensor_id,
-                measurement.value,
-                measurement.timestamp);
+void loop() {
+	// nothing here for now; everything done in setup for a single poll
 	delay(1000);
 }
