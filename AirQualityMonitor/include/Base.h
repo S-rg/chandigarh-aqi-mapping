@@ -15,6 +15,7 @@ Base Classes for
 #include <HardwareSerial.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
+#include <string>
 
 class CommsInterface {
 protected:

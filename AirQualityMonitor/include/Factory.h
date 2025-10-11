@@ -19,7 +19,7 @@ private:
      * @param sensor_cfg 
      * @return sensor_comms_ptr
      */
-    static CommsInterface* assignCommPtr(SensorInfo* sensor_cfg) {
+    CommsInterface* assignCommPtr(SensorInfo* sensor_cfg) {
 
         CommsInterface* sensor_comm;
 
@@ -85,10 +85,9 @@ private:
 
 public: 
     SensorBase* createSensor(SensorInfo* sensor_cfg) {
-        if (sensor_cfg->type == "TVOCSensor") {
+        if (std::string(sensor_cfg->type) == "TVOCSensor") {
             return new TVOCSensor(sensor_cfg, assignCommPtr(sensor_cfg));
         }
         return nullptr;
     }
-    
 };
