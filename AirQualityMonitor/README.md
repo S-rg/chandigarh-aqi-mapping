@@ -7,9 +7,10 @@
 ## TODO
 - [x] Fix: Config file's sensor table should have an i2c address for each sensor.
 - [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
-- [ ] FUNC: Sensor Factory
-- [ ] FUNC: Sensor Manager
-- [ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory
+- [x] FUNC: Sensor Factory
+- [x] FUNC: Sensor Manager
+- ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
+  - [ ] simply hardcode this inside sensor factory
 - [ ] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
 - [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
@@ -39,6 +40,48 @@ Initial Plan:
 
 #### Notes:
 - The `measurement_id` for each unit of each measurement of a sensor should remain constant.
+
+## Reference Tables:
+TODO: add the sensors vs sensor_ids and measurement vs measurement_ids for each sensor
+
+### Measurement ID reference
+
+#### TVOCSensor
+| Measurement ID | Measurement name | Unit |
+|---:|---|---|
+| 1 | tvoc | ppb |
+
+#### CH2OSensor (Formaldehyde)
+| Measurement ID | Measurement name | Unit |
+|---:|---|---|
+| 1 | formaldehyde (CH2O) | ppb |
+
+#### SO2Sensor
+| Measurement ID | Measurement name | Unit |
+|---:|---|---|
+| 1 | so2 | ppm |
+
+#### CO2Sensor
+| Measurement ID | Measurement name | Unit |
+|---:|---|---|
+| 1 | co2 | ppm |
+
+#### PMS7003Sensor (Plantower PMS7003)
+| Measurement ID | Measurement name | Unit |
+|---:|---|---|
+| 1 | PM1.0 (standard, CF=1) | µg/m³ |
+| 2 | PM2.5 (standard, CF=1) | µg/m³ |
+| 3 | PM10 (standard, CF=1) | µg/m³ |
+| 4 | PM1.0 (atmospheric) | µg/m³ |
+| 5 | PM2.5 (atmospheric) | µg/m³ |
+| 6 | PM10 (atmospheric) | µg/m³ |
+| 7 | Particle count ≥ 0.3 µm | particles / 0.1 L |
+| 8 | Particle count ≥ 0.5 µm | particles / 0.1 L |
+| 9 | Particle count ≥ 1.0 µm | particles / 0.1 L |
+| 10 | Particle count ≥ 2.5 µm | particles / 0.1 L |
+| 11 | Particle count ≥ 5.0 µm | particles / 0.1 L |
+| 12 | Particle count ≥ 10 µm | particles / 0.1 L |
+
 
 ### Sensors
 
