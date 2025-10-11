@@ -1,0 +1,833 @@
+[0;32mI (2153795457) Alphasense_sensors: CO ---> WE-Working voltage : 410[0m
+[0;32mI (2153795457) Alphasense_sensors: CO ---> Auxilary voltage   : 254[0m
+[0;32mI (2153795457) Alphasense_sensors: CO_WE_ELECTRONIC_OFFSET  : 287.00[0m
+[0;32mI (2153795457) Alphasense_sensors: CO_WE_ZERO_OFFSET        : 61.00[0m
+[0;32mI (2153795467) Alphasense_sensors: CO_AUX_ELECTRONIC_OFFSET : 287.00[0m
+[0;32mI (2153795477) Alphasense_sensors: CO_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153795487) Alphasense_sensors: CO_SENSITIVITY           : 0.2760[0m
+[0;32mI (2153795487) Alphasense_sensors: CO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153795497) Alphasense_sensors: CO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153795507) Alphasense_sensors: co WEc raw_value with SENSITIVITY           : 338.0435[0m
+[0;32mI (2153795517) Alphasense_sensors: CO value  : 338.0435[0m
+[0;32mI (2153795517) Alphasense_sensors: co raw value        : 338.043488[0m
+[0;32mI (2153795527) Alphasense_sensors:  co calib.offset        :  0.000000[0m
+[0;32mI (2153795537) Alphasense_sensors:  co calib.multiplier    :  1.000000[0m
+[0;32mI (2153795537) Alphasense_sensors:  co calib.lower_limit   :  -10000.000000[0m
+[0;32mI (2153795547) Alphasense_sensors:  co calib.upper_limit   :  10000.000000[0m
+[0;32mI (2153795557) Alphasense_sensors:  co calibrated Value :  338.043488[0m
+[0;32mI (2153795567) Alphasense_sensors: ALPHSENSE_NO_AE_PIN        : 2[0m
+[0;32mI (2153795567) Alphasense_sensors: ALPHSENSE_NO_WE_PIN        : 3[0m
+[0;31mE (2153796107) BME68X: Bsec2_run failed![0m
+[0;32mI (2153796577) Alphasense_sensors: NO_WE_ELECTRONIC_OFFSET  : 220.00[0m
+[0;32mI (2153796577) Alphasense_sensors: NO_WE_ZERO_OFFSET        : 220.00[0m
+[0;32mI (2153796577) Alphasense_sensors: NO_AUX_ELECTRONIC_OFFSET : 220.00[0m
+[0;32mI (2153796587) Alphasense_sensors: NO_AUX_ZERO_OFFSET       : 220.00[0m
+[0;32mI (2153796587) Alphasense_sensors: NO_SENSITIVITY           : 0.2480[0m
+[0;32mI (2153796597) Alphasense_sensors: NO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153796607) Alphasense_sensors: NO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153796607) Alphasense_sensors: no WEc raw_value with SENSITIVITY          : 40.3226[0m
+[0;32mI (2153796617) Alphasense_sensors: NO ---> WE-Working voltage : 407[0m
+[0;32mI (2153796627) Alphasense_sensors: NO ---> Auxilary voltage   : 397[0m
+[0;32mI (2153796637) Alphasense_sensors: NO value  : 40.3226[0m
+[0;32mI (2153796637) Alphasense_sensors: no raw value        : 40.322582[0m
+[0;32mI (2153796647) Alphasense_sensors:  no calib.offset        :  0.000000[0m
+[0;32mI (2153796657) Alphasense_sensors:  no calib.multiplier    :  1.000000[0m
+[0;32mI (2153796657) Alphasense_sensors:  no calib.lower_limit   :  0.000000[0m
+[0;32mI (2153796667) Alphasense_sensors:  no calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153796677) Alphasense_sensors:  no calibrated Value :  40.322582[0m
+[0;32mI (2153796677) Alphasense_sensors: ALPHSENSE_O3_AE_PIN        : 2[0m
+[0;32mI (2153796687) Alphasense_sensors: ALPHSENSE_O3_WE_PIN        : 3[0m
+[0;32mI (2153797697) Alphasense_sensors: O3 ---> WE-Working voltage : 407[0m
+[0;32mI (2153797697) Alphasense_sensors: O3 ---> Auxilary voltage   : 398[0m
+[0;32mI (2153797697) Alphasense_sensors: O3_WE_ELECTRONIC_OFFSET  : 411.00[0m
+[0;32mI (2153797697) Alphasense_sensors: O3_WE_ZERO_OFFSET        : 1.00[0m
+[0;32mI (2153797707) Alphasense_sensors: O3_AUX_ELECTRONIC_OFFSET : 408.00[0m
+[0;32mI (2153797717) Alphasense_sensors: O3_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153797727) Alphasense_sensors: O3_SENSITIVITY           : 0.2740[0m
+[0;32mI (2153797727) Alphasense_sensors: O3_COMP_VALUE            : -1.00[0m
+[0;32mI (2153797737) Alphasense_sensors: O3_CROSS_SENSITIVITY     : 0.30
+[0m
+[0;32mI (2153797747) Alphasense_sensors: gv_no2          : 7[0m
+[0;32mI (2153797747) Alphasense_sensors: O3 raw_value after NO2 compensation        : 2.9280[0m
+[0;32mI (2153797757) Alphasense_sensors: o3 WEc raw_value with SENSITIVITY          : 10.6861[0m
+[0;32mI (2153797767) Alphasense_sensors: O3 value  : 10.6861[0m
+[0;32mI (2153797777) Alphasense_sensors: o3 raw value        : 10.686131[0m
+[0;32mI (2153797777) Alphasense_sensors:  o3 calib.offset        :  0.000000[0m
+[0;32mI (2153797787) Alphasense_sensors:  o3 calib.multiplier    :  1.000000[0m
+[0;32mI (2153797797) Alphasense_sensors:  o3 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153797797) Alphasense_sensors:  o3 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153797807) Alphasense_sensors:  o3 calibrated Value :  10.686131[0m
+[0;32mI (2153797817) MHZ19C-CO2: Reading mhz19c_co2 sensor data...[0m
+[0;32mI (2153797827) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153797827) Sensors Monitor: Timestamp = 2153797148414 - SENSOR_SO2_DATA_READY - so2=-26.94[0m
+[0;31mE (2153797837) Sensors Monitor: so2_we_volt = 292.00, so2_aux_volt = 277.00[0m
+[0;32mI (2153797847) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153797847) Sensors Monitor: Timestamp = 2153797148414 - SENSOR_NO2_DATA_READY - no2=7.67[0m
+[0;31mE (2153797857) Sensors Monitor: no2_we_volt = 284.00, no2_aux_volt = 271.00[0m
+[0;32mI (2153797867) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153797877) Sensors Monitor: Timestamp = 2153797148414 - SENSOR_CO_DATA_READY - co=338.04[0m
+[0;31mE (2153797877) Sensors Monitor: co_we_volt = 410.00, co_aux_volt = 254.00[0m
+[0;32mI (2153797887) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153797897) Sensors Monitor: Timestamp = 2153797148414 - SENSOR_NO_DATA_READY - NO=40.32[0m
+[0;31mE (2153797907) Sensors Monitor: no_we_volt = 407.00, no_aux_volt = 397.00[0m
+[0;32mI (2153797907) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153797917) Sensors Monitor: Timestamp = 2153797148414 - SENSOR_O3_DATA_READY - o3=10.69[0m
+[0;31mE (2153797927) Sensors Monitor: o3_we_volt = 407.00, o3_aux_volt = 398.00[0m
+[0;31mE (2153798827) MHZ19C-CO2: uart_get_buffered_data_len : 9[0m
+[0;32mI (2153799267) BME68X: ----[0m
+[0;32mI (2153799267) BME68X: IAQ: 81.643463 (2153799107000000,1)[0m
+[0;32mI (2153799267) BME68X: sIAQ: 63.822788 (2153799107000000,1)[0m
+[0;32mI (2153799267) BME68X: CO2: 569.113953 (2153799107000000,1)[0m
+[0;32mI (2153799277) BME68X: bVOC: 0.684053 (2153799107000000,1)[0m
+[0;32mI (2153799277) BME68X: rtemp: 25.459946 (2153799107000000,0)[0m
+[0;32mI (2153799287) BME68X: rpressure: 97540.859375 (2153799107000000,0)[0m
+[0;32mI (2153799297) BME68X: rhumidity: 55.527733 (2153799107000000,0)[0m
+[0;32mI (2153799297) BME68X: temp: 25.436382 (2153799107000000,0)[0m
+[0;32mI (2153799307) BME68X: humidity: 55.500664 (2153799107000000,0)[0m
+[0;31mE (2153799327) MHZ19C-CO2: Received 9 bytes[0m
+[0;32mI (2153799327) MHZ19C-CO2: 0x3ffca9d0   ff 86 01 b0 42 00 6f 00  18                       |....B.o..|[0m
+[0;31mE (2153799327) MHZ19C-CO2: Received CRC: 0x18, Calculated CRC: 0x18[0m
+[0;32mI (2153799337) MHZ19C-CO2:  co2 raw Value        :  432.000000[0m
+[0;32mI (2153799347) MHZ19C-CO2:  co2 calib.offset        :  0.000000[0m
+[0;32mI (2153799347) MHZ19C-CO2:  co2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153799357) MHZ19C-CO2:  co2 calib.lower_limit   :  0.000000[0m
+[0;32mI (2153799357) MHZ19C-CO2:  co2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153799367) MHZ19C-CO2:  co2 calibrated Value :  432.000000[0m
+[0;31mE (2153799377) BME68X: temperature raw value : 25.436382[0m
+[0;31mE (2153799377) BME68X: temperature calibrated value : 25.436382[0m
+[0;31mE (2153799387) BME68X: humidity raw value : 55.500664[0m
+[0;31mE (2153799397) BME68X: humidity calibrated value : 55.500664[0m
+[0;31mE (2153799397) BME68X: tvoc raw value : 0.684053[0m
+[0;31mE (2153799407) BME68X: tvoc calibrated value : 0.684053[0m
+[0;32mI (2153799407) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153799417) Alphasense_sensors: ALPHSENSE_SO2_AE_PIN        : 6[0m
+[0;31mE (2153799427) Sensors Monitor: Timestamp = 2153798707732 - SENSOR_CO2_DATA_READY - co2=432.00[0m
+[0;32mI (2153799437) Alphasense_sensors: ALPHSENSE_SO2_WE_PIN        : 7[0m
+[0;32mI (2153799437) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153799447) Sensors Monitor: Timestamp = 2153798743563 - SENSOR_TEMP_DATA_READY - temperature=25.44
+[0m
+[0;32mI (2153799457) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153799457) Sensors Monitor: Timestamp = 2153798743563 - SENSOR_HUMI_DATA_READY - humiture=55.50[0m
+[0;32mI (2153799467) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153799477) Sensors Monitor: Timestamp = 2153798743563 - SENSOR_TVOC_DATA_READY - tvoc=0.68[0m
+[0;32mI (2153800477) Alphasense_sensors: SO2 ---> WE-Working voltage : 296[0m
+[0;32mI (2153800477) Alphasense_sensors: SO2 ---> Auxilary voltage   : 279[0m
+[0;32mI (2153800477) Alphasense_sensors: SO2_WE_ELECTRONIC_OFFSET  : 288.00[0m
+[0;32mI (2153800487) Alphasense_sensors: SO2_WE_ZERO_OFFSET        : 12.00[0m
+[0;32mI (2153800487) Alphasense_sensors: SO2_AUX_ELECTRONIC_OFFSET : 285.00[0m
+[0;32mI (2153800497) Alphasense_sensors: SO2_AUX_ZERO_OFFSET       : 1.00[0m
+[0;32mI (2153800507) Alphasense_sensors: SO2_SENSITIVITY           : 0.2970[0m
+[0;32mI (2153800507) Alphasense_sensors: SO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153800517) Alphasense_sensors: SO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153800527) Alphasense_sensors: so2 WEc raw_value with SENSITIVITY        : -13.4680[0m
+[0;32mI (2153800537) Alphasense_sensors: so2Index          : 16.6667[0m
+[0;32mI (2153800537) Alphasense_sensors: calibFactor          : 0.0149[0m
+[0;32mI (2153800547) Alphasense_sensors: SO2 value  : -13.4680[0m
+[0;32mI (2153800557) Alphasense_sensors: so2 raw value        : -13.468014[0m
+[0;32mI (2153800557) Alphasense_sensors:  So2 calib.offset        :  0.000000[0m
+[0;32mI (2153800567) Alphasense_sensors:  So2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153800577) Alphasense_sensors:  So2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153800577) Alphasense_sensors:  So2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153800587) Alphasense_sensors:  so2 calibrated Value :  -13.468014[0m
+[0;32mI (2153800597) Alphasense_sensors: ALPHSENSE_NO2_AE_PIN        : 0[0m
+[0;32mI (2153800607) Alphasense_sensors: ALPHSENSE_NO2_WE_PIN        : 1[0m
+[0;32mI (2153801607) Alphasense_sensors: NO2 ---> WE-Working voltage : 284[0m
+[0;32mI (2153801607) Alphasense_sensors: NO2 ---> Auxilary voltage   : 271[0m
+[0;32mI (2153801607) Alphasense_sensors: NO2_WE_ELECTRONIC_OFFSET  : 296.00[0m
+[0;32mI (2153801617) Alphasense_sensors: NO2_WE_ZERO_OFFSET        : 0.00[0m
+[0;32mI (2153801617) Alphasense_sensors: NO2_AUX_ELECTRONIC_OFFSET : 279.00[0m
+[0;32mI (2153801627) Alphasense_sensors: NO2_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153801637) Alphasense_sensors: NO2_SENSITIVITY           : 0.3130[0m
+[0;32mI (2153801637) Alphasense_sensors: NO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153801647) Alphasense_sensors: NO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153801657) Alphasense_sensors: correction_factor  : 1.8000[0m
+[0;32mI (2153801657) Alphasense_sensors: no2 WEc raw_value with SENSITIVITY  : 7.6677[0m
+[0;32mI (2153801667) Alphasense_sensors: no2Index          : 6.6667[0m
+[0;32mI (2153801677) Alphasense_sensors: calibFactor       : 0.0499[0m
+[0;32mI (2153801677) Alphasense_sensors: NO2 value  : 7.6677[0m
+[0;32mI (2153801687) Alphasense_sensors: no2 raw value        : 7.667730[0m
+[0;32mI (2153801697) Alphasense_sensors:  no2 calib.offset        :  0.000000[0m
+[0;32mI (2153801697) Alphasense_sensors:  no2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153801707) Alphasense_sensors:  no2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153801717) Alphasense_sensors:  no2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153801727) Alphasense_sensors:  no2 calibrated Value :  7.667730[0m
+[0;32mI (2153801727) Alphasense_sensors: ALPHSENSE_CO_AE_PIN        : 4[0m
+[0;32mI (2153801737) Alphasense_sensors: ALPHSENSE_CO_WE_PIN        : 5[0m
+[0;31mE (2153801747) Alphasense_sensors: CO ---> WE-Working channel no : 5[0m
+[0;31mE (2153801747) Alphasense_sensors: CO ---> Auxilary  channel no   : 4[0m
+[0;31mE (2153802317) BME68X: Bsec2_run failed![0m
+[0;32mI (2153802757) Alphasense_sensors: CO ---> WE-Working voltage : 410[0m
+[0;32mI (2153802757) Alphasense_sensors: CO ---> Auxilary voltage   : 252[0m
+[0;32mI (2153802757) Alphasense_sensors: CO_WE_ELECTRONIC_OFFSET  : 287.00[0m
+[0;32mI (2153802757) Alphasense_sensors: CO_WE_ZERO_OFFSET        : 61.00[0m
+[0;32mI (2153802767) Alphasense_sensors: CO_AUX_ELECTRONIC_OFFSET : 287.00[0m
+[0;32mI (2153802777) Alphasense_sensors: CO_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153802787) Alphasense_sensors: CO_SENSITIVITY           : 0.2760[0m
+[0;32mI (2153802787) Alphasense_sensors: CO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153802797) Alphasense_sensors: CO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;31mE (2153802807) Sensors Monitor: @ Reseting Watchdog........ pin : 23
+[0m
+[0;32mI (2153802807) Alphasense_sensors: co WEc raw_value with SENSITIVITY           : 331.5218[0m
+[0;32mI (2153802817) Alphasense_sensors: CO value  : 331.5218[0m
+[0;32mI (2153802827) Alphasense_sensors: co raw value        : 331.521759[0m
+[0;32mI (2153802837) Alphasense_sensors:  co calib.offset        :  0.000000[0m
+[0;32mI (2153802837) Alphasense_sensors:  co calib.multiplier    :  1.000000[0m
+[0;32mI (2153802847) Alphasense_sensors:  co calib.lower_limit   :  -10000.000000[0m
+[0;32mI (2153802857) Alphasense_sensors:  co calib.upper_limit   :  10000.000000[0m
+[0;32mI (2153802867) Alphasense_sensors:  co calibrated Value :  331.521759[0m
+[0;32mI (2153802867) Alphasense_sensors: ALPHSENSE_NO_AE_PIN        : 2[0m
+[0;32mI (2153802877) Alphasense_sensors: ALPHSENSE_NO_WE_PIN        : 3[0m
+[0;32mI (2153803887) Alphasense_sensors: NO_WE_ELECTRONIC_OFFSET  : 220.00[0m
+[0;32mI (2153803887) Alphasense_sensors: NO_WE_ZERO_OFFSET        : 220.00[0m
+[0;32mI (2153803887) Alphasense_sensors: NO_AUX_ELECTRONIC_OFFSET : 220.00[0m
+[0;32mI (2153803897) Alphasense_sensors: NO_AUX_ZERO_OFFSET       : 220.00[0m
+[0;32mI (2153803897) Alphasense_sensors: NO_SENSITIVITY           : 0.2480[0m
+[0;32mI (2153803907) Alphasense_sensors: NO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153803917) Alphasense_sensors: NO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153803917) Alphasense_sensors: no WEc raw_value with SENSITIVITY          : 44.3548[0m
+[0;32mI (2153803927) Alphasense_sensors: NO ---> WE-Working voltage : 408[0m
+[0;32mI (2153803937) Alphasense_sensors: NO ---> Auxilary voltage   : 397[0m
+[0;32mI (2153803947) Alphasense_sensors: NO value  : 44.3548[0m
+[0;32mI (2153803947) Alphasense_sensors: no raw value        : 44.354839[0m
+[0;32mI (2153803957) Alphasense_sensors:  no calib.offset        :  0.000000[0m
+[0;32mI (2153803967) Alphasense_sensors:  no calib.multiplier    :  1.000000[0m
+[0;32mI (2153803967) Alphasense_sensors:  no calib.lower_limit   :  0.000000[0m
+[0;32mI (2153803977) Alphasense_sensors:  no calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153803987) Alphasense_sensors:  no calibrated Value :  44.354839[0m
+[0;32mI (2153803987) Alphasense_sensors: ALPHSENSE_O3_AE_PIN        : 2[0m
+[0;32mI (2153803997) Alphasense_sensors: ALPHSENSE_O3_WE_PIN        : 3[0m
+[0;32mI (2153805327) Alphasense_sensors: O3 ---> WE-Working voltage : 408[0m
+[0;32mI (2153805327) Alphasense_sensors: O3 ---> Auxilary voltage   : 398[0m
+[0;32mI (2153805327) Alphasense_sensors: O3_WE_ELECTRONIC_OFFSET  : 411.00[0m
+[0;32mI (2153805337) Alphasense_sensors: O3_WE_ZERO_OFFSET        : 1.00[0m
+[0;32mI (2153805337) Alphasense_sensors: O3_AUX_ELECTRONIC_OFFSET : 408.00[0m
+[0;32mI (2153805347) Alphasense_sensors: O3_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153805357) BME68X: ----[0m
+[0;32mI (2153805357) BME68X: IAQ: 81.469437 (2153805317000000,1)[0m
+[0;32mI (2153805367) Alphasense_sensors: O3_SENSITIVITY           : 0.2740[0m
+[0;32mI (2153805367) Alphasense_sensors: O3_COMP_VALUE            : -1.00[0m
+[0;32mI (2153805377) BME68X: sIAQ: 63.746769 (2153805317000000,1)[0m
+[0;32mI (2153805387) Alphasense_sensors: O3_CROSS_SENSITIVITY     : 0.30
+[0m
+[0;32mI (2153805387) Alphasense_sensors: gv_no2          : 7[0m
+[0;32mI (2153805397) BME68X: CO2: 568.733826 (2153805317000000,1)[0m
+[0;32mI (2153805397) BME68X: bVOC: 0.682875 (2153805317000000,1)[0m
+[0;32mI (2153805407) Alphasense_sensors: O3 raw_value after NO2 compensation        : 3.9280[0m
+[0;32mI (2153805417) BME68X: rtemp: 25.406963 (2153805317000000,0)[0m
+[0;32mI (2153805427) Alphasense_sensors: o3 WEc raw_value with SENSITIVITY          : 14.3358[0m
+[0;32mI (2153805427) Alphasense_sensors: O3 value  : 14.3358[0m
+[0;32mI (2153805437) BME68X: rpressure: 97540.656250 (2153805317000000,0)[0m
+[0;32mI (2153805447) Alphasense_sensors: o3 raw value        : 14.335767[0m
+[0;32mI (2153805447) Alphasense_sensors:  o3 calib.offset        :  0.000000[0m
+[0;32mI (2153805457) BME68X: rhumidity: 55.724274 (2153805317000000,0)[0m
+[0;32mI (2153805467) Alphasense_sensors:  o3 calib.multiplier    :  1.000000[0m
+[0;32mI (2153805477) BME68X: temp: 25.383108 (2153805317000000,0)[0m
+[0;32mI (2153805477) BME68X: humidity: 55.858688 (2153805317000000,0)[0m
+[0;32mI (2153805487) Alphasense_sensors:  o3 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153805497) Alphasense_sensors:  o3 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153805497) Alphasense_sensors:  o3 calibrated Value :  14.335767[0m
+[0;32mI (2153805507) MHZ19C-CO2: Reading mhz19c_co2 sensor data...[0m
+[0;32mI (2153805517) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153805517) Sensors Monitor: Timestamp = 2153804839811 - SENSOR_SO2_DATA_READY - so2=-13.47[0m
+[0;31mE (2153805527) Sensors Monitor: so2_we_volt = 296.00, so2_aux_volt = 279.00[0m
+[0;32mI (2153805537) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153805537) Sensors Monitor: Timestamp = 2153804839811 - SENSOR_NO2_DATA_READY - no2=7.67[0m
+[0;31mE (2153805547) Sensors Monitor: no2_we_volt = 284.00, no2_aux_volt = 271.00[0m
+[0;32mI (2153805557) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153805567) Sensors Monitor: Timestamp = 2153804839811 - SENSOR_CO_DATA_READY - co=331.52[0m
+[0;31mE (2153805577) Sensors Monitor: co_we_volt = 410.00, co_aux_volt = 252.00[0m
+[0;32mI (2153805577) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153805587) Sensors Monitor: Timestamp = 2153804839811 - SENSOR_NO_DATA_READY - NO=44.35[0m
+[0;31mE (2153805597) Sensors Monitor: no_we_volt = 408.00, no_aux_volt = 397.00[0m
+[0;32mI (2153805607) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153805607) Sensors Monitor: Timestamp = 2153804839811 - SENSOR_O3_DATA_READY - o3=14.34[0m
+[0;31mE (2153805617) Sensors Monitor: o3_we_volt = 408.00, o3_aux_volt = 398.00[0m
+[0;31mE (2153806517) MHZ19C-CO2: uart_get_buffered_data_len : 9[0m
+[0;31mE (2153807017) MHZ19C-CO2: Received 9 bytes[0m
+[0;32mI (2153807017) MHZ19C-CO2: 0x3ffca9d0   ff 86 01 b0 42 00 6f 00  18                       |....B.o..|[0m
+[0;31mE (2153807017) MHZ19C-CO2: Received CRC: 0x18, Calculated CRC: 0x18[0m
+[0;32mI (2153807027) MHZ19C-CO2:  co2 raw Value        :  432.000000[0m
+[0;32mI (2153807027) MHZ19C-CO2:  co2 calib.offset        :  0.000000[0m
+[0;32mI (2153807037) MHZ19C-CO2:  co2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153807047) MHZ19C-CO2:  co2 calib.lower_limit   :  0.000000[0m
+[0;32mI (2153807047) MHZ19C-CO2:  co2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153807057) MHZ19C-CO2:  co2 calibrated Value :  432.000000[0m
+[0;31mE (2153807067) BME68X: temperature raw value : 25.383108[0m
+[0;31mE (2153807067) BME68X: temperature calibrated value : 25.383108[0m
+[0;31mE (2153807077) BME68X: humidity raw value : 55.858688[0m
+[0;31mE (2153807077) BME68X: humidity calibrated value : 55.858688[0m
+[0;31mE (2153807087) BME68X: tvoc raw value : 0.682875[0m
+[0;31mE (2153807097) BME68X: tvoc calibrated value : 0.682875[0m
+[0;32mI (2153807097) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153807107) Alphasense_sensors: ALPHSENSE_SO2_AE_PIN        : 6[0m
+[0;32mI (2153807107) Alphasense_sensors: ALPHSENSE_SO2_WE_PIN        : 7[0m
+[0;31mE (2153807117) Sensors Monitor: Timestamp = 2153806394815 - SENSOR_CO2_DATA_READY - co2=432.00[0m
+[0;32mI (2153807127) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153807137) Sensors Monitor: Timestamp = 2153806430658 - SENSOR_TEMP_DATA_READY - temperature=25.38
+[0m
+[0;32mI (2153807147) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153807147) Sensors Monitor: Timestamp = 2153806430658 - SENSOR_HUMI_DATA_READY - humiture=55.86[0m
+[0;32mI (2153807157) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153807167) Sensors Monitor: Timestamp = 2153806430658 - SENSOR_TVOC_DATA_READY - tvoc=0.68[0m
+[0;32mI (2153808167) Alphasense_sensors: SO2 ---> WE-Working voltage : 301[0m
+[0;32mI (2153808167) Alphasense_sensors: SO2 ---> Auxilary voltage   : 280[0m
+[0;32mI (2153808167) Alphasense_sensors: SO2_WE_ELECTRONIC_OFFSET  : 288.00[0m
+[0;32mI (2153808177) Alphasense_sensors: SO2_WE_ZERO_OFFSET        : 12.00[0m
+[0;32mI (2153808177) Alphasense_sensors: SO2_AUX_ELECTRONIC_OFFSET : 285.00[0m
+[0;32mI (2153808187) Alphasense_sensors: SO2_AUX_ZERO_OFFSET       : 1.00[0m
+[0;32mI (2153808197) Alphasense_sensors: SO2_SENSITIVITY           : 0.2970[0m
+[0;32mI (2153808197) Alphasense_sensors: SO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153808207) Alphasense_sensors: SO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153808217) Alphasense_sensors: so2 WEc raw_value with SENSITIVITY        : 3.3670[0m
+[0;32mI (2153808227) Alphasense_sensors: so2Index          : 16.6667[0m
+[0;32mI (2153808227) Alphasense_sensors: calibFactor          : 0.0150[0m
+[0;32mI (2153808237) Alphasense_sensors: SO2 value  : 3.3670[0m
+[0;32mI (2153808247) Alphasense_sensors: so2 raw value        : 3.367003[0m
+[0;32mI (2153808247) Alphasense_sensors:  So2 calib.offset        :  0.000000[0m
+[0;32mI (2153808257) Alphasense_sensors:  So2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153808267) Alphasense_sensors:  So2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153808267) Alphasense_sensors:  So2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153808277) Alphasense_sensors:  so2 calibrated Value :  3.367003[0m
+[0;32mI (2153808287) Alphasense_sensors: ALPHSENSE_NO2_AE_PIN        : 0[0m
+[0;32mI (2153808297) Alphasense_sensors: ALPHSENSE_NO2_WE_PIN        : 1[0m
+[0;32mI (2153808657) BME68X: ----[0m
+[0;32mI (2153808657) BME68X: IAQ: 79.721558 (2153808497000000,1)[0m
+[0;32mI (2153808657) BME68X: sIAQ: 62.983242 (2153808497000000,1)[0m
+[0;32mI (2153808657) BME68X: CO2: 564.916199 (2153808497000000,1)[0m
+[0;32mI (2153808667) BME68X: bVOC: 0.671154 (2153808497000000,1)[0m
+[0;32mI (2153808667) BME68X: rtemp: 25.384258 (2153808497000000,0)[0m
+[0;32mI (2153808677) BME68X: rpressure: 97542.109375 (2153808497000000,0)[0m
+[0;32mI (2153808687) BME68X: rhumidity: 55.835911 (2153808497000000,0)[0m
+[0;32mI (2153808687) BME68X: temp: 25.324871 (2153808497000000,0)[0m
+[0;32mI (2153808697) BME68X: humidity: 56.136703 (2153808497000000,0)[0m
+[0;32mI (2153809827) Alphasense_sensors: NO2 ---> WE-Working voltage : 284[0m
+[0;32mI (2153809827) Alphasense_sensors: NO2 ---> Auxilary voltage   : 272[0m
+[0;32mI (2153809827) Alphasense_sensors: NO2_WE_ELECTRONIC_OFFSET  : 296.00[0m
+[0;32mI (2153809837) Alphasense_sensors: NO2_WE_ZERO_OFFSET        : 0.00[0m
+[0;32mI (2153809837) Alphasense_sensors: NO2_AUX_ELECTRONIC_OFFSET : 279.00[0m
+[0;32mI (2153809847) Alphasense_sensors: NO2_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153809857) Alphasense_sensors: NO2_SENSITIVITY           : 0.3130[0m
+[0;32mI (2153809857) Alphasense_sensors: NO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153809867) Alphasense_sensors: NO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153809877) Alphasense_sensors: correction_factor  : 1.8000[0m
+[0;32mI (2153809877) Alphasense_sensors: no2 WEc raw_value with SENSITIVITY  : 1.9169[0m
+[0;32mI (2153809887) Alphasense_sensors: no2Index          : 6.6667[0m
+[0;32mI (2153809897) Alphasense_sensors: calibFactor       : 0.0499[0m
+[0;32mI (2153809897) Alphasense_sensors: NO2 value  : 1.9169[0m
+[0;32mI (2153809907) Alphasense_sensors: no2 raw value        : 1.916932[0m
+[0;32mI (2153809917) Alphasense_sensors:  no2 calib.offset        :  0.000000[0m
+[0;32mI (2153809917) Alphasense_sensors:  no2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153809927) Alphasense_sensors:  no2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153809937) Alphasense_sensors:  no2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153809947) Alphasense_sensors:  no2 calibrated Value :  1.916932[0m
+[0;32mI (2153809947) Alphasense_sensors: ALPHSENSE_CO_AE_PIN        : 4[0m
+[0;32mI (2153809957) Alphasense_sensors: ALPHSENSE_CO_WE_PIN        : 5[0m
+[0;31mE (2153809967) Alphasense_sensors: CO ---> WE-Working channel no : 5[0m
+[0;31mE (2153809967) Alphasense_sensors: CO ---> Auxilary  channel no   : 4[0m
+[0;32mI (2153811337) Alphasense_sensors: CO ---> WE-Working voltage : 412[0m
+[0;32mI (2153811337) Alphasense_sensors: CO ---> Auxilary voltage   : 253[0m
+[0;32mI (2153811337) Alphasense_sensors: CO_WE_ELECTRONIC_OFFSET  : 287.00[0m
+[0;32mI (2153811337) Alphasense_sensors: CO_WE_ZERO_OFFSET        : 61.00[0m
+[0;32mI (2153811347) Alphasense_sensors: CO_AUX_ELECTRONIC_OFFSET : 287.00[0m
+[0;32mI (2153811357) Alphasense_sensors: CO_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153811367) Alphasense_sensors: CO_SENSITIVITY           : 0.2760[0m
+[0;32mI (2153811367) Alphasense_sensors: CO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153811377) Alphasense_sensors: CO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153811387) Alphasense_sensors: co WEc raw_value with SENSITIVITY           : 342.0290[0m
+[0;32mI (2153811397) Alphasense_sensors: CO value  : 342.0290[0m
+[0;32mI (2153811397) Alphasense_sensors: co raw value        : 342.028992[0m
+[0;32mI (2153811407) Alphasense_sensors:  co calib.offset        :  0.000000[0m
+[0;32mI (2153811417) Alphasense_sensors:  co calib.multiplier    :  1.000000[0m
+[0;32mI (2153811417) Alphasense_sensors:  co calib.lower_limit   :  -10000.000000[0m
+[0;32mI (2153811427) Alphasense_sensors:  co calib.upper_limit   :  10000.000000[0m
+[0;32mI (2153811437) Alphasense_sensors:  co calibrated Value :  342.028992[0m
+[0;32mI (2153811447) Alphasense_sensors: ALPHSENSE_NO_AE_PIN        : 2[0m
+[0;32mI (2153811447) Alphasense_sensors: ALPHSENSE_NO_WE_PIN        : 3[0m
+[0;31mE (2153811707) BME68X: Bsec2_run failed![0m
+[0;32mI (2153812457) Alphasense_sensors: NO_WE_ELECTRONIC_OFFSET  : 220.00[0m
+[0;32mI (2153812457) Alphasense_sensors: NO_WE_ZERO_OFFSET        : 220.00[0m
+[0;32mI (2153812457) Alphasense_sensors: NO_AUX_ELECTRONIC_OFFSET : 220.00[0m
+[0;32mI (2153812467) Alphasense_sensors: NO_AUX_ZERO_OFFSET       : 220.00[0m
+[0;32mI (2153812467) Alphasense_sensors: NO_SENSITIVITY           : 0.2480[0m
+[0;32mI (2153812477) Alphasense_sensors: NO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153812487) Alphasense_sensors: NO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153812487) Alphasense_sensors: no WEc raw_value with SENSITIVITY          : 44.3548[0m
+[0;32mI (2153812497) Alphasense_sensors: NO ---> WE-Working voltage : 408[0m
+[0;32mI (2153812507) Alphasense_sensors: NO ---> Auxilary voltage   : 397[0m
+[0;32mI (2153812517) Alphasense_sensors: NO value  : 44.3548[0m
+[0;32mI (2153812517) Alphasense_sensors: no raw value        : 44.354839[0m
+[0;32mI (2153812527) Alphasense_sensors:  no calib.offset        :  0.000000[0m
+[0;32mI (2153812537) Alphasense_sensors:  no calib.multiplier    :  1.000000[0m
+[0;32mI (2153812537) Alphasense_sensors:  no calib.lower_limit   :  0.000000[0m
+[0;32mI (2153812547) Alphasense_sensors:  no calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153812557) Alphasense_sensors:  no calibrated Value :  44.354839[0m
+[0;32mI (2153812557) Alphasense_sensors: ALPHSENSE_O3_AE_PIN        : 2[0m
+[0;32mI (2153812567) Alphasense_sensors: ALPHSENSE_O3_WE_PIN        : 3[0m
+[0;32mI (2153813577) Alphasense_sensors: O3 ---> WE-Working voltage : 407[0m
+[0;32mI (2153813577) Alphasense_sensors: O3 ---> Auxilary voltage   : 397[0m
+[0;32mI (2153813577) Alphasense_sensors: O3_WE_ELECTRONIC_OFFSET  : 411.00[0m
+[0;32mI (2153813577) Alphasense_sensors: O3_WE_ZERO_OFFSET        : 1.00[0m
+[0;32mI (2153813587) Alphasense_sensors: O3_AUX_ELECTRONIC_OFFSET : 408.00[0m
+[0;32mI (2153813597) Alphasense_sensors: O3_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153813607) Alphasense_sensors: O3_SENSITIVITY           : 0.2740[0m
+[0;32mI (2153813607) Alphasense_sensors: O3_COMP_VALUE            : -1.00[0m
+[0;32mI (2153813617) Alphasense_sensors: O3_CROSS_SENSITIVITY     : 0.30
+[0m
+[0;32mI (2153813627) Alphasense_sensors: gv_no2          : 1[0m
+[0;32mI (2153813627) Alphasense_sensors: O3 raw_value after NO2 compensation        : 5.7040[0m
+[0;32mI (2153813637) Alphasense_sensors: o3 WEc raw_value with SENSITIVITY          : 20.8175[0m
+[0;32mI (2153813647) Alphasense_sensors: O3 value  : 20.8175[0m
+[0;32mI (2153813657) Alphasense_sensors: o3 raw value        : 20.817518[0m
+[0;32mI (2153813657) Alphasense_sensors:  o3 calib.offset        :  0.000000[0m
+[0;32mI (2153813667) Alphasense_sensors:  o3 calib.multiplier    :  1.000000[0m
+[0;32mI (2153813677) Alphasense_sensors:  o3 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153813677) Alphasense_sensors:  o3 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153813687) Alphasense_sensors:  o3 calibrated Value :  20.817518[0m
+[0;32mI (2153813697) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153813697) Sensors Monitor: Timestamp = 2153813028418 - SENSOR_SO2_DATA_READY - so2=3.37[0m
+[0;32mI (2153813707) MHZ19C-CO2: Reading mhz19c_co2 sensor data...[0m
+[0;31mE (2153813717) Sensors Monitor: so2_we_volt = 301.00, so2_aux_volt = 280.00[0m
+[0;32mI (2153813727) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153813727) Sensors Monitor: Timestamp = 2153813028418 - SENSOR_NO2_DATA_READY - no2=1.92[0m
+[0;31mE (2153813737) Sensors Monitor: no2_we_volt = 284.00, no2_aux_volt = 272.00[0m
+[0;32mI (2153813747) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153813757) Sensors Monitor: Timestamp = 2153813028418 - SENSOR_CO_DATA_READY - co=342.03[0m
+[0;31mE (2153813757) Sensors Monitor: co_we_volt = 412.00, co_aux_volt = 253.00[0m
+[0;32mI (2153813767) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153813777) Sensors Monitor: Timestamp = 2153813028418 - SENSOR_NO_DATA_READY - NO=44.35[0m
+[0;31mE (2153813787) Sensors Monitor: no_we_volt = 408.00, no_aux_volt = 397.00[0m
+[0;32mI (2153813787) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153813797) Sensors Monitor: Timestamp = 2153813028418 - SENSOR_O3_DATA_READY - o3=20.82[0m
+[0;31mE (2153813807) Sensors Monitor: o3_we_volt = 407.00, o3_aux_volt = 397.00[0m
+[0;31mE (2153814607) Sensors Monitor: @ Reseting Watchdog........ pin : 23
+[0m
+[0;32mI (2153814717) BME68X: ----[0m
+[0;32mI (2153814717) BME68X: IAQ: 80.103401 (2153814707000000,1)[0m
+[0;32mI (2153814717) BME68X: sIAQ: 63.150043 (2153814707000000,1)[0m
+[0;32mI (2153814717) BME68X: CO2: 565.750244 (2153814707000000,1)[0m
+[0;32mI (2153814727) BME68X: bVOC: 0.673697 (2153814707000000,1)[0m
+[0;32mI (2153814737) BME68X: rtemp: 25.414534 (2153814707000000,0)[0m
+[0;32mI (2153814737) BME68X: rpressure: 97542.226562 (2153814707000000,0)[0m
+[0;32mI (2153814747) BME68X: rhumidity: 55.776367 (2153814707000000,0)[0m
+[0;32mI (2153814757) BME68X: temp: 25.390678 (2153814707000000,0)[0m
+[0;32mI (2153814757) BME68X: humidity: 55.857426 (2153814707000000,0)[0m
+[0;31mE (2153814767) MHZ19C-CO2: uart_get_buffered_data_len : 9[0m
+[0;31mE (2153815277) MHZ19C-CO2: Received 9 bytes[0m
+[0;32mI (2153815277) MHZ19C-CO2: 0x3ffca9d0   ff 86 01 af 42 00 6f 00  19                       |....B.o..|[0m
+[0;31mE (2153815277) MHZ19C-CO2: Received CRC: 0x19, Calculated CRC: 0x19[0m
+[0;32mI (2153815287) MHZ19C-CO2:  co2 raw Value        :  431.000000[0m
+[0;32mI (2153815287) MHZ19C-CO2:  co2 calib.offset        :  0.000000[0m
+[0;32mI (2153815297) MHZ19C-CO2:  co2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153815307) MHZ19C-CO2:  co2 calib.lower_limit   :  0.000000[0m
+[0;32mI (2153815307) MHZ19C-CO2:  co2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153815317) MHZ19C-CO2:  co2 calibrated Value :  431.000000[0m
+[0;32mI (2153815327) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153815327) Sensors Monitor: Timestamp = 2153814654819 - SENSOR_CO2_DATA_READY - co2=431.00[0m
+[0;31mE (2153815337) BME68X: temperature raw value : 25.390678[0m
+[0;31mE (2153815347) BME68X: temperature calibrated value : 25.390678[0m
+[0;31mE (2153815347) BME68X: humidity raw value : 55.857426[0m
+[0;31mE (2153815357) BME68X: humidity calibrated value : 55.857426[0m
+[0;31mE (2153815357) BME68X: tvoc raw value : 0.673697[0m
+[0;31mE (2153815367) BME68X: tvoc calibrated value : 0.673697[0m
+[0;32mI (2153815377) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153815377) Sensors Monitor: Timestamp = 2153814705414 - SENSOR_TEMP_DATA_READY - temperature=25.39
+[0m
+[0;32mI (2153815387) Alphasense_sensors: ALPHSENSE_SO2_AE_PIN        : 6[0m
+[0;32mI (2153815397) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153815397) Sensors Monitor: Timestamp = 2153814705414 - SENSOR_HUMI_DATA_READY - humiture=55.86[0m
+[0;32mI (2153815407) Alphasense_sensors: ALPHSENSE_SO2_WE_PIN        : 7[0m
+[0;32mI (2153815417) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153815427) Sensors Monitor: Timestamp = 2153814705414 - SENSOR_TVOC_DATA_READY - tvoc=0.67[0m
+[0;32mI (2153816427) Alphasense_sensors: SO2 ---> WE-Working voltage : 295[0m
+[0;32mI (2153816427) Alphasense_sensors: SO2 ---> Auxilary voltage   : 279[0m
+[0;32mI (2153816427) Alphasense_sensors: SO2_WE_ELECTRONIC_OFFSET  : 288.00[0m
+[0;32mI (2153816437) Alphasense_sensors: SO2_WE_ZERO_OFFSET        : 12.00[0m
+[0;32mI (2153816437) Alphasense_sensors: SO2_AUX_ELECTRONIC_OFFSET : 285.00[0m
+[0;32mI (2153816447) Alphasense_sensors: SO2_AUX_ZERO_OFFSET       : 1.00[0m
+[0;32mI (2153816457) Alphasense_sensors: SO2_SENSITIVITY           : 0.2970[0m
+[0;32mI (2153816457) Alphasense_sensors: SO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153816467) Alphasense_sensors: SO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153816477) Alphasense_sensors: so2 WEc raw_value with SENSITIVITY        : -16.8350[0m
+[0;32mI (2153816487) Alphasense_sensors: so2Index          : 16.6667[0m
+[0;32mI (2153816487) Alphasense_sensors: calibFactor          : 0.0149[0m
+[0;32mI (2153816497) Alphasense_sensors: SO2 value  : -16.8350[0m
+[0;32mI (2153816507) Alphasense_sensors: so2 raw value        : -16.835018[0m
+[0;32mI (2153816507) Alphasense_sensors:  So2 calib.offset        :  0.000000[0m
+[0;32mI (2153816517) Alphasense_sensors:  So2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153816527) Alphasense_sensors:  So2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153816527) Alphasense_sensors:  So2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153816537) Alphasense_sensors:  so2 calibrated Value :  -16.835018[0m
+[0;32mI (2153816547) Alphasense_sensors: ALPHSENSE_NO2_AE_PIN        : 0[0m
+[0;32mI (2153816557) Alphasense_sensors: ALPHSENSE_NO2_WE_PIN        : 1[0m
+[0;32mI (2153817557) Alphasense_sensors: NO2 ---> WE-Working voltage : 284[0m
+[0;32mI (2153817557) Alphasense_sensors: NO2 ---> Auxilary voltage   : 270[0m
+[0;32mI (2153817557) Alphasense_sensors: NO2_WE_ELECTRONIC_OFFSET  : 296.00[0m
+[0;32mI (2153817567) Alphasense_sensors: NO2_WE_ZERO_OFFSET        : 0.00[0m
+[0;32mI (2153817567) Alphasense_sensors: NO2_AUX_ELECTRONIC_OFFSET : 279.00[0m
+[0;32mI (2153817577) Alphasense_sensors: NO2_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153817587) Alphasense_sensors: NO2_SENSITIVITY           : 0.3130[0m
+[0;32mI (2153817587) Alphasense_sensors: NO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153817597) Alphasense_sensors: NO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153817607) Alphasense_sensors: correction_factor  : 1.8000[0m
+[0;32mI (2153817607) Alphasense_sensors: no2 WEc raw_value with SENSITIVITY  : 13.4185[0m
+[0;32mI (2153817617) Alphasense_sensors: no2Index          : 6.6667[0m
+[0;32mI (2153817627) Alphasense_sensors: calibFactor       : 0.0499[0m
+[0;32mI (2153817627) Alphasense_sensors: NO2 value  : 13.4185[0m
+[0;32mI (2153817637) Alphasense_sensors: no2 raw value        : 13.418530[0m
+[0;32mI (2153817647) Alphasense_sensors:  no2 calib.offset        :  0.000000[0m
+[0;32mI (2153817657) Alphasense_sensors:  no2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153817657) Alphasense_sensors:  no2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153817667) Alphasense_sensors:  no2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153817677) Alphasense_sensors:  no2 calibrated Value :  13.418530[0m
+[0;32mI (2153817677) Alphasense_sensors: ALPHSENSE_CO_AE_PIN        : 4[0m
+[0;32mI (2153817687) Alphasense_sensors: ALPHSENSE_CO_WE_PIN        : 5[0m
+[0;31mE (2153817697) Alphasense_sensors: CO ---> WE-Working channel no : 5[0m
+[0;31mE (2153817707) Alphasense_sensors: CO ---> Auxilary  channel no   : 4[0m
+[0;32mI (2153817777) BME68X: ----[0m
+[0;32mI (2153817777) BME68X: IAQ: 79.479103 (2153817767000000,1)[0m
+[0;32mI (2153817777) BME68X: sIAQ: 62.877331 (2153817767000000,1)[0m
+[0;32mI (2153817777) BME68X: CO2: 564.386658 (2153817767000000,1)[0m
+[0;32mI (2153817787) BME68X: bVOC: 0.669544 (2153817767000000,1)[0m
+[0;32mI (2153817797) BME68X: rtemp: 25.381735 (2153817767000000,0)[0m
+[0;32mI (2153817797) BME68X: rpressure: 97540.859375 (2153817767000000,0)[0m
+[0;32mI (2153817807) BME68X: rhumidity: 55.848320 (2153817767000000,0)[0m
+[0;32mI (2153817817) BME68X: temp: 25.318905 (2153817767000000,0)[0m
+[0;32mI (2153817817) BME68X: humidity: 56.144875 (2153817767000000,0)[0m
+[0;32mI (2153818927) Alphasense_sensors: CO ---> WE-Working voltage : 410[0m
+[0;32mI (2153818927) Alphasense_sensors: CO ---> Auxilary voltage   : 253[0m
+[0;32mI (2153818927) Alphasense_sensors: CO_WE_ELECTRONIC_OFFSET  : 287.00[0m
+[0;32mI (2153818927) Alphasense_sensors: CO_WE_ZERO_OFFSET        : 61.00[0m
+[0;32mI (2153818937) Alphasense_sensors: CO_AUX_ELECTRONIC_OFFSET : 287.00[0m
+[0;32mI (2153818947) Alphasense_sensors: CO_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153818957) Alphasense_sensors: CO_SENSITIVITY           : 0.2760[0m
+[0;32mI (2153818957) Alphasense_sensors: CO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153818967) Alphasense_sensors: CO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153818977) Alphasense_sensors: co WEc raw_value with SENSITIVITY           : 334.7826[0m
+[0;32mI (2153818987) Alphasense_sensors: CO value  : 334.7826[0m
+[0;32mI (2153818987) Alphasense_sensors: co raw value        : 334.782623[0m
+[0;32mI (2153818997) Alphasense_sensors:  co calib.offset        :  0.000000[0m
+[0;32mI (2153819007) Alphasense_sensors:  co calib.multiplier    :  1.000000[0m
+[0;32mI (2153819007) Alphasense_sensors:  co calib.lower_limit   :  -10000.000000[0m
+[0;32mI (2153819017) Alphasense_sensors:  co calib.upper_limit   :  10000.000000[0m
+[0;32mI (2153819027) Alphasense_sensors:  co calibrated Value :  334.782623[0m
+[0;32mI (2153819037) Alphasense_sensors: ALPHSENSE_NO_AE_PIN        : 2[0m
+[0;32mI (2153819037) Alphasense_sensors: ALPHSENSE_NO_WE_PIN        : 3[0m
+[0;32mI (2153820447) Alphasense_sensors: NO_WE_ELECTRONIC_OFFSET  : 220.00[0m
+[0;32mI (2153820447) Alphasense_sensors: NO_WE_ZERO_OFFSET        : 220.00[0m
+[0;32mI (2153820447) Alphasense_sensors: NO_AUX_ELECTRONIC_OFFSET : 220.00[0m
+[0;32mI (2153820457) Alphasense_sensors: NO_AUX_ZERO_OFFSET       : 220.00[0m
+[0;32mI (2153820457) Alphasense_sensors: NO_SENSITIVITY           : 0.2480[0m
+[0;32mI (2153820467) Alphasense_sensors: NO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153820477) Alphasense_sensors: NO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153820477) Alphasense_sensors: no WEc raw_value with SENSITIVITY          : 44.3548[0m
+[0;32mI (2153820487) Alphasense_sensors: NO ---> WE-Working voltage : 409[0m
+[0;32mI (2153820497) Alphasense_sensors: NO ---> Auxilary voltage   : 398[0m
+[0;32mI (2153820507) Alphasense_sensors: NO value  : 44.3548[0m
+[0;32mI (2153820507) Alphasense_sensors: no raw value        : 44.354839[0m
+[0;32mI (2153820517) Alphasense_sensors:  no calib.offset        :  0.000000[0m
+[0;32mI (2153820527) Alphasense_sensors:  no calib.multiplier    :  1.000000[0m
+[0;32mI (2153820527) Alphasense_sensors:  no calib.lower_limit   :  0.000000[0m
+[0;32mI (2153820537) Alphasense_sensors:  no calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153820547) Alphasense_sensors:  no calibrated Value :  44.354839[0m
+[0;32mI (2153820547) Alphasense_sensors: ALPHSENSE_O3_AE_PIN        : 2[0m
+[0;32mI (2153820557) Alphasense_sensors: ALPHSENSE_O3_WE_PIN        : 3[0m
+[0;32mI (2153820987) BME68X: ----[0m
+[0;32mI (2153820987) BME68X: IAQ: 78.853951 (2153820827000000,1)[0m
+[0;32mI (2153820987) BME68X: sIAQ: 62.604248 (2153820827000000,1)[0m
+[0;32mI (2153820987) BME68X: CO2: 563.021240 (2153820827000000,1)[0m
+[0;32mI (2153820997) BME68X: bVOC: 0.665411 (2153820827000000,1)[0m
+[0;32mI (2153820997) BME68X: rtemp: 25.419579 (2153820827000000,0)[0m
+[0;32mI (2153821007) BME68X: rpressure: 97540.656250 (2153820827000000,0)[0m
+[0;32mI (2153821017) BME68X: rhumidity: 55.751556 (2153820827000000,0)[0m
+[0;32mI (2153821017) BME68X: temp: 25.356749 (2153820827000000,0)[0m
+[0;32mI (2153821027) BME68X: humidity: 55.929832 (2153820827000000,0)[0m
+[0;31mE (2153822097) aurassure_modbus_slave: HOLDING READ (2042810867 us), ADDR:0, TYPE:2, INST_ADDR:0x3ffb741c, SIZE:125[0m
+[0;32mI (2153822157) Alphasense_sensors: O3 ---> WE-Working voltage : 408[0m
+[0;32mI (2153822157) Alphasense_sensors: O3 ---> Auxilary voltage   : 397[0m
+[0;32mI (2153822157) Alphasense_sensors: O3_WE_ELECTRONIC_OFFSET  : 411.00[0m
+[0;32mI (2153822167) Alphasense_sensors: O3_WE_ZERO_OFFSET        : 1.00[0m
+[0;32mI (2153822167) Alphasense_sensors: O3_AUX_ELECTRONIC_OFFSET : 408.00[0m
+[0;32mI (2153822177) Alphasense_sensors: O3_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153822187) Alphasense_sensors: O3_SENSITIVITY           : 0.2740[0m
+[0;32mI (2153822187) Alphasense_sensors: O3_COMP_VALUE            : -1.00[0m
+[0;32mI (2153822197) Alphasense_sensors: O3_CROSS_SENSITIVITY     : 0.30
+[0m
+[0;32mI (2153822207) Alphasense_sensors: gv_no2          : 13[0m
+[0;32mI (2153822207) Alphasense_sensors: O3 raw_value after NO2 compensation        : 3.1520[0m
+[0;32mI (2153822217) Alphasense_sensors: o3 WEc raw_value with SENSITIVITY          : 11.5036[0m
+[0;32mI (2153822227) Alphasense_sensors: O3 value  : 11.5036[0m
+[0;32mI (2153822237) Alphasense_sensors: o3 raw value        : 11.503650[0m
+[0;32mI (2153822237) Alphasense_sensors:  o3 calib.offset        :  0.000000[0m
+[0;32mI (2153822247) Alphasense_sensors:  o3 calib.multiplier    :  1.000000[0m
+[0;32mI (2153822257) Alphasense_sensors:  o3 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153822257) Alphasense_sensors:  o3 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153822267) Alphasense_sensors:  o3 calibrated Value :  11.503650[0m
+[0;32mI (2153822277) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153822277) Sensors Monitor: Timestamp = 2153821608697 - SENSOR_SO2_DATA_READY - so2=-16.84[0m
+[0;32mI (2153822287) MHZ19C-CO2: Reading mhz19c_co2 sensor data...[0m
+[0;31mE (2153822287) Sensors Monitor: so2_we_volt = 295.00, so2_aux_volt = 279.00[0m
+[0;32mI (2153822307) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153822307) Sensors Monitor: Timestamp = 2153821608697 - SENSOR_NO2_DATA_READY - no2=13.42[0m
+[0;31mE (2153822317) Sensors Monitor: no2_we_volt = 284.00, no2_aux_volt = 270.00[0m
+[0;32mI (2153822327) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153822337) Sensors Monitor: Timestamp = 2153821608697 - SENSOR_CO_DATA_READY - co=334.78[0m
+[0;31mE (2153822337) Sensors Monitor: co_we_volt = 410.00, co_aux_volt = 253.00[0m
+[0;32mI (2153822347) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153822357) Sensors Monitor: Timestamp = 2153821608697 - SENSOR_NO_DATA_READY - NO=44.35[0m
+[0;31mE (2153822367) Sensors Monitor: no_we_volt = 409.00, no_aux_volt = 398.00[0m
+[0;32mI (2153822367) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153822377) Sensors Monitor: Timestamp = 2153821608697 - SENSOR_O3_DATA_READY - o3=11.50[0m
+[0;31mE (2153822387) Sensors Monitor: o3_we_volt = 408.00, o3_aux_volt = 397.00[0m
+[0;31mE (2153822917) aurassure_modbus_slave: HOLDING WRITE (2043635505 us), ADDR:554, TYPE:1, INST_ADDR:0x3ffb7870, SIZE:2[0m
+[0;31mE (2153822917) aurassure_modbus_slave: Data transmitted to omni,Resetting Rain and Wind sensor data[0m
+[0;31mE (2153823297) MHZ19C-CO2: uart_get_buffered_data_len : 9[0m
+[0;31mE (2153823607) aurassure_modbus_slave: HOLDING READ (2044320328 us), ADDR:128, TYPE:2, INST_ADDR:0x3ffb751c, SIZE:12[0m
+[0;31mE (2153823797) MHZ19C-CO2: Received 9 bytes[0m
+[0;32mI (2153823797) MHZ19C-CO2: 0x3ffca9d0   ff 86 01 b0 42 00 6f 00  18                       |....B.o..|[0m
+[0;31mE (2153823797) MHZ19C-CO2: Received CRC: 0x18, Calculated CRC: 0x18[0m
+[0;32mI (2153823807) MHZ19C-CO2:  co2 raw Value        :  432.000000[0m
+[0;32mI (2153823807) MHZ19C-CO2:  co2 calib.offset        :  0.000000[0m
+[0;32mI (2153823817) MHZ19C-CO2:  co2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153823827) MHZ19C-CO2:  co2 calib.lower_limit   :  0.000000[0m
+[0;32mI (2153823827) MHZ19C-CO2:  co2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153823837) MHZ19C-CO2:  co2 calibrated Value :  432.000000[0m
+[0;32mI (2153823847) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153823847) Sensors Monitor: Timestamp = 2153823174906 - SENSOR_CO2_DATA_READY - co2=432.00[0m
+[0;31mE (2153823857) BME68X: temperature raw value : 25.356749[0m
+[0;31mE (2153823867) BME68X: temperature calibrated value : 25.356749[0m
+[0;31mE (2153823867) BME68X: humidity raw value : 55.929832[0m
+[0;31mE (2153823877) BME68X: humidity calibrated value : 55.929832[0m
+[0;31mE (2153823877) BME68X: tvoc raw value : 0.665411[0m
+[0;31mE (2153823887) BME68X: tvoc calibrated value : 0.665411[0m
+[0;32mI (2153823897) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153823897) Sensors Monitor: Timestamp = 2153823225501 - SENSOR_TEMP_DATA_READY - temperature=25.36
+[0m
+[0;32mI (2153823907) Alphasense_sensors: ALPHSENSE_SO2_AE_PIN        : 6[0m
+[0;32mI (2153823917) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153823917) Sensors Monitor: Timestamp = 2153823225501 - SENSOR_HUMI_DATA_READY - humiture=55.93[0m
+[0;32mI (2153823927) Alphasense_sensors: ALPHSENSE_SO2_WE_PIN        : 7[0m
+[0;32mI (2153823937) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153823947) Sensors Monitor: Timestamp = 2153823225501 - SENSOR_TVOC_DATA_READY - tvoc=0.67[0m
+[0;31mE (2153824037) BME68X: Bsec2_run failed![0m
+[0;31mE (2153824257) aurassure_modbus_slave: HOLDING READ (2044970690 us), ADDR:152, TYPE:2, INST_ADDR:0x3ffb754c, SIZE:20[0m
+[0;31mE (2153824927) aurassure_modbus_slave: HOLDING READ (2045640246 us), ADDR:200, TYPE:2, INST_ADDR:0x3ffb75ac, SIZE:22[0m
+[0;32mI (2153824957) Alphasense_sensors: SO2 ---> WE-Working voltage : 296[0m
+[0;32mI (2153824957) Alphasense_sensors: SO2 ---> Auxilary voltage   : 277[0m
+[0;32mI (2153824957) Alphasense_sensors: SO2_WE_ELECTRONIC_OFFSET  : 288.00[0m
+[0;32mI (2153824967) Alphasense_sensors: SO2_WE_ZERO_OFFSET        : 12.00[0m
+[0;32mI (2153824967) Alphasense_sensors: SO2_AUX_ELECTRONIC_OFFSET : 285.00[0m
+[0;32mI (2153824977) Alphasense_sensors: SO2_AUX_ZERO_OFFSET       : 1.00[0m
+[0;32mI (2153824987) Alphasense_sensors: SO2_SENSITIVITY           : 0.2970[0m
+[0;32mI (2153824987) Alphasense_sensors: SO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153824997) Alphasense_sensors: SO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153825007) Alphasense_sensors: so2 WEc raw_value with SENSITIVITY        : -13.4680[0m
+[0;32mI (2153825017) Alphasense_sensors: so2Index          : 16.6667[0m
+[0;32mI (2153825017) Alphasense_sensors: calibFactor          : 0.0149[0m
+[0;32mI (2153825027) Alphasense_sensors: SO2 value  : -13.4680[0m
+[0;32mI (2153825037) Alphasense_sensors: so2 raw value        : -13.468014[0m
+[0;32mI (2153825037) Alphasense_sensors:  So2 calib.offset        :  0.000000[0m
+[0;32mI (2153825047) Alphasense_sensors:  So2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153825057) Alphasense_sensors:  So2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153825057) Alphasense_sensors:  So2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153825067) Alphasense_sensors:  so2 calibrated Value :  -13.468014[0m
+[0;32mI (2153825077) Alphasense_sensors: ALPHSENSE_NO2_AE_PIN        : 0[0m
+[0;32mI (2153825087) Alphasense_sensors: ALPHSENSE_NO2_WE_PIN        : 1[0m
+[0;31mE (2153825527) aurassure_modbus_slave: HOLDING WRITE (2046245484 us), ADDR:556, TYPE:1, INST_ADDR:0x3ffb7874, SIZE:2[0m
+[0;31mE (2153825527) aurassure_modbus_slave: Data transmitted to omni,Resetting error codes[0m
+[0;32mI (2153826087) Alphasense_sensors: NO2 ---> WE-Working voltage : 284[0m
+[0;32mI (2153826087) Alphasense_sensors: NO2 ---> Auxilary voltage   : 271[0m
+[0;32mI (2153826087) Alphasense_sensors: NO2_WE_ELECTRONIC_OFFSET  : 296.00[0m
+[0;32mI (2153826097) Alphasense_sensors: NO2_WE_ZERO_OFFSET        : 0.00[0m
+[0;32mI (2153826097) Alphasense_sensors: NO2_AUX_ELECTRONIC_OFFSET : 279.00[0m
+[0;32mI (2153826107) Alphasense_sensors: NO2_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153826117) Alphasense_sensors: NO2_SENSITIVITY           : 0.3130[0m
+[0;32mI (2153826117) Alphasense_sensors: NO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153826127) Alphasense_sensors: NO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153826137) Alphasense_sensors: correction_factor  : 1.8000[0m
+[0;32mI (2153826137) Alphasense_sensors: no2 WEc raw_value with SENSITIVITY  : 7.6677[0m
+[0;32mI (2153826147) Alphasense_sensors: no2Index          : 6.6667[0m
+[0;32mI (2153826157) Alphasense_sensors: calibFactor       : 0.0499[0m
+[0;32mI (2153826167) Alphasense_sensors: NO2 value  : 7.6677[0m
+[0;32mI (2153826167) Alphasense_sensors: no2 raw value        : 7.667730[0m
+[0;32mI (2153826177) Alphasense_sensors:  no2 calib.offset        :  0.000000[0m
+[0;32mI (2153826187) Alphasense_sensors:  no2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153826187) Alphasense_sensors:  no2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153826197) Alphasense_sensors:  no2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153826207) Alphasense_sensors:  no2 calibrated Value :  7.667730[0m
+[0;32mI (2153826207) Alphasense_sensors: ALPHSENSE_CO_AE_PIN        : 4[0m
+[0;32mI (2153826217) Alphasense_sensors: ALPHSENSE_CO_WE_PIN        : 5[0m
+[0;31mE (2153826227) Alphasense_sensors: CO ---> WE-Working channel no : 5[0m
+[0;31mE (2153826237) Alphasense_sensors: CO ---> Auxilary  channel no   : 4[0m
+[0;31mE (2153826407) Sensors Monitor: @ Reseting Watchdog........ pin : 23
+[0m
+[0;32mI (2153827047) BME68X: ----[0m
+[0;32mI (2153827047) BME68X: IAQ: 78.782990 (2153827037000000,1)[0m
+[0;32mI (2153827047) BME68X: sIAQ: 62.573250 (2153827037000000,1)[0m
+[0;32mI (2153827047) BME68X: CO2: 562.866272 (2153827037000000,1)[0m
+[0;32mI (2153827057) BME68X: bVOC: 0.664943 (2153827037000000,1)[0m
+[0;32mI (2153827067) BME68X: rtemp: 25.432194 (2153827037000000,0)[0m
+[0;32mI (2153827067) BME68X: rpressure: 97542.171875 (2153827037000000,0)[0m
+[0;32mI (2153827077) BME68X: rhumidity: 55.689556 (2153827037000000,0)[0m
+[0;32mI (2153827087) BME68X: temp: 25.408339 (2153827037000000,0)[0m
+[0;32mI (2153827087) BME68X: humidity: 55.711926 (2153827037000000,0)[0m
+[0;32mI (2153827297) Alphasense_sensors: CO ---> WE-Working voltage : 410[0m
+[0;32mI (2153827297) Alphasense_sensors: CO ---> Auxilary voltage   : 254[0m
+[0;32mI (2153827297) Alphasense_sensors: CO_WE_ELECTRONIC_OFFSET  : 287.00[0m
+[0;32mI (2153827297) Alphasense_sensors: CO_WE_ZERO_OFFSET        : 61.00[0m
+[0;32mI (2153827307) Alphasense_sensors: CO_AUX_ELECTRONIC_OFFSET : 287.00[0m
+[0;32mI (2153827317) Alphasense_sensors: CO_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153827327) Alphasense_sensors: CO_SENSITIVITY           : 0.2760[0m
+[0;32mI (2153827327) Alphasense_sensors: CO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153827337) Alphasense_sensors: CO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153827347) Alphasense_sensors: co WEc raw_value with SENSITIVITY           : 338.0435[0m
+[0;32mI (2153827357) Alphasense_sensors: CO value  : 338.0435[0m
+[0;32mI (2153827357) Alphasense_sensors: co raw value        : 338.043488[0m
+[0;32mI (2153827367) Alphasense_sensors:  co calib.offset        :  0.000000[0m
+[0;32mI (2153827377) Alphasense_sensors:  co calib.multiplier    :  1.000000[0m
+[0;32mI (2153827377) Alphasense_sensors:  co calib.lower_limit   :  -10000.000000[0m
+[0;32mI (2153827387) Alphasense_sensors:  co calib.upper_limit   :  10000.000000[0m
+[0;32mI (2153827397) Alphasense_sensors:  co calibrated Value :  338.043488[0m
+[0;32mI (2153827407) Alphasense_sensors: ALPHSENSE_NO_AE_PIN        : 2[0m
+[0;32mI (2153827407) Alphasense_sensors: ALPHSENSE_NO_WE_PIN        : 3[0m
+[0;32mI (2153828457) Alphasense_sensors: NO_WE_ELECTRONIC_OFFSET  : 220.00[0m
+[0;32mI (2153828457) Alphasense_sensors: NO_WE_ZERO_OFFSET        : 220.00[0m
+[0;32mI (2153828457) Alphasense_sensors: NO_AUX_ELECTRONIC_OFFSET : 220.00[0m
+[0;32mI (2153828467) Alphasense_sensors: NO_AUX_ZERO_OFFSET       : 220.00[0m
+[0;32mI (2153828467) Alphasense_sensors: NO_SENSITIVITY           : 0.2480[0m
+[0;32mI (2153828477) Alphasense_sensors: NO_COMP_VALUE            : -1.00[0m
+[0;32mI (2153828487) Alphasense_sensors: NO_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153828487) Alphasense_sensors: no WEc raw_value with SENSITIVITY          : 40.3226[0m
+[0;32mI (2153828497) Alphasense_sensors: NO ---> WE-Working voltage : 407[0m
+[0;32mI (2153828507) Alphasense_sensors: NO ---> Auxilary voltage   : 397[0m
+[0;32mI (2153828517) Alphasense_sensors: NO value  : 40.3226[0m
+[0;32mI (2153828517) Alphasense_sensors: no raw value        : 40.322582[0m
+[0;32mI (2153828527) Alphasense_sensors:  no calib.offset        :  0.000000[0m
+[0;32mI (2153828537) Alphasense_sensors:  no calib.multiplier    :  1.000000[0m
+[0;32mI (2153828537) Alphasense_sensors:  no calib.lower_limit   :  0.000000[0m
+[0;32mI (2153828547) Alphasense_sensors:  no calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153828557) Alphasense_sensors:  no calibrated Value :  40.322582[0m
+[0;32mI (2153828557) Alphasense_sensors: ALPHSENSE_O3_AE_PIN        : 2[0m
+[0;32mI (2153828567) Alphasense_sensors: ALPHSENSE_O3_WE_PIN        : 3[0m
+[0;32mI (2153829977) Alphasense_sensors: O3 ---> WE-Working voltage : 407[0m
+[0;32mI (2153829977) Alphasense_sensors: O3 ---> Auxilary voltage   : 397[0m
+[0;32mI (2153829977) Alphasense_sensors: O3_WE_ELECTRONIC_OFFSET  : 411.00[0m
+[0;32mI (2153829977) Alphasense_sensors: O3_WE_ZERO_OFFSET        : 1.00[0m
+[0;32mI (2153829987) Alphasense_sensors: O3_AUX_ELECTRONIC_OFFSET : 408.00[0m
+[0;32mI (2153829997) Alphasense_sensors: O3_AUX_ZERO_OFFSET       : 0.00[0m
+[0;32mI (2153830007) Alphasense_sensors: O3_SENSITIVITY           : 0.2740[0m
+[0;32mI (2153830007) Alphasense_sensors: O3_COMP_VALUE            : -1.00[0m
+[0;32mI (2153830017) Alphasense_sensors: O3_CROSS_SENSITIVITY     : 0.30
+[0m
+[0;32mI (2153830027) Alphasense_sensors: gv_no2          : 7[0m
+[0;32mI (2153830027) Alphasense_sensors: O3 raw_value after NO2 compensation        : 3.9280[0m
+[0;32mI (2153830037) Alphasense_sensors: o3 WEc raw_value with SENSITIVITY          : 14.3358[0m
+[0;32mI (2153830047) Alphasense_sensors: O3 value  : 14.3358[0m
+[0;32mI (2153830057) Alphasense_sensors: o3 raw value        : 14.335767[0m
+[0;32mI (2153830057) Alphasense_sensors:  o3 calib.offset        :  0.000000[0m
+[0;32mI (2153830067) Alphasense_sensors:  o3 calib.multiplier    :  1.000000[0m
+[0;32mI (2153830077) Alphasense_sensors:  o3 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153830077) Alphasense_sensors:  o3 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153830087) Alphasense_sensors:  o3 calibrated Value :  14.335767[0m
+[0;32mI (2153830097) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153830097) MHZ19C-CO2: Reading mhz19c_co2 sensor data...[0m
+[0;31mE (2153830097) Sensors Monitor: Timestamp = 2153829428419 - SENSOR_SO2_DATA_READY - so2=-13.47[0m
+[0;31mE (2153830117) Sensors Monitor: so2_we_volt = 296.00, so2_aux_volt = 277.00[0m
+[0;32mI (2153830127) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153830127) Sensors Monitor: Timestamp = 2153829428419 - SENSOR_NO2_DATA_READY - no2=7.67[0m
+[0;31mE (2153830137) Sensors Monitor: no2_we_volt = 284.00, no2_aux_volt = 271.00[0m
+[0;32mI (2153830147) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153830157) Sensors Monitor: Timestamp = 2153829428419 - SENSOR_CO_DATA_READY - co=338.04[0m
+[0;31mE (2153830157) Sensors Monitor: co_we_volt = 410.00, co_aux_volt = 254.00[0m
+[0;32mI (2153830167) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153830177) Sensors Monitor: Timestamp = 2153829428419 - SENSOR_NO_DATA_READY - NO=40.32[0m
+[0;31mE (2153830187) Sensors Monitor: no_we_volt = 407.00, no_aux_volt = 397.00[0m
+[0;32mI (2153830187) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153830197) Sensors Monitor: Timestamp = 2153829428419 - SENSOR_O3_DATA_READY - o3=14.34[0m
+[0;31mE (2153830207) Sensors Monitor: o3_we_volt = 407.00, o3_aux_volt = 397.00[0m
+[0;32mI (2153830217) BME68X: ----[0m
+[0;32mI (2153830217) BME68X: IAQ: 77.853714 (2153830097000000,1)[0m
+[0;32mI (2153830227) BME68X: sIAQ: 62.167316 (2153830097000000,1)[0m
+[0;32mI (2153830227) BME68X: CO2: 560.836609 (2153830097000000,1)[0m
+[0;32mI (2153830237) BME68X: bVOC: 0.658851 (2153830097000000,1)[0m
+[0;32mI (2153830237) BME68X: rtemp: 25.381735 (2153830097000000,0)[0m
+[0;32mI (2153830247) BME68X: rpressure: 97538.640625 (2153830097000000,0)[0m
+[0;32mI (2153830257) BME68X: rhumidity: 55.810036 (2153830097000000,0)[0m
+[0;32mI (2153830257) BME68X: temp: 25.318905 (2153830097000000,0)[0m
+[0;32mI (2153830267) BME68X: humidity: 56.106331 (2153830097000000,0)[0m
+[0;31mE (2153831107) MHZ19C-CO2: uart_get_buffered_data_len : 9[0m
+[0;31mE (2153831607) MHZ19C-CO2: Received 9 bytes[0m
+[0;32mI (2153831607) MHZ19C-CO2: 0x3ffca9d0   ff 86 01 b0 42 00 6f 00  18                       |....B.o..|[0m
+[0;31mE (2153831607) MHZ19C-CO2: Received CRC: 0x18, Calculated CRC: 0x18[0m
+[0;32mI (2153831617) MHZ19C-CO2:  co2 raw Value        :  432.000000[0m
+[0;32mI (2153831617) MHZ19C-CO2:  co2 calib.offset        :  0.000000[0m
+[0;32mI (2153831627) MHZ19C-CO2:  co2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153831637) MHZ19C-CO2:  co2 calib.lower_limit   :  0.000000[0m
+[0;32mI (2153831637) MHZ19C-CO2:  co2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153831647) MHZ19C-CO2:  co2 calibrated Value :  432.000000[0m
+[0;32mI (2153831657) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153831657) Sensors Monitor: Timestamp = 2153830984830 - SENSOR_CO2_DATA_READY - co2=432.00[0m
+[0;31mE (2153831667) BME68X: temperature raw value : 25.318905[0m
+[0;31mE (2153831677) BME68X: temperature calibrated value : 25.318905[0m
+[0;31mE (2153831677) BME68X: humidity raw value : 56.106331[0m
+[0;31mE (2153831687) BME68X: humidity calibrated value : 56.106331[0m
+[0;31mE (2153831687) BME68X: tvoc raw value : 0.658851[0m
+[0;31mE (2153831697) BME68X: tvoc calibrated value : 0.658851[0m
+[0;32mI (2153831707) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153831707) Sensors Monitor: Timestamp = 2153831035418 - SENSOR_TEMP_DATA_READY - temperature=25.32
+[0m
+[0;32mI (2153831717) Alphasense_sensors: ALPHSENSE_SO2_AE_PIN        : 6[0m
+[0;32mI (2153831727) Sensors Monitor: wifi_connected : 0[0m
+[0;31mE (2153831727) Sensors Monitor: Timestamp = 2153831035418 - SENSOR_HUMI_DATA_READY - humiture=56.11[0m
+[0;32mI (2153831737) Alphasense_sensors: ALPHSENSE_SO2_WE_PIN        : 7[0m
+[0;32mI (2153831747) Sensors Monitor: wifi_connected : 0[0m
+[0;32mI (2153831757) Sensors Monitor: Timestamp = 2153831035418 - SENSOR_TVOC_DATA_READY - tvoc=0.66[0m
+[0;32mI (2153833157) Alphasense_sensors: SO2 ---> WE-Working voltage : 295[0m
+[0;32mI (2153833157) Alphasense_sensors: SO2 ---> Auxilary voltage   : 275[0m
+[0;32mI (2153833157) Alphasense_sensors: SO2_WE_ELECTRONIC_OFFSET  : 288.00[0m
+[0;32mI (2153833167) Alphasense_sensors: SO2_WE_ZERO_OFFSET        : 12.00[0m
+[0;32mI (2153833167) Alphasense_sensors: SO2_AUX_ELECTRONIC_OFFSET : 285.00[0m
+[0;32mI (2153833177) Alphasense_sensors: SO2_AUX_ZERO_OFFSET       : 1.00[0m
+[0;32mI (2153833187) Alphasense_sensors: SO2_SENSITIVITY           : 0.2970[0m
+[0;32mI (2153833187) Alphasense_sensors: SO2_COMP_VALUE            : -1.00[0m
+[0;32mI (2153833197) Alphasense_sensors: SO2_CROSS_SENSITIVITY     : -1.00
+[0m
+[0;32mI (2153833207) Alphasense_sensors: so2 WEc raw_value with SENSITIVITY        : -16.8350[0m
+[0;32mI (2153833217) Alphasense_sensors: so2Index          : 16.6667[0m
+[0;32mI (2153833217) Alphasense_sensors: calibFactor          : 0.0149[0m
+[0;32mI (2153833227) Alphasense_sensors: SO2 value  : -16.8350[0m
+[0;32mI (2153833237) Alphasense_sensors: so2 raw value        : -16.835018[0m
+[0;32mI (2153833237) Alphasense_sensors:  So2 calib.offset        :  0.000000[0m
+[0;32mI (2153833247) Alphasense_sensors:  So2 calib.multiplier    :  1.000000[0m
+[0;32mI (2153833257) Alphasense_sensors:  So2 calib.lower_limit   :  -5000.000000[0m
+[0;32mI (2153833257) Alphasense_sensors:  So2 calib.upper_limit   :  5000.000000[0m
+[0;32mI (2153833267) Alphasense_sensors:  so2 calibrated Value :  -16.835018[0m
+[0;32mI (2153833277) Alphasense_sensors: ALPHSENSE_NO2_AE_PIN        : 0[0m
+[0;32mI (2153833287) Alphasense_sensors: ALPHSENSE_NO2_WE_PIN        : 1[0m
+[0;32mI (2153833427) BME68X: ----[0m
+[0;32mI (2153833427) BME68X: IAQ: 78.633461 (2153833277000000,1)[0m
+[0;32mI (2153833427) BME68X: sIAQ: 62.507931 (2153833277000000,1)[0m
+[0;32mI (2153833427) BME68X: CO2: 562.539673 (2153833277000000,1)[0m
+[0;32mI (2153833437) BME68X: bVOC: 0.663959 (2153833277000000,1)[0m
+[0;32mI (2153833437) BME68X: rtemp: 25.414534 (2153833277000000,0)[0m
+[0;32mI (2153833447) BME68X: rpressure: 97539.156250 (2153833277000000,0)[0m
+[0;32mI (2153833457) BME68X: rhumidity: 55.725342 (2153833277000000,0)[0m
+[0;32mI (2153833457) BME68X: temp: 25.355146 (2153833277000000,0)[0m
+[0;32mI (2153833467) BME68X: humidity: 55.905247 (2153833277000000,0)[0m
