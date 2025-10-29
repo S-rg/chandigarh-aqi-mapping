@@ -23,7 +23,7 @@ void setup() {
 void loop() {
 
 	// Do a single poll and print results
-	manager.poll_once();
+	manager.poll_all_sensors();
 
 	uint16_t n = manager.getRecentMeasurements(out, BUF);
 

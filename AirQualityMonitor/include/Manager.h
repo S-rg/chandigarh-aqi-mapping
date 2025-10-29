@@ -7,8 +7,8 @@
 
 class Manager {
 private:
-    static const int MEASUREMENTS_COUNT = 10;
-    RuntimeMeasurement _measurements[MEASUREMENTS_COUNT];
+    int MAX_MEASUREMENTS_COUNT;
+    RuntimeMeasurement *_measurements;
     uint16_t _pos = 0; // current posiiton in _measurements buffer; 
 
     SensorBase* _sensors[SENSOR_COUNT];
@@ -16,13 +16,20 @@ private:
     // Factory instance managed by manager
     SensorFactory* _factory;
 
-    void updatePos(int offset = 1) {
-        _pos = (_pos + 1) % MEASUREMENTS_COUNT;
+    float updatePos(int offset = 1) {
+        _pos = (_pos + 1) % MAX_MEASUREMENTS_COUNT;
+
+        // Calculate % buffer filled
+        static uint32_t totalWrites = 0;
+        totalWrites += (uint32_t)offset;
+        uint32_t filledSlots = (totalWrites >= (uint32_t)MAX_MEASUREMENTS_COUNT) ? (uint32_t)MAX_MEASUREMENTS_COUNT : totalWrites;
+        return (float)filledSlots * 100.0f / (float)MAX_MEASUREMENTS_COUNT;
     }
 
 public:
-    Manager() {
+    Manager(int NUM_MEAS=10) : MAX_MEASUREMENTS_COUNT(NUM_MEAS) {
         _factory = new SensorFactory();
+        _measurements = new RuntimeMeasurement[MAX_MEASUREMENTS_COUNT];
     }
 
     ~Manager() {
@@ -43,7 +50,7 @@ public:
         }
     }
 
-    RuntimeMeasurement* poll_once() {
+    RuntimeMeasurement* poll_all_sensors() {
         for (size_t i = 0; i < SENSOR_COUNT; ++i) {
             SensorBase* sensor = _sensors[i];
             if (sensor == nullptr) continue;
@@ -68,25 +75,9 @@ public:
 
         // Return pointer to the most-recent measurement slot (previous position)
         // Compute last written index
-        uint16_t lastIndex = (_pos + MEASUREMENTS_COUNT - 1) % MEASUREMENTS_COUNT;
+        uint16_t lastIndex = (_pos + MAX_MEASUREMENTS_COUNT - 1) % MAX_MEASUREMENTS_COUNT;
         return &_measurements[lastIndex];
     }
 
-    // Copies up to max measurements into outBuf and returns the number copied.
-    // Measurements are returned in chronological order (oldest first).
-    uint16_t getRecentMeasurements(RuntimeMeasurement* outBuf, uint16_t max) {
-        if (outBuf == nullptr || max == 0) return 0;
-
-        // Determine how many measurements are actually available.
-        uint16_t available = MEASUREMENTS_COUNT; // ring buffer is full/rotating; caller should manage freshness
-        uint16_t toCopy = (max < available) ? max : available;
-
-        // Compute start index (oldest)
-        uint16_t start = (_pos + MEASUREMENTS_COUNT - available) % MEASUREMENTS_COUNT;
-
-        for (uint16_t i = 0; i < toCopy; ++i) {
-            outBuf[i] = _measurements[(start + i) % MEASUREMENTS_COUNT];
-        }
-        return toCopy;
-    }
+    
 };

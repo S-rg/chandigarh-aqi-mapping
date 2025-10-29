@@ -18,6 +18,7 @@
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
   - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
 - [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+- [ ] Handle buffer being full in the manager
 - [ ] Print last updated measuremt buffer's `RuntimeMeasurement` object
 - [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
 - [ ] Other printing stuff
