@@ -155,3 +155,9 @@ TODO: add the sensors vs sensor_ids and measurement vs measurement_ids for each 
 - All values showing up as max or very high + comp. temp as -48 •C
 - Upon checking further, all the calibration values were either 65k or -1. The problem is the data fetching with the sensor.
 - Tried unit tests to find what the problem was, still do not know or understand why no data is coming through.
+
+# Installation
+
+1. Install PlatformIO
+2. Install Python Dependencies inside of PlatformIO's interpreter
+  - `~/.platformio/penv/bin/pip install -r requirements.txt`
