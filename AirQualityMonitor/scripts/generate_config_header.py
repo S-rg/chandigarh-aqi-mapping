@@ -49,10 +49,28 @@ def ensure_list(x):
         return []
     if isinstance(x, list):
         return x
-    # If it's a mapping and seems to contain multiple measurement entries accidentally,
-    # try to convert to list — otherwise return single-element list
     if isinstance(x, dict):
-        # detect if keys are sequential numeric strings -> unlikely; just return single
+        # If the dict has integer keys, treat as list-like (YAML map-as-list)
+        if all(isinstance(k, (int, str)) and str(k).isdigit() for k in x.keys()):
+            return [x[k] for k in sorted(x.keys(), key=lambda k: int(k))]
+        # If the dict has repeated keys in YAML, only the last one is kept (YAML limitation)
+        # To support multiple measurements, check for flat dict with repeated measurement keys
+        # If keys are repeated (e.g. measurement_id, name, unit), group them into dicts
+        keys = list(x.keys())
+        if keys.count('measurement_id') > 1 or keys.count('name') > 1 or keys.count('unit') > 1:
+            # Unlikely, but if so, try to group
+            items = list(x.items())
+            result = []
+            temp = {}
+            for k, v in items:
+                temp[k] = v
+                if k == 'unit':
+                    result.append(temp)
+                    temp = {}
+            if temp:
+                result.append(temp)
+            return result
+        # Otherwise, treat as a single measurement dict
         return [x]
     return [x]
 

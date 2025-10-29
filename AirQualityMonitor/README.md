@@ -12,7 +12,8 @@
 - [x] FUNC: Sensor Manager
 - ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
   - [x] simply hardcode this inside sensor factory
-- [ ] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
+- [x] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
+  - Problem was with the yaml having repeated keys `measurement_id`, to fix there needed to be a `-` before the key, so they appear as a list or something, like: `- measurement_id` when having multiple measurements. 
 - [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
   - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
