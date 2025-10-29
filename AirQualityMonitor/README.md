@@ -2,7 +2,8 @@
 
 ## Common Mistakes
 
-- Not initializaing your comms method [wire / stream]
+- ~~ Not initializaing your comms method [wire / stream] ~~
+  - Fixed with new design
 
 ## TODO
 - [x] Fix: Config file's sensor table should have an i2c address for each sensor.
@@ -10,12 +11,17 @@
 - [x] FUNC: Sensor Factory
 - [x] FUNC: Sensor Manager
 - ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
-  - [ ] simply hardcode this inside sensor factory
+  - [x] simply hardcode this inside sensor factory
 - [ ] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
 - [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
   - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
-
+- [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+- [ ] Print last updated measuremt buffer's `RuntimeMeasurement` object
+- [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
+- [ ] Other printing stuff
+- [ ] Confirm the checksums for the sensors
+- [ ] Add debug stuff everywhere
 
 ## Library Design
 Initial Plan:
@@ -42,7 +48,6 @@ Initial Plan:
 - The `measurement_id` for each unit of each measurement of a sensor should remain constant.
 
 ## Reference Tables:
-TODO: add the sensors vs sensor_ids and measurement vs measurement_ids for each sensor
 
 ### Measurement ID reference
 
@@ -84,19 +89,16 @@ TODO: add the sensors vs sensor_ids and measurement vs measurement_ids for each 
 
 
 ### Sensors
-
+All Tasks and TODOs at the top
 - [x] Add `DEBUG` mode in SerialSensor to see the raw output of sensor.
-- [ ] In `SerialSensor` constructor, check the datatype of the `Stream` reference, instead of having the user put `HARDWARE` or `SOFTWARE` serial as an argument.
-
+- [x] In `SerialSensor` constructor, check the datatype of the `Stream` reference, instead of having the user put `HARDWARE` or `SOFTWARE` serial as an argument.
   - Too many human errors made due to this.
 
-- [ ] Macros to control what sensors are active in main, so no need to comment, uncomment, etc.
-- [ ] Handle proper serial reading with checksum and frame start byte check
-- [ ] Create proper `I2CSensor` class.
-
+- ~~[ ] Macros to control what sensors are active in main, so no need to comment, uncomment, etc.~~
+- [x] Handle proper serial reading with checksum and frame start byte check
+- [x] Create proper `I2CSensor` class.
   - All I2C sensors have libraries, but need to integrate into current convention.
-
-- [ ] Extend the base class so that `read()` can be implemented into `readTemp()`, `readPressure()`, etc.
+- [x] Extend the base class so that `read()` can be implemented into `readTemp()`, `readPressure()`, etc.
 
 ### Sensor Manager
 

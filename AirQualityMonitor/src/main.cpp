@@ -6,21 +6,25 @@
 
 Manager manager;
 
+const int BUF = 16;
+RuntimeMeasurement out[BUF];
+
+
 void setup() {
 	delay(1000);
-	Serial.begin(115200);
 
 	// Create and start sensors
 	manager.createSensors();
 	manager.beginSensors();
 
 	Serial.println("Manager and sensors initialized\n");
+}
+
+void loop() {
 
 	// Do a single poll and print results
 	manager.poll_once();
 
-	const int BUF = 16;
-	RuntimeMeasurement out[BUF];
 	uint16_t n = manager.getRecentMeasurements(out, BUF);
 
 	for (uint16_t i = 0; i < n; ++i) {
@@ -31,9 +35,6 @@ void setup() {
 					  out[i].value,
 					  out[i].timestamp);
 	}
-}
 
-void loop() {
-	// nothing here for now; everything done in setup for a single poll
-	delay(1000);
+	delay(2500);
 }
