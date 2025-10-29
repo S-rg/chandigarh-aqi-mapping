@@ -22,8 +22,10 @@ function make_graph() {
     plotSensorData(table, sensor);
 }
 
+// NEW: Updated function to use gas-specific endpoints
 function plotSensorData(table, sensor) {
-    fetch(`/api/${table}/${sensor}`)
+    // Call new gas-specific endpoint for historical data
+    fetch(`/api/gas/${table}/${sensor}/history`)
     .then(response => response.json())
     .then(data => {
         if (data.error) {
