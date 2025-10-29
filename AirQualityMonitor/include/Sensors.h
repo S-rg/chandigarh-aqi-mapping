@@ -7,8 +7,7 @@ public:
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 
-	TVOCSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
-		_comm = comm;
+	TVOCSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {
 	}
 
 	bool begin() override
@@ -95,8 +94,7 @@ class CH2OSensor : public SensorBase
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 	
-	CH2OSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
-		_comm = comm;
+	CH2OSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {
 	}
 	
 	bool begin() override
@@ -179,8 +177,7 @@ public:
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 
-	SO2Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
-		_comm = comm;
+	SO2Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {
 	}
 
 	bool begin() override
@@ -261,8 +258,7 @@ public:
 	static const int commandSize = 9;
 	static const int responseSize = 9;
 
-	CO2Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
-		_comm = comm;
+	CO2Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {
 	}
 
 	bool begin() override
@@ -328,8 +324,7 @@ public:
 	static const int responseSize = 32;
 	static const int commandSize = 7;
 
-	PMS7003Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg) {
-		_comm = comm;
+	PMS7003Sensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {
 	}
 
 	bool begin() override {

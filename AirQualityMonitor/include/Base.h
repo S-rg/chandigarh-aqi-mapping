@@ -131,7 +131,8 @@ protected:
 public:
 	uint32_t delayTime = 100; // ms
 	
-	SensorBase(SensorInfo* cfg) : _cfg(cfg) {}
+	SensorBase(SensorInfo* cfg, CommsInterface* comm) : _cfg(cfg), _comm(comm) {
+	}
 
 	virtual ~SensorBase() {
 		delete _cfg;
