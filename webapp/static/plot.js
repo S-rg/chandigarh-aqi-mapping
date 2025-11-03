@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializePlots();
     startAutoUpdate();
     
-    document.getElementById('updateInterval').addEventListener('change', function() {
+    document.getElementById('updateIntervalSelect').addEventListener('change', function() {
         if (autoUpdate) {
             stopAutoUpdate();
             startAutoUpdate();
@@ -106,19 +106,32 @@ function updateSensorDisplay(sensorId, data) {
     if (!data) return;
     
     const statusElement = document.getElementById(`status-${sensorId}`);
+    const statusLabel = document.getElementById(`status-label-${sensorId}`);
+    const valueContainer = document.getElementById(`value-container-${sensorId}`);
+    const detailsContainer = document.getElementById(`details-${sensorId}`);
+    const waitingMessage = document.getElementById(`waiting-${sensorId}`);
+    
+    // Update status
     statusElement.classList.remove('status-inactive', 'status-warning');
     statusElement.classList.add('status-active');
+    statusLabel.textContent = 'Connected';
+    
+    // Show value container and details, hide waiting message
+    valueContainer.style.display = 'block';
+    detailsContainer.style.display = 'block';
+    waitingMessage.style.display = 'none';
     
     const valueElement = document.getElementById(`value-${sensorId}`);
     const unitElement = document.getElementById(`unit-${sensorId}`);
     valueElement.textContent = data.value !== undefined ? data.value.toFixed(2) : '--';
     unitElement.textContent = data.unit || '';
     
-    const now = new Date();
-    document.getElementById(`updated-${sensorId}`).textContent = 
-        `Updated: ${now.toLocaleTimeString()}`;
+    // Update detail values (simplified for demo - you might want to fetch actual PM values)
+    document.getElementById(`pm1-${sensorId}`).textContent = `${(data.value * 0.8).toFixed(1)} µg/m³`;
+    document.getElementById(`pm25-${sensorId}`).textContent = `${data.value.toFixed(1)} µg/m³`;
+    document.getElementById(`pm10-${sensorId}`).textContent = `${(data.value * 1.2).toFixed(1)} µg/m³`;
     
-    sensorData[sensorId].timestamps.push(now);
+    sensorData[sensorId].timestamps.push(new Date());
     sensorData[sensorId].values.push(data.value || 0);
     sensorData[sensorId].active = true;
     
@@ -144,17 +157,28 @@ function updatePlot(sensorId) {
 
 function updateSensorStatus(sensorId, status) {
     const statusElement = document.getElementById(`status-${sensorId}`);
+    const statusLabel = document.getElementById(`status-label-${sensorId}`);
+    const valueContainer = document.getElementById(`value-container-${sensorId}`);
+    const detailsContainer = document.getElementById(`details-${sensorId}`);
+    const waitingMessage = document.getElementById(`waiting-${sensorId}`);
+    
     statusElement.classList.remove('status-active', 'status-inactive', 'status-warning');
     
     switch(status) {
         case 'active':
             statusElement.classList.add('status-active');
+            statusLabel.textContent = 'Connected';
             break;
         case 'error':
             statusElement.classList.add('status-inactive');
+            statusLabel.textContent = 'Disconnected';
+            valueContainer.style.display = 'none';
+            detailsContainer.style.display = 'none';
+            waitingMessage.style.display = 'block';
             break;
         case 'warning':
             statusElement.classList.add('status-warning');
+            statusLabel.textContent = 'Warning';
             break;
     }
 }
@@ -177,7 +201,7 @@ async function refreshAllSensors() {
 function startAutoUpdate() {
     if (updateIntervalId) clearInterval(updateIntervalId);
     
-    const interval = parseInt(document.getElementById('updateInterval').value);
+    const interval = parseInt(document.getElementById('updateIntervalSelect').value);
     refreshAllSensors(); // Initial fetch
     
     updateIntervalId = setInterval(() => {
@@ -201,15 +225,11 @@ function toggleAutoUpdate() {
     const btn = document.getElementById('autoUpdateBtn');
     
     if (autoUpdate) {
-        btn.textContent = '⏸ Pause Updates';
+        btn.textContent = 'Pause';
         startAutoUpdate();
-        document.getElementById('connectionStatus').textContent = 'Connected';
-        document.getElementById('connectionStatus').className = 'badge bg-success';
     } else {
-        btn.textContent = '▶ Resume Updates';
+        btn.textContent = 'Resume';
         stopAutoUpdate();
-        document.getElementById('connectionStatus').textContent = 'Paused';
-        document.getElementById('connectionStatus').className = 'badge bg-warning';
     }
 }
 

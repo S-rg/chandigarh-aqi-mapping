@@ -1,3 +1,21 @@
+// Auto-generate graph when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to radio buttons for auto-update
+    const tableInputs = document.querySelectorAll('input[name="table"]');
+    const sensorInputs = document.querySelectorAll('input[name="sensor"]');
+    
+    tableInputs.forEach(input => {
+        input.addEventListener('change', make_graph);
+    });
+    
+    sensorInputs.forEach(input => {
+        input.addEventListener('change', make_graph);
+    });
+    
+    // Generate initial graph
+    make_graph();
+});
+
 function make_graph() {
     const table = document.querySelector('input[name="table"]:checked').value;
     const sensor = document.querySelector('input[name="sensor"]:checked').value;
