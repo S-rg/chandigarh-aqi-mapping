@@ -5,7 +5,10 @@
 #include <stdint.h>
 #include "DataTypes.h"
 
-#define SENSORS_DEBUG 0
+#define SENSORS_DEBUG 1
+
+#define NODE_ID "A01"
+#define SAMPLING_RATE 3000
 
 typedef struct {
   uint8_t measurement_id;

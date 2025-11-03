@@ -1,4 +1,7 @@
-DEBUG: false
+node_id: A01
+DEBUG: true 
+
+sampling_rate: 3000 # ms
 
 Sensors:
   TVOCSensor:
