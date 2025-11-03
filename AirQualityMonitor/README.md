@@ -18,12 +18,14 @@
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
   - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
 - [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
-- [ ] Handle buffer being full in the manager
-- [ ] Print last updated measuremt buffer's `RuntimeMeasurement` object
+- [x] Handle buffer being full in the manager
+  - [ ] Handle this in a smarter way than ignoring as it is right now
+- [x] Print last updated measuremt buffer's `RuntimeMeasurement` object
 - [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
-- [ ] Other printing stuff
-- [ ] Confirm the checksums for the sensors
+- [x] Other printing stuff
+- [x] Confirm the checksums for the sensors
 - [ ] Add debug stuff everywhere
+  - [x] Added it in places, where i needed to debug stuff.
 
 ## Library Design
 Initial Plan:
