@@ -94,6 +94,9 @@ public:
         if (std::string(sensor_cfg->type) == "PMS7003Sensor") {
             return new PMS7003Sensor(sensor_cfg, assignCommPtr(sensor_cfg));
         }
+        if (std::string(sensor_cfg->type) == "CH2OSensor") {
+            return new CH2OSensor(sensor_cfg, assignCommPtr(sensor_cfg));
+        }
         return nullptr;
     }
 };

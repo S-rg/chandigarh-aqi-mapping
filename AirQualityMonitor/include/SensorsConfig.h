@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "DataTypes.h"
 
-#define SENSORS_DEBUG 1
+#define SENSORS_DEBUG 0
 
 #define NODE_ID "A01"
 #define SAMPLING_RATE 3000
@@ -32,38 +32,58 @@ typedef struct {
 } SensorInfo;
 
 // Measurement arrays
+static const MeasurementInfo TVOCSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "tvoc", "ppb" },
+};
+
+static const MeasurementInfo FORMSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "formaldehyde", "ppb" },
+};
+
 static const MeasurementInfo PMSENSOR_MEASUREMENTS[] = {
   { (uint8_t)4, "PM1.0 (atmospheric)", "µg/m³" },
   { (uint8_t)5, "PM2.5 (atmospheric)", "µg/m³" },
   { (uint8_t)6, "PM10 (atmospheric)", "µg/m³" },
-  { (uint8_t)12, "Particle count ≥ 10 µm", "particles / 0.1 L" },
 };
 
 // Sensor table
 static const SensorInfo sensors_config[] = {
-  { (uint16_t)2, "PMSensor", "Plantower PMS7003", "PMS7003Sensor", COMM_HARDWARE_SERIAL, (int32_t)2, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, PMSENSOR_MEASUREMENTS, (uint8_t)4 },
+  { (uint16_t)1, "TVOCSensor", "ZE40A-TVOC", "TVOCSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, TVOCSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)3, "FormSensor", "Dart Sensors WZ-S-K", "CH2OSensor", COMM_SOFTWARE_SERIAL, (int32_t)-1, (uint16_t)-1, (int16_t)26, (int16_t)27, (int32_t)9600, FORMSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)2, "PMSensor", "Plantower PMS7003", "PMS7003Sensor", COMM_HARDWARE_SERIAL, (int32_t)2, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, PMSENSOR_MEASUREMENTS, (uint8_t)3 },
 };
 
-#define SENSOR_COUNT 1
+#define SENSOR_COUNT 3
 
 // Convenience macros for sensor IDs and measurement IDs
+#define SENSOR_ID_TVOCSENSOR 1
+#define MEAS_TVOCSENSOR_TVOC 1
+
+#define SENSOR_ID_FORMSENSOR 3
+#define MEAS_FORMSENSOR_FORMALDEHYDE 1
+
 #define SENSOR_ID_PMSENSOR 2
 #define MEAS_PMSENSOR_PM1_0_ATMOSPHERIC 4
 #define MEAS_PMSENSOR_PM2_5_ATMOSPHERIC 5
 #define MEAS_PMSENSOR_PM10_ATMOSPHERIC 6
-#define MEAS_PMSENSOR_PARTICLE_COUNT_10_M 12
 
 // Debug helpers: arrays of names (useful when SENSORS_DEBUG == 1)
 static const char* const sensor_config_key[] = {
+  "TVOCSensor",
+  "FormSensor",
   "PMSensor",
 };
 
 static const char* const sensor_part_name[] = {
+  "ZE40A-TVOC",
+  "Dart Sensors WZ-S-K",
   "Plantower PMS7003",
 };
 
 // For debug: measurement names by sensor (array of arrays).
 static const MeasurementInfo* const sensor_measurements[] = {
+  TVOCSENSOR_MEASUREMENTS,
+  FORMSENSOR_MEASUREMENTS,
   PMSENSOR_MEASUREMENTS,
 };
 

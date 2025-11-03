@@ -1,20 +1,32 @@
 node_id: A01
-DEBUG: true 
+DEBUG: false 
 
 sampling_rate: 3000 # ms
 
 Sensors:
-  # TVOCSensor:
-  #   id: 1
-  #   type: "TVOCSensor"
-  #   part_name : "ZE40A-TVOC"
-  #   comms: "HARDWARE_SERIAL"
-  #   port_no: 1 
-  #   baud_rate: 9600
-  #   measurements:
-  #       measurement_id: 1
-  #       name: "tvoc"
-  #       unit: "ppb"
+  TVOCSensor:
+    id: 1
+    type: "TVOCSensor"
+    part_name : "ZE40A-TVOC"
+    comms: "HARDWARE_SERIAL"
+    port_no: 1 
+    baud_rate: 9600
+    measurements:
+        measurement_id: 1
+        name: "tvoc"
+        unit: "ppb"
+  FormSensor:
+    id: 3
+    type: "CH2OSensor"
+    part_name : "Dart Sensors WZ-S-K"
+    comms: "SOFTWARE_SERIAL"
+    rx_pin: 26
+    tx_pin: 27
+    baud_rate: 9600
+    measurements:
+        measurement_id: 1
+        name: "formaldehyde"
+        unit: "ppb"
   PMSensor:
     id: 2
     type: "PMS7003Sensor"
@@ -56,9 +68,9 @@ Sensors:
       # - measurement_id: 11
       #   name: "Particle count ≥ 5.0 µm"
       #   unit: "particles / 0.1 L"
-      - measurement_id: 12
-        name: "Particle count ≥ 10 µm"
-        unit: "particles / 0.1 L"
+      # - measurement_id: 12
+      #   name: "Particle count ≥ 10 µm"
+      #   unit: "particles / 0.1 L"
   # PMSensor:
   #   id: 2
   #   type: "PMSensor"
