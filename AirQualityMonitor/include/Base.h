@@ -82,6 +82,14 @@ public:
 			Serial.println();
 		#endif
 	}
+
+	// Reads a single byte from the serial stream, blocking until available
+	int readByte() {
+		while (_serialStream.available() == 0) {
+			// Optionally add a timeout here if needed
+		}
+		return _serialStream.read();
+	}
 };
 
 class I2CInterface : public CommsInterface {
