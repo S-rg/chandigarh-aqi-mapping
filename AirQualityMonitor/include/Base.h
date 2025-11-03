@@ -71,6 +71,7 @@ public:
 		}
 
 		#if SENSORS_DEBUG == 1 
+			Serial.print("[DEBUG] Reponse: ");
 			for (int i = 0; i < bufferSize; i++) {
 				Serial.print(buffer[i]); Serial.print(" ");
 			}
