@@ -1,0 +1,283 @@
+{
+  "status": 1,
+  "message": "Successfully.",
+  "data": [
+    {
+      "serialNo": "84530304be06c",
+      "devicename": "PranaSense",
+      "dev_type": "outdoor",
+      "productimg": "https://airquality.aqi.in/public/My_Device_icons/PranaSensemonitor.svg",
+      "hwid": 55,
+      "lat": "0.0",
+      "lon": "0.0",
+      "adddevicelat": "30.6319856020464",
+      "adddevicelon": "76.72627825617869",
+      "dev_category": "Home",
+      "dev_location_type": "Bedroom",
+      "dev_identifier": null,
+      "Status": 1,
+      "isOnline": 1,
+      "last_updated": "2025-10-23 03:37:01 AM",
+      "timeago": "15 seconds ago ",
+      "is_devicehavelicense": 1,
+      "CalibrationStartDate": null,
+      "CalibrationEndDate": null,
+      "licenceData": {
+        "id": 1726,
+        "user_id": 79983,
+        "vendor_id": 0,
+        "plan_id": 3,
+        "devicelist": "[{\"name\": \"84530304be06c\", \"serialno\": \"84530304be06c\"}]",
+        "licenceKey": "AQIPR-15102025-PLXBW7-CVIYP9-1760528148",
+        "transaction_currency_symbol": "Rs",
+        "transaction_currency": "INR",
+        "transaction_amount": "7990",
+        "StartDate": "2025-10-15 11:35:48",
+        "EndDate": "2026-10-15 11:35:48",
+        "remaining_days": 357,
+        "Status": 1,
+        "is_paid_before": 1,
+        "licenceType": 1,
+        "issued_by": 2,
+        "created_at": "2025-10-15 11:35:48",
+        "updated_at": "2025-10-15 11:35:48"
+      },
+      "realtime": [
+        {
+          "sensorid": 1,
+          "sensorname": "AQI-IN",
+          "sensorvalue": 305,
+          "unit": "in-aqi"
+        },
+        {
+          "sensorid": 2,
+          "sensorname": "AQI-US",
+          "sensorvalue": 201,
+          "unit": "us-aqi"
+        },
+        {
+          "sensorid": 3,
+          "sensorname": "PM25",
+          "sensorvalue": 126,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 4,
+          "sensorname": "PM10",
+          "sensorvalue": 138,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 5,
+          "sensorname": "PM1",
+          "sensorvalue": 90,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 11,
+          "sensorname": "Temp(cel)",
+          "sensorvalue": 25.9,
+          "unit": "°C"
+        },
+        {
+          "sensorid": 12,
+          "sensorname": "Hum",
+          "sensorvalue": 58,
+          "unit": "%"
+        },
+        {
+          "sensorid": 13,
+          "sensorname": "Noise",
+          "sensorvalue": 41,
+          "unit": "dB"
+        },
+        {
+          "sensorid": 18,
+          "sensorname": "TVOC(ppm)",
+          "sensorvalue": 0.409,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 20,
+          "sensorname": "CO(ppm)",
+          "sensorvalue": 0.5,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 21,
+          "sensorname": "CO2(ppm)",
+          "sensorvalue": 450,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 22,
+          "sensorname": "SO2(ppm)",
+          "sensorvalue": 0.009,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 23,
+          "sensorname": "NO2(ppm)",
+          "sensorvalue": 0.008,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 25,
+          "sensorname": "O3(ppm)",
+          "sensorvalue": 0.027,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 26,
+          "sensorname": "NH3(ppm)",
+          "sensorvalue": 0.002,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 27,
+          "sensorname": "H2S(ppm)",
+          "sensorvalue": 0.004,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 78,
+          "sensorname": "CH4",
+          "sensorvalue": 0,
+          "unit": "%"
+        },
+        {
+          "sensorid": 85,
+          "sensorname": "Solar",
+          "sensorvalue": 12.33,
+          "unit": "Watt"
+        },
+        {
+          "sensorid": 86,
+          "sensorname": "Battery",
+          "sensorvalue": 100,
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "serialNo": "48F6EE5481E0",
+      "devicename": "jlpl-industrial-area",
+      "dev_type": "outdoor",
+      "productimg": "",
+      "hwid": 65,
+      "lat": "0.0",
+      "lon": "0.0",
+      "adddevicelat": "30.63231050099808",
+      "adddevicelon": "76.72565571239421",
+      "dev_category": null,
+      "dev_location_type": null,
+      "dev_identifier": null,
+      "Status": 1,
+      "isOnline": 0,
+      "last_updated": "2025-10-23 01:01:59 AM",
+      "timeago": "3 hours ago ",
+      "is_devicehavelicense": 1,
+      "CalibrationStartDate": null,
+      "CalibrationEndDate": null,
+      "licenceData": null,
+      "realtime": [
+        {
+          "sensorid": 1,
+          "sensorname": "AQI-IN",
+          "sensorvalue": 306,
+          "unit": "in-aqi"
+        },
+        {
+          "sensorid": 2,
+          "sensorname": "AQI-US",
+          "sensorvalue": 203,
+          "unit": "us-aqi"
+        },
+        {
+          "sensorid": 3,
+          "sensorname": "PM25",
+          "sensorvalue": 128,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 4,
+          "sensorname": "PM10",
+          "sensorvalue": 145,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 5,
+          "sensorname": "PM1",
+          "sensorvalue": 80,
+          "unit": "µg/m³"
+        },
+        {
+          "sensorid": 11,
+          "sensorname": "Temp(cel)",
+          "sensorvalue": 29,
+          "unit": "°C"
+        },
+        {
+          "sensorid": 12,
+          "sensorname": "Hum",
+          "sensorvalue": 45,
+          "unit": "%"
+        },
+        {
+          "sensorid": 13,
+          "sensorname": "Noise",
+          "sensorvalue": 48,
+          "unit": "dB"
+        },
+        {
+          "sensorid": 18,
+          "sensorname": "TVOC(ppm)",
+          "sensorvalue": 0.091,
+          "unit": "ppm"
+        },
+        {
+          "sensorid": 30,
+          "sensorname": "Temp(Fer)",
+          "sensorvalue": 84.2,
+          "unit": "°F"
+        },
+        {
+          "sensorid": 71,
+          "sensorname": "particle count(0.3)",
+          "sensorvalue": 21741,
+          "unit": "μm"
+        },
+        {
+          "sensorid": 72,
+          "sensorname": "particle count(0.5)",
+          "sensorvalue": 6309,
+          "unit": "μm"
+        },
+        {
+          "sensorid": 73,
+          "sensorname": "particle count(1.0)",
+          "sensorvalue": 1290,
+          "unit": "μm"
+        },
+        {
+          "sensorid": 74,
+          "sensorname": "particle count(3.0)",
+          "sensorvalue": 129,
+          "unit": "μm"
+        },
+        {
+          "sensorid": 75,
+          "sensorname": "particle count(5.0)",
+          "sensorvalue": 35,
+          "unit": "μm"
+        },
+        {
+          "sensorid": 76,
+          "sensorname": "particle count(10.0)",
+          "sensorvalue": 11,
+          "unit": "μm"
+        }
+      ]
+    }
+  ]
+}
