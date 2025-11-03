@@ -21,7 +21,7 @@ private:
      */
     CommsInterface* assignCommPtr(SensorInfo* sensor_cfg) {
 
-        CommsInterface* sensor_comm;
+        CommsInterface* sensor_comm = nullptr;
 
         if (sensor_cfg->comms == COMM_HARDWARE_SERIAL) {
             switch (sensor_cfg->port_no) {
@@ -78,6 +78,9 @@ private:
             }
         }
 
+        if (sensor_comm == nullptr) {
+            Serial.printf("[FATAL] Comm ptr not assigned for SensorID %i\n", sensor_cfg->sensor_id);
+        }
         return sensor_comm;
     }
     
@@ -87,6 +90,9 @@ public:
     SensorBase* createSensor(SensorInfo* sensor_cfg) {
         if (std::string(sensor_cfg->type) == "TVOCSensor") {
             return new TVOCSensor(sensor_cfg, assignCommPtr(sensor_cfg));
+        }
+        if (std::string(sensor_cfg->type) == "PMS7003Sensor") {
+            return new PMS7003Sensor(sensor_cfg, assignCommPtr(sensor_cfg));
         }
         return nullptr;
     }
