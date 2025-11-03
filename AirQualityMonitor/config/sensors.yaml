@@ -4,17 +4,61 @@ DEBUG: true
 sampling_rate: 3000 # ms
 
 Sensors:
-  TVOCSensor:
-    id: 1
-    type: "TVOCSensor"
-    part_name : "ZE40A-TVOC"
+  # TVOCSensor:
+  #   id: 1
+  #   type: "TVOCSensor"
+  #   part_name : "ZE40A-TVOC"
+  #   comms: "HARDWARE_SERIAL"
+  #   port_no: 1 
+  #   baud_rate: 9600
+  #   measurements:
+  #       measurement_id: 1
+  #       name: "tvoc"
+  #       unit: "ppb"
+  PMSensor:
+    id: 2
+    type: "PMS7003Sensor"
+    part_name : "Plantower PMS7003"
     comms: "HARDWARE_SERIAL"
-    port_no: 1 
+    port_no: 2 
     baud_rate: 9600
     measurements:
-        measurement_id: 1
-        name: "tvoc"
-        unit: "ppb"
+      # - measurement_id: 1
+      #   name: "PM1.0 (standard, CF=1)"
+      #   unit: "µg/m³"
+      # - measurement_id: 2
+      #   name: "PM2.5 (standard, CF=1)"
+      #   unit: "µg/m³"
+      # - measurement_id: 3
+      #   name: "PM10 (standard, CF=1)"
+      #   unit: "µg/m³"
+      - measurement_id: 4
+        name: "PM1.0 (atmospheric)"
+        unit: "µg/m³"
+      - measurement_id: 5
+        name: "PM2.5 (atmospheric)"
+        unit: "µg/m³"
+      - measurement_id: 6
+        name: "PM10 (atmospheric)"
+        unit: "µg/m³"
+      # - measurement_id: 7
+      #   name: "Particle count ≥ 0.3 µm"
+      #   unit: "particles / 0.1 L"
+      # - measurement_id: 8
+      #   name: "Particle count ≥ 0.5 µm"
+      #   unit: "particles / 0.1 L"
+      # - measurement_id: 9
+      #   name: "Particle count ≥ 1.0 µm"
+      #   unit: "particles / 0.1 L"
+      # - measurement_id: 10
+      #   name: "Particle count ≥ 2.5 µm"
+      #   unit: "particles / 0.1 L"
+      # - measurement_id: 11
+      #   name: "Particle count ≥ 5.0 µm"
+      #   unit: "particles / 0.1 L"
+      - measurement_id: 12
+        name: "Particle count ≥ 10 µm"
+        unit: "particles / 0.1 L"
   # PMSensor:
   #   id: 2
   #   type: "PMSensor"

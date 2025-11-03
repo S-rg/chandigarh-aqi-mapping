@@ -82,7 +82,14 @@ public:
             if (sensor == nullptr) continue;
 
             const SensorInfo* info = sensor->info();
-            if (info == nullptr || info->measurements == nullptr) continue;
+            if (info == nullptr || info->measurements == nullptr) {
+                Serial.printf("[FATAL] info or info->measurements is nullptr for SensorCount = %i\n", i);
+                continue;
+            }
+            
+            if(SENSORS_DEBUG) {
+                Serial.printf("[DEBUG] Reading Sensor %f\n", info->config_key);
+            }
 
             for (uint8_t m = 0; m < info->measurement_count; ++m) {
                 // Capture the slot we will write to BEFORE changing _pos

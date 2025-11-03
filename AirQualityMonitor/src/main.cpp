@@ -4,7 +4,7 @@
 #include "Sensors.h"
 #include "Manager.h"
 
-Manager manager(10);
+Manager manager(15);
 
 void setup() {
 	delay(1000);
@@ -20,7 +20,7 @@ void loop() {
 
 	// Do a single poll and print results
 	manager.pollAllSensors();
-	manager.printLastMeasurement();
+	manager.printLastPolledMeasurements();
 
 	delay(SAMPLING_RATE);
 }

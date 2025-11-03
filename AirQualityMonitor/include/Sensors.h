@@ -343,12 +343,23 @@ public:
 			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
 
 			commInterface->sendBuffer(getValueCommand, commandSize);
-			delay(delayTime);
+			delay(delayTime + 400);
 
 			byte frame[responseSize];
-			commInterface->receiveBuffer(frame, responseSize);
+			// Replace commInterface->receiveBuffer(frame, responseSize) with frame sync logic
+			int frameIdx = 0;
+			while (frameIdx < responseSize) {
+				int b = commInterface->readByte();
+				if (frameIdx == 0 && b != 0x42) continue;
+				if (frameIdx == 1 && b != 0x4D) { frameIdx = 0; continue; }
+				frame[frameIdx++] = b;
+			}
 
-			if (!_verifyChecksum(frame)) return;
+			if (!_verifyChecksum(frame)) {
+				if(SENSORS_DEBUG) {
+					Serial.printf("[DEBUG] Checksum failed for PMS7003 with ID = %i\n", _cfg->sensor_id);
+				}
+			}
 
 			switch (measurement_id) {
 				case 1: read_measurement_1(frame, buffer); break;

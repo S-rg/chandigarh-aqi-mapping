@@ -125,6 +125,11 @@ All Tasks and TODOs at the top
 
   - Air flushing
 
+## PMSensor
+- **Comms:** Serial
+- **Problems:**
+  - The manager did not recieve the frame in order and needed to be changed such that it waits to get the correct starting bytes.
+  - Even after that, the checksum fails half the time.
 
 ## TVOC
 
