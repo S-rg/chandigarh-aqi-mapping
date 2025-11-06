@@ -88,7 +88,7 @@ public:
             }
             
             if(SENSORS_DEBUG) {
-                Serial.printf("[DEBUG] Reading Sensor %f\n", info->config_key);
+                Serial.printf("[DEBUG] Reading Sensor %s\n", info->config_key);
             }
 
             for (uint8_t m = 0; m < info->measurement_count; ++m) {
