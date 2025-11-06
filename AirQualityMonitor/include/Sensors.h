@@ -436,12 +436,14 @@ public:
 		return true;
 	}
 
+	
+
 	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
 	{
 		if (_cfg->comms == COMM_I2C)
 		{
 			I2CInterface *commInterface = static_cast<I2CInterface *>(_comm);
-
+			loadKey(commInterface->getWire(), commInterface->getAddress());
 			// The sensor manager can update the sensor_id and measurement_id field
 			// of RuntimeMeasurement
 			if (measurement_id == 1)
@@ -449,6 +451,37 @@ public:
 				read_measurement_1(commInterface, buffer);
 			}
 		}
+	}
+
+	void loadKey(TwoWire& _pWire, int _addr) {
+		uint8_t value[2] = {0};
+
+		// Use I2CInterface-style communication
+		_pWire.beginTransmission(_addr);
+		_pWire.write(GET_KEY_REGISTER);
+		if (_pWire.endTransmission() != 0) {
+			// Handle transmission error
+			this->_Key = 20.9 / 120.0;
+			return;
+		}
+
+		delay(50);
+
+		if (_pWire.requestFrom(_addr, 2) != 2) {
+			// Handle request error
+			this->_Key = 20.9 / 120.0;
+			return;
+		}
+
+		for (int i = 0; i < 2 && _pWire.available(); ++i) {
+			value[i] = _pWire.read();
+		}
+
+		uint16_t temp = (static_cast<uint16_t>(value[1]) << 8) | value[0];
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotOxygenSensor: temp (key register value): %u\n", temp);
+		}
+		this->_Key = (temp == 0) ? (20.9 / 120.0) : (static_cast<float>(temp) / 1000.0);
 	}
 
 	void read_measurement_1(I2CInterface *commInterface, RuntimeMeasurement *buffer)
@@ -461,10 +494,10 @@ public:
 		float byte2 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 1);
 		float byte3 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 2);
 		if (SENSORS_DEBUG) {
-			Serial.printf("[DEBUG] DFRobotOxygenSensor: Read bytes: %.2f %.2f %.2f\n", byte1, byte2, byte3);
+			Serial.printf("[DEBUG] DFRobotOxygenSensor: Key: %f| Read bytes: %.2f %.2f %.2f\n", _Key, byte1, byte2, byte3);
 		}
 		// Combine the high and low bytes to form the oxygen concentration value
-		float oxygenConcentration = byte1 + byte2 / 10 + byte3 / 100;
+		float oxygenConcentration = _Key * (byte1 + byte2 / 10 + byte3 / 100);
 
 		// Populate the buffer with the timestamp and oxygen concentration value
 		buffer->timestamp = SensorBase::getCurrentTime();
@@ -472,8 +505,10 @@ public:
 	}
 
 private:
-	int OXYGEN_DATA_REGISTER = 0x03;   ///< register for oxygen data
 	// From the DFRobot library 
+	int OXYGEN_DATA_REGISTER = 0x03;   ///< register for oxygen data
+	int GET_KEY_REGISTER = 0x0A; /// There is some compensation happening from this key
+	float _Key = 20.9 / 120.0;
 };
 
 byte TVOCSensor::qaModeOnCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};

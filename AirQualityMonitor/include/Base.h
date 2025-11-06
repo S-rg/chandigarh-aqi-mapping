@@ -106,6 +106,14 @@ public:
 			if (SENSORS_DEBUG) sweep_i2c(_wire);
 		}
 
+	TwoWire& getWire() {
+		return _wire;
+	}
+
+	uint16_t getAddress() {
+		return _address;
+	}
+
 	static void sweep_i2c(TwoWire& wire) {
 		wire.begin();
 
