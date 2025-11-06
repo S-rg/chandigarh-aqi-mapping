@@ -98,7 +98,7 @@ def get_measurement_data(node_id, sensor_id, measurement_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
 
-    cursor.execute(f"""SELECT * FROM {node_id}_{sensor_id}_{measurement_id};""")
+    cursor.execute(f"""SELECT timestamp, value FROM {node_id}_{sensor_id}_{measurement_id};""")
 
     result = cursor.fetchall()
     data = [{"timestamp": row[0].isoformat(), "value": row[1]} for row in result]

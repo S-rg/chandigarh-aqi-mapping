@@ -7,6 +7,7 @@ import logging
 def init_tables(cursor, logger):
     create_node_table(cursor, logger)
     create_sensor_table(cursor, logger)
+    create_aqi_in_scrape_table(cursor, logger)
 
 def create_node_table(cursor, logger):
     create_table_query = """
@@ -37,6 +38,35 @@ def create_sensor_table(cursor, logger):
     """
     cursor.execute(create_table_query)
     logger.info("Sensor table created successfully.")
+
+def create_aqi_in_scrape_table(cursor, logger):
+    create_table_query = """
+    CREATE TABLE AqiInScrape (
+        scrape_id INT AUTO_INCREMENT PRIMARY KEY,
+        lat DOUBLE,
+        lon DOUBLE,
+        locationId VARCHAR(50),
+        city VARCHAR(100),
+        state VARCHAR(100),
+        country VARCHAR(100),
+        last_updated DATETIME,
+        AQI_IN INT,
+        AQI_US INT,
+        CO_PPB DOUBLE,
+        H_PERCENT DOUBLE,
+        NO2_PPB DOUBLE,
+        O3_PPB DOUBLE,
+        PM10_UGM3 DOUBLE,
+        PM2_5_UGM3 DOUBLE,
+        SO2_PPB DOUBLE,
+        T_C DOUBLE,
+        PM1_UGM3 DOUBLE,
+        TVOC_PPM DOUBLE,
+        Noise_DB DOUBLE
+    );
+    """
+    cursor.execute(create_table_query)
+    logger.info("AqiInScrape table created successfully.")
 
 def main():
     logger = logging.getLogger(__name__)
