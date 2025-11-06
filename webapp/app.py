@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
-import api_routes
 
 @app.route("/")
 def hello():            
@@ -20,6 +19,8 @@ def winsen():
 @app.route('/plot')
 def plot():
     return render_template('plot.html') 
+
+import webapp.api_routes
 
 load_dotenv()
 

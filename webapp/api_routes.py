@@ -1,14 +1,15 @@
-from app import app
+from webapp.app import app
 import os
 from mysql.connector import connect, Error
 from typing import List
+from flask import request, render_template
 
 def get_connection():
     return connect(
         host=os.getenv("DB_HOST", "localhost"),
         user=os.getenv("DB_USER", ""),
         password=os.getenv("DB_PASSWORD", ""),
-        database=os.getenv("DB_NAME", "aqi_monitoring")
+        database=os.getenv("DB_NAME", "SMAQI")
     )
 
 def get_data(table: str, cols: List[str]):
@@ -71,5 +72,44 @@ def get_sensor_data(table, sensor):
     finally:
         cursor.close()
         connection.close()
-    
 
+@app.route("/api/node/<string:node_id>")
+def get_all_sensors(node_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT sensor_id FROM sensor WHERE node_id = {node_id};""")
+
+    result = cursor.fetchall()
+    return {"sensors": [row[0] for row in result]}, 200
+
+@app.route("/api/sensor/<string:node_id>/<int:sensor_id>")
+def get_all_measurements(node_id, sensor_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT measurement_id FROM sensor WHERE node_id = {node_id} AND sensor_id = {sensor_id};""")
+
+    result = cursor.fetchall()
+    return {"measurements": [row[0] for row in result]}, 200
+
+@app.route("/api/measurement/<string:node_id>/<int:sensor_id>/<int:measurement_id>")
+def get_measurement_data(node_id, sensor_id, measurement_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT * FROM {node_id}_{sensor_id}_{measurement_id};""")
+
+    result = cursor.fetchall()
+    data = [{"timestamp": row[0].isoformat(), "value": row[1]} for row in result]
+    return {"data": data}, 200
+
+@app.route("/api/postdata/", methods=["POST"])
+def post_data():
+    headers = dict(request.headers)
+    return {"headers": headers}, 200
+
+
+@app.route("/tempviz")
+def temp_viz():
+    return render_template('plot.html')
