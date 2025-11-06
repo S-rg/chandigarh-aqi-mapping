@@ -102,18 +102,79 @@ public:
 	I2CInterface(SensorInfo* cfg, TwoWire& wire = Wire, uint32_t clockSpeed = 100000) // Hz
 		: CommsInterface(cfg), _wire(wire), _clockSpeed(clockSpeed) {
 			_address = _cfg->i2c_address;
+
+			if (SENSORS_DEBUG) sweep_i2c(_wire);
 		}
+
+	static void sweep_i2c(TwoWire& wire) {
+		wire.begin();
+
+		char found[128] = {0};
+		// Print which Wire instance is being used (if possible)
+		#if defined(ARDUINO_TEENSY41) || defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY36) || defined(ARDUINO_TEENSY35) || defined(ARDUINO_TEENSY31) || defined(ARDUINO_TEENSY32) || defined(ARDUINO_TEENSY30)
+			if (&wire == &Wire) {
+				Serial.println("[DEBUG] Scanning I2C bus: Wire");
+			} else if (&wire == &Wire1) {
+				Serial.println("[DEBUG] Scanning I2C bus: Wire1");
+			} else if (&wire == &Wire2) {
+				Serial.println("[DEBUG] Scanning I2C bus: Wire2");
+			} else {
+				Serial.println("[DEBUG] Scanning I2C bus: Unknown Wire instance");
+			}
+		#else
+			Serial.println("[DEBUG] Scanning I2C bus (Wire instance, name unknown on this platform)");
+		#endif
+		int count = 0;
+		for (uint8_t address = 1; address < 127; address++) {
+			wire.beginTransmission(address);
+			uint8_t error = wire.endTransmission();
+			if (error == 0) {
+				found[address] = 1;
+				count++;
+			}
+		}
+		for (uint8_t row = 0; row < 8; row++) {
+			for (uint8_t col = 0; col < 16; col++) {
+				uint8_t addr = row * 16 + col;
+				if (addr == 0 || addr >= 127) {
+					Serial.print("   ");
+					continue;
+				}
+				if (found[addr]) {
+					Serial.printf("%02X ", addr);
+				} else {
+					Serial.print("-- ");
+				}
+			}
+			Serial.println();
+		}
+
+		wire.end();
+	}
 
 	CommsInterface* begin() override {
 		_wire.begin();
 		_wire.setClock(_clockSpeed);
 
 		// Test communication by attempting to contact the device
-		// _wire.beginTransmission(_address);
-		// return (_wire.endTransmission() == 0);
+		_wire.beginTransmission(_address);
+		uint8_t error = _wire.endTransmission();
+
+		#if SENSORS_DEBUG == 1
+			printf("[DEBUG] I2C device at 0x%X", _address);
+			if (error == 0) {
+				printf(" responded successfully.\n");
+			} else {
+				printf(" did not respond. Error code: %d\n", error);
+			}
+		#endif
+
+		if (error == 0) {
+			return this;
+		}
 		return nullptr;
 	}
-	
+
 	void writeRegister(uint8_t reg, uint8_t value) {
 		_wire.beginTransmission(_address);
 		_wire.write(reg);
@@ -155,7 +216,13 @@ public:
 	If it is I2C, call another set of funcs for same measurements
 	This is to provide functionality for 1 sensor having both comms*/
 
-	virtual const SensorInfo* info() const = 0;
+	virtual const SensorInfo* info() const {
+		if (_cfg != nullptr)
+		{
+			return _cfg;
+		}
+		return nullptr;
+	};
 };
 
 uint32_t SensorBase::getCurrentTime() {
