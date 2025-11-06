@@ -13,7 +13,7 @@ void setup() {
 	manager.createSensors();
 	manager.beginSensors();
 
-	Serial.println("Manager and sensors initialized\n");
+	Serial.println("[INFO] Manager and sensors initialized\n");
 }
 
 void loop() {

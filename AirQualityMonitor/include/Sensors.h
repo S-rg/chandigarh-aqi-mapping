@@ -421,6 +421,60 @@ private:
 	}
 };
 
+/**
+ * @class DFRobotOxygen
+ * @brief Sensor driver class for I2C DFRobot Oxygen sensor.
+ * Register numbers and reading mechanism from https://github.com/DFRobot/DFRobot_OxygenSensor/
+ */
+class DFRobotOxygenSensor : public SensorBase {
+public:
+	DFRobotOxygenSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {}
+	
+	bool begin() override
+	{
+		_comm->begin();
+		return true;
+	}
+
+	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
+	{
+		if (_cfg->comms == COMM_I2C)
+		{
+			I2CInterface *commInterface = static_cast<I2CInterface *>(_comm);
+
+			// The sensor manager can update the sensor_id and measurement_id field
+			// of RuntimeMeasurement
+			if (measurement_id == 1)
+			{
+				read_measurement_1(commInterface, buffer);
+			}
+		}
+	}
+
+	void read_measurement_1(I2CInterface *commInterface, RuntimeMeasurement *buffer)
+	{
+		// Write the register address to the sensor
+		commInterface->writeRegister(OXYGEN_DATA_REGISTER, 0x00);
+
+		// Read 2 bytes of oxygen data from the sensor
+		float byte1 = commInterface->readRegister(OXYGEN_DATA_REGISTER);
+		float byte2 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 1);
+		float byte3 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 2);
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotOxygenSensor: Read bytes: %.2f %.2f %.2f\n", byte1, byte2, byte3);
+		}
+		// Combine the high and low bytes to form the oxygen concentration value
+		float oxygenConcentration = byte1 + byte2 / 10 + byte3 / 100;
+
+		// Populate the buffer with the timestamp and oxygen concentration value
+		buffer->timestamp = SensorBase::getCurrentTime();
+		buffer->value = oxygenConcentration;
+	}
+
+private:
+	int OXYGEN_DATA_REGISTER = 0x03;   ///< register for oxygen data
+	// From the DFRobot library 
+};
 
 byte TVOCSensor::qaModeOnCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};
 byte TVOCSensor::getValueCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
