@@ -1,7 +1,12 @@
-node_id: A01
 DEBUG: false 
 
 sampling_rate: 3000 # ms
+
+Node:
+  id: "A01"
+  location_name: "Prototype Monitor"
+  lat: 30.631701
+  lon: 76.725323
 
 Sensors:
   TVOCSensor:

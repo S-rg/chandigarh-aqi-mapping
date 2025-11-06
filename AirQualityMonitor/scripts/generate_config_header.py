@@ -109,12 +109,21 @@ def generate_header(data, out_path):
         w("")
         w(f"#define SENSORS_DEBUG {1 if debug else 0}")
         w("")
-         # Add node_id and sampling_rate to the header
-        node_id = data.get("node_id", "")
+         # Add sampling_rate to the header
         sampling_rate = data.get("sampling_rate", 0)
-        w(f"#define NODE_ID {cstr(node_id)}")
         w(f"#define SAMPLING_RATE {sampling_rate}")
         w("")
+
+        # Add node_id to the header
+        node_id = data.get("Node", {}).get("id", "")
+        w(f"#define NODE_ID {cstr(node_id)}")
+        w("")
+
+        # Add location info to the header
+        location_name = data.get("Node", {}).get("location_name", "")
+        w(f"#define LOCATION_NAME {cstr(location_name)}")
+        w("")
+
         # Measurement info
         w("typedef struct {")
         w("  uint8_t measurement_id;")
