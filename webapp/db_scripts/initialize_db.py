@@ -27,6 +27,7 @@ def create_sensor_table(cursor):
         measurement_id INT NOT NULL,
         sensor_type VARCHAR(255) NOT NULL,
         sensor_model VARCHAR(255) NOT NULL,
+        measurement_name VARCHAR(255) NOT NULL,
         unit VARCHAR(50) NOT NULL,
         FOREIGN KEY (node_id) REFERENCES Node(node_id),
         PRIMARY KEY (node_id, sensor_id, measurement_id)
