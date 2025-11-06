@@ -1,6 +1,7 @@
-DB_NAME = "SMAQI"
-
 import mysql.connector
+from dotenv import load_dotenv
+import os
+
 
 def init_tables(cursor):
     create_node_table(cursor)
@@ -37,14 +38,12 @@ def create_sensor_table(cursor):
     print("Sensor table created successfully.")
 
 def main():
-    username = input("Enter your MySQL username: ")
-    password = input("Enter your MySQL password: ")
-    host = input("Enter the MySQL host (default: localhost): ") or 'localhost'
+    DB_NAME = os.getenv("DB_NAME")
 
     config = {
-        'user': username,
-        'password': password,
-        'host': host
+        'user': os.getenv("DB_USER"),
+        'password': os.getenv("DB_PASSWORD", ""),
+        'host': os.getenv("DB_HOST", "localhost")
     }
 
     try:
@@ -77,4 +76,5 @@ def main():
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()

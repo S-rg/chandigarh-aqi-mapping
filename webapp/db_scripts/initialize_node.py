@@ -1,8 +1,9 @@
-DB_NAME = "SMAQI"
-
 import yaml
 import sys
+from dotenv import load_dotenv
+import os
 import mysql.connector
+
 
 def initialize_node(node, cursor):
     query = f"""INSERT INTO Node (node_id, location, latitude, longitude) 
@@ -11,7 +12,7 @@ def initialize_node(node, cursor):
 
 def insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor):
     query = f"""INSERT INTO Sensor (node_id, sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit) 
-    VALUES ({node_id}, {sensor_id}, {measurement_id}, '{sensor_type}', '{sensor_model}', {measurement_name}, '{unit}');"""
+    VALUES ({node_id}, {sensor_id}, {measurement_id}, '{sensor_type}', '{sensor_model}', '{measurement_name}', '{unit}');"""
     cursor.execute(query)
 
 def create_sensor_table(node_id, sensor_id, measurement_id, cursor):
@@ -25,11 +26,16 @@ def create_sensor_table(node_id, sensor_id, measurement_id, cursor):
 
 def initialize_sensors(node, sensors, cursor):
     node_id = node['id']
-    for sensor in sensors:
+    for _, sensor in sensors.items():
         sensor_id = sensor['id']
         sensor_type = sensor['type']
         sensor_model = sensor['part_name']
-        for measurement in sensor['measurements']:
+
+        measurements = sensor['measurements']
+        if isinstance(measurements, dict):
+            measurements = [measurements]
+
+        for measurement in measurements:
             measurement_id = measurement['measurement_id']
             measurement_name = measurement['name']
             unit = measurement['unit']
@@ -37,6 +43,8 @@ def initialize_sensors(node, sensors, cursor):
             create_sensor_table(node_id, sensor_id, measurement_id, cursor)
 
 def main():
+    DB_NAME = os.getenv("DB_NAME")
+
     if len(sys.argv) < 2:
         print("Usage: py create_tables.py <input_yaml_file>")
         sys.exit(1)
@@ -45,14 +53,10 @@ def main():
     with open(input_yaml_file, 'r') as f:
         data = yaml.safe_load(f)
 
-    username = input("Enter your MySQL username: ")
-    password = input("Enter your MySQL password: ")
-    host = input("Enter the MySQL host (default: localhost): ") or 'localhost'
-
     db_config = {
-        'user': username,
-        'password': password,
-        'host': host
+        'user': os.getenv("DB_USER"),
+        'password': os.getenv("DB_PASSWORD", ""),
+        'host': os.getenv("DB_HOST", "localhost")
     }
 
     try:
@@ -72,4 +76,5 @@ def main():
 
 
 if __name__ == "__main__":
+    load_dotenv()
     main()
