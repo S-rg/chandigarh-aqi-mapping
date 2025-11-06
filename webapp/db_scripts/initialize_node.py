@@ -64,6 +64,7 @@ def main():
         cursor.execute(f"USE {DB_NAME};")
 
         initialize_node(data['Node'], cursor)
+        initialize_sensors(data['Node'], data['Sensors'], cursor)
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
