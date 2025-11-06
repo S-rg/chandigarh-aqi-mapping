@@ -3,28 +3,33 @@ import sys
 from dotenv import load_dotenv
 import os
 import mysql.connector
+from logging_config import setup_logging
+import logging
 
-
-def initialize_node(node, cursor):
+def initialize_node(node, cursor, logger):
     query = f"""INSERT INTO Node (node_id, location, latitude, longitude) 
     VALUES ({node['id']}, '{node['location_name']}', {node['lat']}, {node['lon']});"""
     cursor.execute(query)
+    logger.info(f"Inserted Node {node['id']} into Node")
+    
 
-def insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor):
+def insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor, logger):
     query = f"""INSERT INTO Sensor (node_id, sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit) 
     VALUES ({node_id}, {sensor_id}, {measurement_id}, '{sensor_type}', '{sensor_model}', '{measurement_name}', '{unit}');"""
     cursor.execute(query)
+    logger.info(f"Inserted Sensor {node_id}_{sensor_id}_{measurement_id} into Sensor")
 
-def create_sensor_table(node_id, sensor_id, measurement_id, cursor):
+def create_sensor_table(node_id, sensor_id, measurement_id, cursor, logger):
     query = f"""CREATE TABLE {node_id}_{sensor_id}_{measurement_id} (
         id INT PRIMARY KEY AUTO_INCREMENT,
         value DOUBLE NOT NULL,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
         );"""
     cursor.execute(query)
+    logger.info(f"Created node {node_id}_{sensor_id}_{measurement_id} table")
 
 
-def initialize_sensors(node, sensors, cursor):
+def initialize_sensors(node, sensors, cursor, logger):
     node_id = node['id']
     for _, sensor in sensors.items():
         sensor_id = sensor['id']
@@ -39,11 +44,12 @@ def initialize_sensors(node, sensors, cursor):
             measurement_id = measurement['measurement_id']
             measurement_name = measurement['name']
             unit = measurement['unit']
-            insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor)
-            create_sensor_table(node_id, sensor_id, measurement_id, cursor)
+            insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor, logger)
+            create_sensor_table(node_id, sensor_id, measurement_id, cursor, logger)
 
 def main():
-    DB_NAME = os.getenv("DB_NAME")
+    logger = logging.getLogger(__name__)
+    logger.info("Node Initialization Started")    
 
     if len(sys.argv) < 2:
         print("Usage: py create_tables.py <input_yaml_file>")
@@ -59,16 +65,17 @@ def main():
         'host': os.getenv("DB_HOST", "localhost")
     }
 
+    DB_NAME = os.getenv("DB_NAME")
+
     try:
         conn = mysql.connector.connect(**db_config)
-        print("Connection established!")
         cursor = conn.cursor()
-        print("Cursor created!")
+        logger.info("Created Cursor")
 
         cursor.execute(f"USE {DB_NAME};")
 
-        initialize_node(data['Node'], cursor)
-        initialize_sensors(data['Node'], data['Sensors'], cursor)
+        initialize_node(data['Node'], cursor, logger)
+        initialize_sensors(data['Node'], data['Sensors'], cursor, logger)
 
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -77,4 +84,5 @@ def main():
 
 if __name__ == "__main__":
     load_dotenv()
+    setup_logging()
     main()

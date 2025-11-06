@@ -1,43 +1,45 @@
 import mysql.connector
 from dotenv import load_dotenv
 import os
+from logging_config import setup_logging
+import logging
 
+def init_tables(cursor, logger):
+    create_node_table(cursor, logger)
+    create_sensor_table(cursor, logger)
 
-def init_tables(cursor):
-    create_node_table(cursor)
-    create_sensor_table(cursor)
-
-def create_node_table(cursor):
+def create_node_table(cursor, logger):
     create_table_query = """
     CREATE TABLE Node (
-        node_id INT PRIMARY KEY,
+        node_id VARCHAR(50) PRIMARY KEY,
         location VARCHAR(255) NOT NULL,
         latitude DOUBLE NOT NULL,
         longitude DOUBLE NOT NULL
     );
     """
     cursor.execute(create_table_query)
-    print("Node table created successfully.")
+    logger.info("Node table created successfully.")
 
 
-def create_sensor_table(cursor):
+def create_sensor_table(cursor, logger):
     create_table_query = """
     CREATE TABLE Sensor (
-        node_id INT NOT NULL,
+        node_id VARCHAR(50) NOT NULL,
         sensor_id INT NOT NULL,
         measurement_id INT NOT NULL,
-        sensor_type VARCHAR(255) NOT NULL,
-        sensor_model VARCHAR(255) NOT NULL,
-        measurement_name VARCHAR(255) NOT NULL,
+        sensor_type VARCHAR(255),
+        sensor_model VARCHAR(255),
+        measurement_name VARCHAR(255),
         unit VARCHAR(50) NOT NULL,
         FOREIGN KEY (node_id) REFERENCES Node(node_id),
         PRIMARY KEY (node_id, sensor_id, measurement_id)
     );
     """
     cursor.execute(create_table_query)
-    print("Sensor table created successfully.")
+    logger.info("Sensor table created successfully.")
 
 def main():
+    logger = logging.getLogger(__name__)
     DB_NAME = os.getenv("DB_NAME")
 
     config = {
@@ -48,15 +50,13 @@ def main():
 
     try:
         conn = mysql.connector.connect(**config)
-        print("Connection established!")
         cursor = conn.cursor()
-        print("Cursor created!")
+        logger.info("Connected to MySQL server.")
 
         cursor.execute(f"CREATE DATABASE {DB_NAME};") # Throws error 1007 if DB exists
-        print(f"Database {DB_NAME} created successfully.")
         cursor.execute(f"USE {DB_NAME};")
 
-        init_tables(cursor)
+        init_tables(cursor, logger)
 
 
     except mysql.connector.Error as err:
@@ -76,5 +76,6 @@ def main():
 
 
 if __name__ == "__main__":
+    setup_logging()
     load_dotenv()
     main()
