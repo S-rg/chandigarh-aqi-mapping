@@ -1,0 +1,246 @@
+DEBUG: false
+Node:
+  id: 1
+  location_name: "Pranasense Big Monitor (84530304be06c)"
+  lat: 30.6319856020464
+  lon: 76.72627825617869
+  
+sampling_rate: 3000 # ms
+  
+Sensors:
+  AQIIN:
+    id: 1
+    type: "AQI-IN"
+    measurements:
+        measurement_id: 1
+        name: "AQI-IN"
+        unit: "in-aqi"
+  AQIUS:
+    id: 2
+    type: "AQI-US"
+    measurements:
+        measurement_id: 1
+        name: "AQI-US"
+        unit: "us-aqi"
+  PMSensor:
+    id: 3
+    type: "PMSensor"
+    measurements:
+        - measurement_id: 1
+          name: "PM25"
+          unit: "µg/m³"
+        - measurement_id: 2
+          name: "PM10"
+          unit: "µg/m³"
+        - measurement_id: 3
+          name: "PM1"
+          unit: "µg/m³"
+  Thermometer:
+    id: 4
+    type: "Thermometer"
+    measurements:
+        measurement_id: 1
+        name: "Temperature"
+        unit: "°C"
+  HumiditySensor:
+    id: 5
+    type: "Humidity Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Humidity"
+        unit: "%"
+  NoiseSensor:
+    id: 6
+    type: "Noise Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Noise"
+        unit: "dB"
+  TVOCSensor:
+    id: 7
+    type: "TVOC Sensor"
+    measurements:
+        measurement_id: 1
+        name: "TVOC"
+        unit: "ppm"
+  COSensor:
+    id: 8
+    type: "CO Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CO"
+        unit: "ppm"
+  CO2Sensor:
+    id: 9
+    type: "CO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CO2"
+        unit: "ppm"
+  SO2Sensor:
+    id: 10
+    type: "SO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "SO2"
+        unit: "ppb"
+  NO2Sensor:
+    id: 11
+    type: "NO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "NO2"
+        unit: "ppb"
+  O3Sensor:
+    id: 12
+    type: "O3 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "O3"
+        unit: "ppb"
+  NH3Sensor:
+    id: 13
+    type: "NH3 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "NH3"
+        unit: "ppb"
+  H2SSensor:
+    id: 14
+    type: "H2S Sensor"
+    measurements:
+        measurement_id: 1
+        name: "H2S"
+        unit: "ppb"
+  CH4Sensor:
+    id: 15
+    type: "CH4 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CH4"
+        unit: "ppm"
+  
+  
+DEBUG: false
+Node:
+  id: 1
+  location_name: "Pranasense Big Monitor (84530304be06c)"
+  lat: 30.6319856020464
+  lon: 76.72627825617869
+  
+sampling_rate: 3000 # ms
+  
+Sensors:
+  AQIIN:
+    id: 1
+    type: "AQI-IN"
+    measurements:
+        measurement_id: 1
+        name: "AQI-IN"
+        unit: "in-aqi"
+  AQIUS:
+    id: 2
+    type: "AQI-US"
+    measurements:
+        measurement_id: 1
+        name: "AQI-US"
+        unit: "us-aqi"
+  PMSensor:
+    id: 3
+    type: "PMSensor"
+    measurements:
+        - measurement_id: 1
+          name: "PM25"
+          unit: "µg/m³"
+        - measurement_id: 2
+          name: "PM10"
+          unit: "µg/m³"
+        - measurement_id: 3
+          name: "PM1"
+          unit: "µg/m³"
+  Thermometer:
+    id: 4
+    type: "Thermometer"
+    measurements:
+        measurement_id: 1
+        name: "Temperature"
+        unit: "°C"
+  HumiditySensor:
+    id: 5
+    type: "Humidity Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Humidity"
+        unit: "%"
+  NoiseSensor:
+    id: 6
+    type: "Noise Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Noise"
+        unit: "dB"
+  TVOCSensor:
+    id: 7
+    type: "TVOC Sensor"
+    measurements:
+        measurement_id: 1
+        name: "TVOC"
+        unit: "ppm"
+  COSensor:
+    id: 8
+    type: "CO Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CO"
+        unit: "ppm"
+  CO2Sensor:
+    id: 9
+    type: "CO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CO2"
+        unit: "ppm"
+  SO2Sensor:
+    id: 10
+    type: "SO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "SO2"
+        unit: "ppb"
+  NO2Sensor:
+    id: 11
+    type: "NO2 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "NO2"
+        unit: "ppb"
+  O3Sensor:
+    id: 12
+    type: "O3 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "O3"
+        unit: "ppb"
+  NH3Sensor:
+    id: 13
+    type: "NH3 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "NH3"
+        unit: "ppb"
+  H2SSensor:
+    id: 14
+    type: "H2S Sensor"
+    measurements:
+        measurement_id: 1
+        name: "H2S"
+        unit: "ppb"
+  CH4Sensor:
+    id: 15
+    type: "CH4 Sensor"
+    measurements:
+        measurement_id: 1
+        name: "CH4"
+        unit: "ppm"
+  
+  

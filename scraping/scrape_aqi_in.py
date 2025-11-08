@@ -162,6 +162,47 @@ def insert_scraped_row(row, cursor):
         'TVOC_PPM': row.get('tvoc', None),
         'Noise_DB': row.get('noise', None)
     })
+
+
+def sensor_data_to_sql(sensors_data, logger):
+    sensor_map = {
+        "84530304be06c": "1",
+        "48F6EE5481E0": "2",
+        "48F6EE546F34": "3"
+    }
+
+    sensor_id_map = {
+        1: (1,1),
+        2: (2,1),
+        3: (3,1),
+        4: (3,2),
+        5: (3,3),
+        11: (4,1),
+        12: (5,1),
+        13: (6,1),
+        18: (7,1),
+        20: (8,1),
+        21: (9,1),
+        22: (10,1),
+        23: (11,1),
+        25: (12,1),
+        26: (13,1),
+        27: (14,1),
+        71: (1,4),
+        72: (1,5),
+        73: (1,6),
+        74: (1,7),
+        75: (1,8),
+        76: (1,9),
+        78: (15,1)
+    }
+
+    for device in sensors_data['data']:
+        node_id = sensor_map.get(device['serialNo'])
+
+        for sensor in device['realtime']:
+            sensor_id, measurement_id = sensor_id_map[sensor['sensorId']]
+
     
 
 def main(logger):
@@ -176,6 +217,8 @@ def main(logger):
 
     data_to_sql(mass, logger)
     logger.info("Data inserted into database successfully")
+
+    sensor_data_to_sql(sensors, logger)
 
 def alert_mail(body):
     msg = MIMEMultipart()

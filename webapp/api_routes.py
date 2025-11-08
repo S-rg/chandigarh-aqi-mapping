@@ -104,12 +104,33 @@ def get_measurement_data(node_id, sensor_id, measurement_id):
     data = [{"timestamp": row[0].isoformat(), "value": row[1]} for row in result]
     return {"data": data}, 200
 
-@app.route("/api/postdata/", methods=["POST"])
-def post_data():
-    headers = dict(request.headers)
-    return {"headers": headers}, 200
 
+@app.route("/api/postdata/<string:node_id>/<int:sensor_id>/<int:measurement_id>", methods=["POST"])
+def post_data(node_id, sensor_id, measurement_id):
+    try:
+        data = request.get_json()
+        if not data or "timestamp" not in data or "value" not in data:
+            return {"error": "Invalid data"}, 400
 
-@app.route("/tempviz")
-def temp_viz():
-    return render_template('plot.html')
+        timestamp = data["timestamp"]
+        value = data["value"]
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        query = f"""
+            INSERT INTO {node_id}_{sensor_id}_{measurement_id} (timestamp, value)
+            VALUES (%s, %s);
+        """
+        cursor.execute(query, (timestamp, value))
+        connection.commit()
+
+        return {"message": "Data inserted successfully"}, 201
+
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+
+    finally:
+        cursor.close()
+        connection.close()

@@ -34,7 +34,7 @@ def initialize_sensors(node, sensors, cursor, logger):
     for _, sensor in sensors.items():
         sensor_id = sensor['id']
         sensor_type = sensor['type']
-        sensor_model = sensor['part_name']
+        sensor_model = sensor['part_name'] if 'part_name' in sensor else None
 
         measurements = sensor['measurements']
         if isinstance(measurements, dict):
@@ -56,7 +56,7 @@ def main():
         sys.exit(1)
 
     input_yaml_file = sys.argv[1]
-    with open(input_yaml_file, 'r') as f:
+    with open(input_yaml_file, 'r', encoding='utf-8') as f:
         data = yaml.safe_load(f)
 
     db_config = {
