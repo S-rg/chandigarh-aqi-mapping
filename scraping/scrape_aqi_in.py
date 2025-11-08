@@ -242,24 +242,23 @@ if __name__ == "__main__":
     setup_logging()
     logger = logging.getLogger(__name__)
 
-    while True:
-        try:
-            main(logger)
-            time.sleep(600)
-        except Exception as e:
-            logger.error(f"Error occurred: {e}")
-            alert_mail(str(e))
-            break
-        except KeyboardInterrupt as e:
-            logger.info("Script interrupted by user")
-            alert_mail(str(e) + " \n\n\n Damn bro you stopped it yourself bro.")
-            break
-        except requests.exceptions.ConnectionError:
-            logger.error("Network error occurred, retrying in 5 minutes...")
-            time.sleep(300)
-        except requests.exceptions.Timeout:
-            logger.error("Request timed out, retrying in 5 minutes...")
-            time.sleep(300)
+    try:
+        main(logger)
+        time.sleep(600)
+    except Exception as e:
+        logger.error(f"Error occurred: {e}")
+        alert_mail(str(e))
+        break
+    except KeyboardInterrupt as e:
+        logger.info("Script interrupted by user")
+        alert_mail(str(e) + " \n\n\n Damn bro you stopped it yourself bro.")
+        break
+    except requests.exceptions.ConnectionError:
+        logger.error("Network error occurred, retrying in 5 minutes...")
+        time.sleep(300)
+    except requests.exceptions.Timeout:
+        logger.error("Request timed out, retrying in 5 minutes...")
+        time.sleep(300)
 
     
 

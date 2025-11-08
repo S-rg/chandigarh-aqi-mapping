@@ -1,4 +1,4 @@
 # TODO
 
-- [ ] Add logging with timestamps
-- [ ] Add a failsafe email notification system
+- [x] Add logging with timestamps
+- [x] Add a failsafe email notification system
