@@ -2,7 +2,9 @@ let autoUpdate = true;
 let updateIntervalId = null;
 let sensorData = {};
 let maxDataPoints = 50;
+let measurements = []; // Store all measurements info
 
+// Initialize sensor data structure
 for (let i = 1; i <= 20; i++) {
     sensorData[i] = {
         timestamps: [],
@@ -12,204 +14,285 @@ for (let i = 1; i <= 20; i++) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    initializePlots();
-    startAutoUpdate();
+    initializeDashboard();
     
-    document.getElementById('updateIntervalSelect').addEventListener('change', function() {
-        if (autoUpdate) {
-            stopAutoUpdate();
-            startAutoUpdate();
-        }
-    });
+    // Set up interval selector
+    const intervalSelect = document.getElementById('updateIntervalSelect');
+    if (intervalSelect) {
+        intervalSelect.addEventListener('change', function() {
+            const interval = parseInt(this.value);
+            setupAutoUpdate(interval);
+        });
+    }
+    
+    // Start auto-update with default interval (5 seconds)
+    setupAutoUpdate(5000);
 });
 
-function initializePlots() {
-    for (let i = 1; i <= 20; i++) {
-        const layout = {
-            margin: { t: 10, r: 10, b: 30, l: 40 },
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            xaxis: {
-                type: 'date',
-                gridcolor: 'rgba(255,255,255,0.1)',
-                tickfont: { color: 'rgba(236, 240, 241, 0.5)', size: 10 }
-            },
-            yaxis: {
-                gridcolor: 'rgba(255,255,255,0.1)',
-                tickfont: { color: 'rgba(236, 240, 241, 0.5)', size: 10 }
-            },
-            showlegend: false,
-            height: 250
-        };
-        
-        const data = [{
-            x: [],
-            y: [],
-            type: 'scatter',
-            mode: 'lines+markers',
-            line: { color: '#3498db', width: 2 },
-            marker: { color: '#3498db', size: 4 }
-        }];
-        
-        Plotly.newPlot(`plot-${i}`, data, layout, {responsive: true});
-    }
-}
-
-async function fetchSensorData(sensorId) {
+async function initializeDashboard() {
     try {
-        const response = await fetch(`/api/sensor${sensorId}`);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        showLoading(true);
         
-        const data = await response.json();
-        updateSensorDisplay(sensorId, data);
-        return data;
+        // Fetch node 1 data to get sensors
+        const nodeResponse = await fetch('/api/node/1');
+        const nodeData = await nodeResponse.json();
+        
+        if (!nodeData.sensors || !Array.isArray(nodeData.sensors)) {
+            showError('No sensors found for node 1');
+            return;
+        }
+        
+        // Fetch measurements for each sensor
+        const measurementPromises = nodeData.sensors.map(async (sensorId) => {
+            try {
+                const sensorResponse = await fetch(`/api/sensor/1/${sensorId}`);
+                const sensorData = await sensorResponse.json();
+                
+                // API returns {measurements: [id1, id2, id3, ...]}
+                if (sensorData.measurements && Array.isArray(sensorData.measurements)) {
+                    return sensorData.measurements.map(measurementId => ({
+                        nodeId: '1',
+                        sensorId: sensorId,
+                        measurementId: measurementId,
+                        measurementName: `Sensor ${sensorId} - Measurement ${measurementId}`,
+                        unit: '' // Will be populated from actual data if available
+                    }));
+                }
+                return [];
+            } catch (error) {
+                console.error(`Error fetching measurements for sensor ${sensorId}:`, error);
+                return [];
+            }
+        });
+        
+        const allMeasurements = await Promise.all(measurementPromises);
+        measurements = allMeasurements.flat();
+        
+        console.log('Total measurements found:', measurements.length);
+        
+        // Create graphs for all measurements
+        createGraphs();
+        
+        // Load initial data
+        await loadAllMeasurementData();
+        
+        showLoading(false);
+        updateGlobalLastUpdate();
+        
     } catch (error) {
-        console.error(`Error fetching sensor ${sensorId}:`, error);
-        updateSensorStatus(sensorId, 'error');
-        return null;
+        console.error('Error initializing dashboard:', error);
+        showError('Failed to initialize dashboard: ' + error.message);
+        showLoading(false);
     }
 }
 
-function updateSensorDisplay(sensorId, data) {
-    if (!data) return;
+function createGraphs() {
+    const container = document.getElementById('sensorGrid');
+    if (!container) return;
     
-    const statusElement = document.getElementById(`status-${sensorId}`);
-    const statusLabel = document.getElementById(`status-label-${sensorId}`);
-    const valueContainer = document.getElementById(`value-container-${sensorId}`);
-    const detailsContainer = document.getElementById(`details-${sensorId}`);
-    const waitingMessage = document.getElementById(`waiting-${sensorId}`);
+    // Clear existing content
+    container.innerHTML = '';
     
-    // Update status
-    statusElement.classList.remove('status-inactive', 'status-warning');
-    statusElement.classList.add('status-active');
-    statusLabel.textContent = 'Connected';
-    
-    // Show value container and details, hide waiting message
-    valueContainer.style.display = 'block';
-    detailsContainer.style.display = 'block';
-    waitingMessage.style.display = 'none';
-    
-    const valueElement = document.getElementById(`value-${sensorId}`);
-    const unitElement = document.getElementById(`unit-${sensorId}`);
-    valueElement.textContent = data.value !== undefined ? data.value.toFixed(2) : '--';
-    unitElement.textContent = data.unit || '';
-    
-    // Update detail values (simplified for demo - you might want to fetch actual PM values)
-    document.getElementById(`pm1-${sensorId}`).textContent = `${(data.value * 0.8).toFixed(1)} µg/m³`;
-    document.getElementById(`pm25-${sensorId}`).textContent = `${data.value.toFixed(1)} µg/m³`;
-    document.getElementById(`pm10-${sensorId}`).textContent = `${(data.value * 1.2).toFixed(1)} µg/m³`;
-    
-    sensorData[sensorId].timestamps.push(new Date());
-    sensorData[sensorId].values.push(data.value || 0);
-    sensorData[sensorId].active = true;
-    
-    if (sensorData[sensorId].timestamps.length > maxDataPoints) {
-        sensorData[sensorId].timestamps.shift();
-        sensorData[sensorId].values.shift();
-    }
-    
-    updatePlot(sensorId);
+    // Create a card for each measurement
+    measurements.forEach((measurement, index) => {
+        const card = createMeasurementCard(measurement, index);
+        container.appendChild(card);
+    });
 }
 
-function updatePlot(sensorId) {
-    const data = sensorData[sensorId];
-    if (!data.active) return;
+function createMeasurementCard(measurement, index) {
+    const col = document.createElement('div');
+    col.className = 'col-xl-6 col-lg-12 col-md-12 mb-4';
     
-    const update = {
-        x: [data.timestamps],
-        y: [data.values]
+    const card = document.createElement('div');
+    card.className = 'sensor-card';
+    card.id = `measurement-card-${index}`;
+    
+    const cardHeader = document.createElement('div');
+    cardHeader.className = 'sensor-header';
+    cardHeader.innerHTML = `
+        <div class="sensor-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path d="M7 17V7a5 5 0 0 1 10 0v10" stroke="currentColor" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+        <div class="sensor-info-header">
+            <span class="sensor-name">${measurement.measurementName}</span>
+            <span class="sensor-subtitle">Node ${measurement.nodeId} - Sensor ${measurement.sensorId}</span>
+        </div>
+        <div class="sensor-value-container" id="value-container-${index}">
+            <span class="sensor-value" id="current-value-${index}">--</span>
+            <span class="sensor-unit">${measurement.unit}</span>
+        </div>
+    `;
+    
+    const plotDiv = document.createElement('div');
+    plotDiv.id = `plot-${index}`;
+    plotDiv.className = 'plot-container';
+    plotDiv.style.width = '100%';
+    plotDiv.style.height = '300px';
+    
+    card.appendChild(cardHeader);
+    card.appendChild(plotDiv);
+    col.appendChild(card);
+    
+    return col;
+}
+
+async function loadAllMeasurementData() {
+    const promises = measurements.map((measurement, index) => 
+        loadMeasurementData(measurement, index)
+    );
+    
+    await Promise.all(promises);
+}
+
+async function loadMeasurementData(measurement, index) {
+    try {
+        const response = await fetch(
+            `/api/measurement/${measurement.nodeId}/${measurement.sensorId}/${measurement.measurementId}`
+        );
+        const result = await response.json();
+        
+        if (result.data && Array.isArray(result.data)) {
+            const timestamps = result.data.map(d => new Date(d.timestamp));
+            const values = result.data.map(d => d.value);
+            
+            // Keep only last maxDataPoints
+            const startIdx = Math.max(0, timestamps.length - maxDataPoints);
+            const slicedTimestamps = timestamps.slice(startIdx);
+            const slicedValues = values.slice(startIdx);
+            
+            updatePlot(index, slicedTimestamps, slicedValues, measurement);
+            
+            // Update current value display
+            if (values.length > 0) {
+                const currentValue = values[values.length - 1];
+                const valueElement = document.getElementById(`current-value-${index}`);
+                if (valueElement) {
+                    valueElement.textContent = currentValue.toFixed(2);
+                }
+            }
+        }
+        
+    } catch (error) {
+        console.error(`Error loading data for measurement ${measurement.measurementId}:`, error);
+    }
+}
+
+function updatePlot(index, timestamps, values, measurement) {
+    const plotDiv = document.getElementById(`plot-${index}`);
+    if (!plotDiv) return;
+    
+    const trace = {
+        x: timestamps,
+        y: values,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: measurement.measurementName,
+        line: {
+            color: '#4A90E2',
+            width: 2
+        },
+        marker: {
+            size: 4,
+            color: '#4A90E2'
+        }
     };
     
-    Plotly.update(`plot-${sensorId}`, update, {}, [0]);
-}
-
-function updateSensorStatus(sensorId, status) {
-    const statusElement = document.getElementById(`status-${sensorId}`);
-    const statusLabel = document.getElementById(`status-label-${sensorId}`);
-    const valueContainer = document.getElementById(`value-container-${sensorId}`);
-    const detailsContainer = document.getElementById(`details-${sensorId}`);
-    const waitingMessage = document.getElementById(`waiting-${sensorId}`);
-    
-    statusElement.classList.remove('status-active', 'status-inactive', 'status-warning');
-    
-    switch(status) {
-        case 'active':
-            statusElement.classList.add('status-active');
-            statusLabel.textContent = 'Connected';
-            break;
-        case 'error':
-            statusElement.classList.add('status-inactive');
-            statusLabel.textContent = 'Disconnected';
-            valueContainer.style.display = 'none';
-            detailsContainer.style.display = 'none';
-            waitingMessage.style.display = 'block';
-            break;
-        case 'warning':
-            statusElement.classList.add('status-warning');
-            statusLabel.textContent = 'Warning';
-            break;
-    }
-}
-
-async function refreshAllSensors() {
-    document.getElementById('loadingSpinner').style.display = 'inline-block';
-    
-    const promises = [];
-    for (let i = 1; i <= 20; i++) {
-        promises.push(fetchSensorData(i));
-    }
-    
-    await Promise.allSettled(promises);
-    
-    document.getElementById('globalLastUpdate').textContent = new Date().toLocaleTimeString();
-    document.getElementById('loadingSpinner').style.display = 'none';
-}
-
-// Start auto update
-function startAutoUpdate() {
-    if (updateIntervalId) clearInterval(updateIntervalId);
-    
-    const interval = parseInt(document.getElementById('updateIntervalSelect').value);
-    refreshAllSensors(); // Initial fetch
-    
-    updateIntervalId = setInterval(() => {
-        if (autoUpdate) {
-            refreshAllSensors();
+    const layout = {
+        margin: { t: 20, r: 20, b: 40, l: 50 },
+        xaxis: {
+            title: 'Time',
+            type: 'date',
+            gridcolor: '#e0e0e0'
+        },
+        yaxis: {
+            title: `${measurement.measurementName} (${measurement.unit})`,
+            gridcolor: '#e0e0e0'
+        },
+        plot_bgcolor: '#ffffff',
+        paper_bgcolor: '#ffffff',
+        font: {
+            family: 'Inter, system-ui, -apple-system, sans-serif',
+            size: 11
         }
-    }, interval);
+    };
+    
+    const config = {
+        responsive: true,
+        displayModeBar: false
+    };
+    
+    Plotly.newPlot(plotDiv, [trace], layout, config);
 }
 
-// Stop auto update
-function stopAutoUpdate() {
+function setupAutoUpdate(interval) {
+    // Clear existing interval
     if (updateIntervalId) {
         clearInterval(updateIntervalId);
-        updateIntervalId = null;
+    }
+    
+    // Set up new interval if auto-update is enabled
+    if (autoUpdate) {
+        updateIntervalId = setInterval(() => {
+            loadAllMeasurementData();
+            updateGlobalLastUpdate();
+        }, interval);
     }
 }
 
-// Toggle auto update
 function toggleAutoUpdate() {
     autoUpdate = !autoUpdate;
     const btn = document.getElementById('autoUpdateBtn');
     
     if (autoUpdate) {
         btn.textContent = 'Pause';
-        startAutoUpdate();
+        const interval = parseInt(document.getElementById('updateIntervalSelect').value);
+        setupAutoUpdate(interval);
     } else {
         btn.textContent = 'Resume';
-        stopAutoUpdate();
+        if (updateIntervalId) {
+            clearInterval(updateIntervalId);
+            updateIntervalId = null;
+        }
     }
 }
 
-// Show error message
-function showError(message) {
-    document.getElementById('errorMessage').textContent = message;
-    document.getElementById('errorAlert').style.display = 'block';
-    
-    setTimeout(hideError, 5000);
+function refreshAllSensors() {
+    loadAllMeasurementData();
+    updateGlobalLastUpdate();
 }
 
-// Hide error message
+function updateGlobalLastUpdate() {
+    const element = document.getElementById('globalLastUpdate');
+    if (element) {
+        const now = new Date();
+        element.textContent = now.toLocaleTimeString();
+    }
+}
+
+function showLoading(show) {
+    const spinner = document.getElementById('loadingSpinner');
+    if (spinner) {
+        spinner.style.display = show ? 'block' : 'none';
+    }
+}
+
+function showError(message) {
+    const errorAlert = document.getElementById('errorAlert');
+    const errorMessage = document.getElementById('errorMessage');
+    
+    if (errorAlert && errorMessage) {
+        errorMessage.textContent = message;
+        errorAlert.style.display = 'block';
+    }
+}
+
 function hideError() {
-    document.getElementById('errorAlert').style.display = 'none';
+    const errorAlert = document.getElementById('errorAlert');
+    if (errorAlert) {
+        errorAlert.style.display = 'none';
+    }
 }

@@ -1,5 +1,10 @@
 DEBUG: false
-
+Node:
+  id: 1
+  location_name: "Testing Monitor"
+  lat: 30.631701
+  lon: 76.725323
+  
 Sensors:
   TVOCSensor:
     id: 1
@@ -12,29 +17,29 @@ Sensors:
         measurement_id: 1
         name: "tvoc"
         unit: "ppb"
-  # PMSensor:
-  #   id: 2
-  #   type: "PMSensor"
-  #   part_name: "Plantower PMS7003"
-  #   comms: "I2C"
-  #   port_no: 1 # 0 or 1 or 2 or 3 depending on which i2c it is
-  #   i2c_address: 0x78
-  #   measurements:
-  #       - measurement_id: 1
-  #         name: "pm1"
-  #         unit: "ppm"
-  #       - measurement_id: 2
-  #         name: "pm2.5"
-  #         unit: "ppm"
-  # FormaldehydeSensor:
-  #   id: 3
-  #   type: "CH2OSensor"
-  #   part_name : "DARTSENSORS WZ-S-K"
-  #   comms: "SOFTWARE_SERIAL"
-  #   baud_rate: 9600
-  #   rx_pin: 12
-  #   tx_pin: 13
-  #   measurements:
-  #       measurement_id: 1
-  #       name: "tvoc"
-  #       unit: "ppb"
+  PMSensor:
+    id: 2
+    type: "PMSensor"
+    part_name: "Plantower PMS7003"
+    comms: "I2C"
+    port_no: 1 # 0 or 1 or 2 or 3 depending on which i2c it is
+    i2c_address: 0x78
+    measurements:
+        - measurement_id: 1
+          name: "pm1"
+          unit: "ppm"
+        - measurement_id: 2
+          name: "pm2.5"
+          unit: "ppm"
+  FormaldehydeSensor:
+    id: 3
+    type: "CH2OSensor"
+    part_name : "DARTSENSORS WZ-S-K"
+    comms: "SOFTWARE_SERIAL"
+    baud_rate: 9600
+    rx_pin: 12
+    tx_pin: 13
+    measurements:
+        measurement_id: 1
+        name: "tvoc"
+        unit: "ppb"
