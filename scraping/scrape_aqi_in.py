@@ -206,7 +206,7 @@ def sensor_data_to_sql(sensors_data, logger):
         78: (15,1)
     }
 
-    timestamp = datetime.time().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     for device in sensors_data['data']:
         node_id = sensor_map.get(device['serialNo'])

@@ -1,6 +1,6 @@
 .vscode/
 .env
-webapp/aqi_env/
+aqi-env/
 webapp/db_scripts/temp_data.py
 aqi.log
 requirements.txt
