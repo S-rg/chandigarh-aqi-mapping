@@ -2,6 +2,7 @@ import sys
 import logging
 import traceback
 from dotenv import load_dotenv
+import os
 
 logging.basicConfig(stream=sys.stderr)
 
