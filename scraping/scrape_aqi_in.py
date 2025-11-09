@@ -164,6 +164,15 @@ def insert_scraped_row(row, cursor):
     })
 
 
+def insert_sensor_data_api(node_id, sensor_id, measurement_id, data, logger):
+    request_url = f"10.1.40.45/api/postdata/{node_id}/{sensor_id}/{measurement_id}"
+    
+    response = requests.post(request_url, json=data)
+    if response.status_code != 200:
+        logger.error(f"Failed to insert data for {node_id}/{sensor_id}/{measurement_id}: {response.text}")
+    else:
+        logger.info(f"Inserted data for {node_id}/{sensor_id}/{measurement_id}")
+
 def sensor_data_to_sql(sensors_data, logger):
     sensor_map = {
         "84530304be06c": "1",
@@ -197,16 +206,27 @@ def sensor_data_to_sql(sensors_data, logger):
         78: (15,1)
     }
 
+    timestamp = datetime.time().strftime("%Y-%m-%d %H:%M:%S")
+
     for device in sensors_data['data']:
         node_id = sensor_map.get(device['serialNo'])
 
         for sensor in device['realtime']:
             sensor_id, measurement_id = sensor_id_map[sensor['sensorId']]
 
+            data = {
+                'value': sensor['sensorData'],
+                'timestamp': timestamp,
+            }
+
+            insert_sensor_data_api(node_id, sensor_id, measurement_id, data, logger)
+
+
+
     
 
 def main(logger):
-    load_dotenv()
+    load_dotenv("/home/studentiotlab/aqi-dashboard/.env")
 
     token = login()
     logger.info("Logged in successfully")
@@ -248,18 +268,10 @@ if __name__ == "__main__":
     except Exception as e:
         logger.error(f"Error occurred: {e}")
         alert_mail(str(e))
-        break
     except KeyboardInterrupt as e:
         logger.info("Script interrupted by user")
         alert_mail(str(e) + " \n\n\n Damn bro you stopped it yourself bro.")
-        break
     except requests.exceptions.ConnectionError:
         logger.error("Network error occurred, retrying in 5 minutes...")
-        time.sleep(300)
     except requests.exceptions.Timeout:
         logger.error("Request timed out, retrying in 5 minutes...")
-        time.sleep(300)
-
-    
-
-     
