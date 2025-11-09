@@ -93,6 +93,11 @@ Initial Plan:
 | 11 | Particle count ≥ 5.0 µm | particles / 0.1 L |
 | 12 | Particle count ≥ 10 µm | particles / 0.1 L |
 
+#### Oxygen Sensor (DFRobotOxygen with Winsen MEO2)
+| Measurement ID | Measurement name | Unit | Min-Max
+|---:|---|---|---|
+| 1 | O2 | %Vol | 0% - 25% |
+
 
 ### Sensors
 All Tasks and TODOs at the top

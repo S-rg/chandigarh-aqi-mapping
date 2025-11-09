@@ -9,14 +9,14 @@ Node:
   lon: 76.725323
 
 Sensors:
-  SO2Sensor:
+  DFRobotCOSensor:
     id: 20
-    type: "SO2Sensor"
-    part_name: "Winsen ZE-03"
+    type: "DFRobotCOSensor"
+    part_name: "DFRobot CO Sensor"
     comms: "HARDWARE_SERIAL"
-    port_no: 1 # 0 or 1 or 2 or 3 depending on which i2c it is
+    port_no: 1
     baud_rate: 9600
     measurements:
         - measurement_id: 1
-          name: "SO2"
+          name: "CO"
           unit: "ppm"

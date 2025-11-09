@@ -35,33 +35,33 @@ typedef struct {
 } SensorInfo;
 
 // Measurement arrays
-static const MeasurementInfo SO2SENSOR_MEASUREMENTS[] = {
-  { (uint8_t)1, "SO2", "ppm" },
+static const MeasurementInfo DFROBOTCOSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "CO", "ppm" },
 };
 
 // Sensor table
 static const SensorInfo sensors_config[] = {
-  { (uint16_t)20, "SO2Sensor", "Winsen ZE-03", "SO2Sensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, SO2SENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)20, "DFRobotCOSensor", "DFRobot CO Sensor", "DFRobotCOSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, DFROBOTCOSENSOR_MEASUREMENTS, (uint8_t)1 },
 };
 
 #define SENSOR_COUNT 1
 
 // Convenience macros for sensor IDs and measurement IDs
-#define SENSOR_ID_SO2SENSOR 20
-#define MEAS_SO2SENSOR_SO2 1
+#define SENSOR_ID_DFROBOTCOSENSOR 20
+#define MEAS_DFROBOTCOSENSOR_CO 1
 
 // Debug helpers: arrays of names (useful when SENSORS_DEBUG == 1)
 static const char* const sensor_config_key[] = {
-  "SO2Sensor",
+  "DFRobotCOSensor",
 };
 
 static const char* const sensor_part_name[] = {
-  "Winsen ZE-03",
+  "DFRobot CO Sensor",
 };
 
 // For debug: measurement names by sensor (array of arrays).
 static const MeasurementInfo* const sensor_measurements[] = {
-  SO2SENSOR_MEASUREMENTS,
+  DFROBOTCOSENSOR_MEASUREMENTS,
 };
 
 /*

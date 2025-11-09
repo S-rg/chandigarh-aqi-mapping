@@ -247,7 +247,7 @@ private:
 
 			byte response[responseSize] = {0};
 			commInterface->receiveBuffer(response, responseSize);
-			if (response[2] == 1 && SENSORS_DEBUG) 
+			if (response[2] == 0 && SENSORS_DEBUG) 
 				Serial.printf("[COMMS] Swith to QA Mode failed for SO2 Sensor with id %d\n", _cfg->sensor_id);
 		}
 	}
@@ -517,9 +517,131 @@ public:
 
 private:
 	// From the DFRobot library 
-	int OXYGEN_DATA_REGISTER = 0x03;   ///< register for oxygen data
-	int GET_KEY_REGISTER = 0x0A; /// There is some compensation happening from this key
+	static int OXYGEN_DATA_REGISTER;   ///< register for oxygen data
+	static int GET_KEY_REGISTER; /// There is some compensation happening from this key
 	float _Key = 20.9 / 120.0;
+};
+
+
+/**
+ * @class DFRobotCOSensor
+ * @brief Sensor driver class for Serial (UART) DFRobot CO (Carbon Monoxide) gas sensor.
+ * Communicates using the DFRobot MultiGasSensor protocol via Hardware Serial.
+ */
+class DFRobotCOSensor : public SensorBase {
+public:
+	static const int commandSize = 9;
+	static const int responseSize = 9;
+
+	DFRobotCOSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {}
+	
+	bool begin() override
+	{
+		_comm->begin();
+		_startQAMode();
+		return true;
+	}
+
+	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
+	{
+		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
+		{
+			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
+
+			if (measurement_id == 1)
+			{
+				read_measurement_1(commInterface, buffer);
+			}
+		}
+	}
+
+	void read_measurement_1(SerialInterface *commInterface, RuntimeMeasurement *buffer)
+	{
+		// Send command to get CO gas concentration (0x86)
+		commInterface->sendBuffer(getValueCommand, commandSize);
+		delay(delayTime * 2);
+
+		// Read response from sensor
+		byte responseBuffer[responseSize];
+		commInterface->receiveBuffer(responseBuffer, responseSize);
+
+		// Verify checksum
+		if (_verifyChecksum(responseBuffer) != true)
+		{
+			if (SENSORS_DEBUG) {
+				Serial.printf("[DEBUG] DFRobotCOSensor: Checksum failed for sensor ID %d\n", _cfg->sensor_id);
+			}
+			return;
+		}
+
+		// Extract concentration value from response
+		// Response format: [head, cmd, conc_h, conc_l, gas_type, decimals, temp_h, temp_l, checksum]
+		// CO concentration is in bytes 2 (high) and 3 (low)
+		uint16_t conc = (responseBuffer[2] << 8) | responseBuffer[3];
+		uint8_t decimals = responseBuffer[5];
+
+		// Apply decimal scaling
+		float concentration = static_cast<float>(conc);
+		if (decimals == 1)
+			concentration *= 0.1f;
+		else if (decimals == 2)
+			concentration *= 0.01f;
+
+		buffer->timestamp = SensorBase::getCurrentTime();
+		buffer->value = concentration; // Units: ppm
+
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotCOSensor ID %d: CO concentration = %.2f ppm\n", _cfg->sensor_id, concentration);
+		}
+	}
+
+private:
+	static byte qaModeOnCommand[commandSize];
+	static byte getValueCommand[commandSize];
+
+	void _startQAMode()
+	{
+		if (SENSORS_DEBUG) printf("ENtered Start QA MOde");
+		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
+		{
+			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
+
+			commInterface->sendBuffer(qaModeOnCommand, commandSize);
+			delay(delayTime);
+
+			byte response[responseSize] = {0};
+			commInterface->receiveBuffer(response, responseSize);
+			if (!_verifyChecksum(response)) {
+				if (SENSORS_DEBUG) Serial.printf("[COMMS] Swith to QA Mode Response Buffer Checksum Failed for CO Sensor with id %d\n", _cfg->sensor_id);
+				_startQAMode();
+			}
+			else if (response[2] == 0 && SENSORS_DEBUG) {
+				Serial.printf("[COMMS] Swith to QA Mode FAILED for CO Sensor with id %d\n", _cfg->sensor_id);
+			}
+			else if (response[2] == 1 && SENSORS_DEBUG) {
+				Serial.printf("[COMMS] Swith to QA Mode SUCCESSFULL for CO Sensor with id %d\n", _cfg->sensor_id);
+			}
+		}
+	}
+
+	/**
+	 * @brief Verify checksum using two's complement
+	 * @param responseBuffer Buffer containing response from sensor
+	 * @return true if checksum is valid, false otherwise
+	 */
+	uint8_t _verifyChecksum(byte *responseBuffer)
+	{
+		unsigned char checksum = 0;
+		// Sum all bytes except the first (header) and last (checksum)
+		for (unsigned char i = 1; i < responseSize - 1; i++)
+		{
+			checksum += responseBuffer[i];
+		}
+		// Apply two's complement: invert and add 1
+		checksum = (~checksum) + 1;
+
+		return checksum == responseBuffer[responseSize - 1];
+	}
 };
 
 byte TVOCSensor::qaModeOnCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};
@@ -534,5 +656,11 @@ float SO2Sensor::RESOLUTION = 0.1; // ppm
 
 byte CO2Sensor::getValueCommand[CO2Sensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
 
-byte PMS7003Sensor::qaModeOnCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe1, 0x00, 0x01}; // passive read command example
-byte PMS7003Sensor::getValueCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe2, 0x00, 0x01}; // read data command example
+byte PMS7003Sensor::qaModeOnCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe1, 0x00, 0x01};
+byte PMS7003Sensor::getValueCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe2, 0x00, 0x01};
+
+int DFRobotOxygenSensor::OXYGEN_DATA_REGISTER = 0x03;
+int DFRobotOxygenSensor::GET_KEY_REGISTER = 0x0A;
+
+byte DFRobotCOSensor::qaModeOnCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
+byte DFRobotCOSensor::getValueCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
