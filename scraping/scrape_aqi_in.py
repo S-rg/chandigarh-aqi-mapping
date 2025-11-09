@@ -168,10 +168,7 @@ def insert_sensor_data_api(node_id, sensor_id, measurement_id, data, logger):
     request_url = f"http://10.1.40.45/api/postdata/{node_id}/{sensor_id}/{measurement_id}"
     
     response = requests.post(request_url, json=data)
-    if response.status_code != 200:
-        logger.error(f"Failed to insert data for {node_id}/{sensor_id}/{measurement_id}: {response.text}")
-    else:
-        logger.info(f"Inserted data for {node_id}/{sensor_id}/{measurement_id}")
+    logger.info(f"{node_id}_{sensor_id}_{measurement_id} response status: {response.status_code}, body: {response.text}")
 
 def sensor_data_to_sql(sensors_data, logger):
     sensor_map = {
@@ -266,7 +263,6 @@ if __name__ == "__main__":
 
     try:
         main(logger)
-        time.sleep(600)
     except Exception as e:
         logger.error(f"Error occurred: {e}", exc_info=True)
         alert_mail(str(e))
