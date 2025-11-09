@@ -266,7 +266,7 @@ if __name__ == "__main__":
         main(logger)
         time.sleep(600)
     except Exception as e:
-    logger.error(f"Error occurred: {e}", exc_info=True)
+        logger.error(f"Error occurred: {e}", exc_info=True)
         alert_mail(str(e))
     except KeyboardInterrupt as e:
         logger.info("Script interrupted by user")
