@@ -165,7 +165,7 @@ def insert_scraped_row(row, cursor):
 
 
 def insert_sensor_data_api(node_id, sensor_id, measurement_id, data, logger):
-    request_url = f"10.1.40.45/api/postdata/{node_id}/{sensor_id}/{measurement_id}"
+    request_url = f"http://10.1.40.45/api/postdata/{node_id}/{sensor_id}/{measurement_id}"
     
     response = requests.post(request_url, json=data)
     if response.status_code != 200:
@@ -266,7 +266,7 @@ if __name__ == "__main__":
         main(logger)
         time.sleep(600)
     except Exception as e:
-        logger.error(f"Error occurred: {e}")
+    logger.error(f"Error occurred: {e}", exc_info=True)
         alert_mail(str(e))
     except KeyboardInterrupt as e:
         logger.info("Script interrupted by user")

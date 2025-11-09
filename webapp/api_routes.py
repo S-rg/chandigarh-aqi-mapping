@@ -125,7 +125,7 @@ def post_data(node_id, sensor_id, measurement_id):
         cursor.execute(query, (timestamp, value))
         connection.commit()
 
-        return {"message": "Data inserted successfully"}, 201
+        return {"message": "Data inserted successfully"}, 200
 
     except Error as e:
         print(e)
