@@ -20,7 +20,7 @@ def winsen():
 def plot():
     return render_template('plot.html') 
 
-import webapp.api_routes
+import api_routes
 
 load_dotenv()
 
