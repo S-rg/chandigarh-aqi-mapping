@@ -212,10 +212,10 @@ def sensor_data_to_sql(sensors_data, logger):
         node_id = sensor_map.get(device['serialNo'])
 
         for sensor in device['realtime']:
-            sensor_id, measurement_id = sensor_id_map[sensor['sensorId']]
+            sensor_id, measurement_id = sensor_id_map[sensor['sensorid']]
 
             data = {
-                'value': sensor['sensorData'],
+                'value': sensor['sensorvalue'],
                 'timestamp': timestamp,
             }
 
