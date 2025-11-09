@@ -223,10 +223,10 @@ public:
 			return;
 		}
 
-		uint16_t conc = (responseBuffer[2] << 8) | responseBuffer[3]; // ppm
+		float conc = ((responseBuffer[2] << 8) | responseBuffer[3]) * RESOLUTION; // ppm
 
 		buffer->timestamp = SensorBase::getCurrentTime();
-		buffer->value = static_cast<float>(conc);
+		buffer->value = conc;
 
 		return;
 	}
@@ -234,6 +234,7 @@ public:
 private:
 	static byte qaModeOnCommand[commandSize];
 	static byte getValueCommand[commandSize];
+	static float RESOLUTION;
 
 	void _startQAMode()
 	{
@@ -243,12 +244,22 @@ private:
 
 			commInterface->sendBuffer(qaModeOnCommand, commandSize);
 			delay(delayTime);
+
+			byte response[responseSize] = {0};
+			commInterface->receiveBuffer(response, responseSize);
+			if (response[2] == 1 && SENSORS_DEBUG) 
+				Serial.printf("[COMMS] Swith to QA Mode failed for SO2 Sensor with id %d\n", _cfg->sensor_id);
 		}
 	}
 
-	uint8_t _verifyChecksum(byte *responseBuffer)
-	{
-		return 1;
+	uint8_t _verifyChecksum(byte *responseBuffer) {
+		unsigned char checksum = 0;
+		for (unsigned char i = 1; i < responseSize - 1; i++) {
+			checksum += responseBuffer[i];
+		}
+		checksum = (~checksum) + 1;
+
+		return checksum == responseBuffer[responseSize - 1];
 	}
 };
 
@@ -519,6 +530,7 @@ byte CH2OSensor::getValueCommand[CH2OSensor::commandSize] = {0xff, 0x01, 0x86, 0
 
 byte SO2Sensor::qaModeOnCommand[SO2Sensor::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
 byte SO2Sensor::getValueCommand[SO2Sensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+float SO2Sensor::RESOLUTION = 0.1; // ppm
 
 byte CO2Sensor::getValueCommand[CO2Sensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
 

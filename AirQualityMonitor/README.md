@@ -6,6 +6,7 @@
   - Fixed with new design
 
 ## TODO
+- [ ] Make PMSensor Measurement ID consistent with Arnav's db config id he has used. 
 - [x] Fix: Config file's sensor table should have an i2c address for each sensor.
 - [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
 - [x] FUNC: Sensor Factory
@@ -17,7 +18,8 @@
 - [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
   - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
   - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
-- [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+- [x] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+  - Just using a buffer which is part of Manager object and the object only manages it.
 - [x] Handle buffer being full in the manager
   - [ ] Handle this in a smarter way than ignoring as it is right now
 - [x] Print last updated measuremt buffer's `RuntimeMeasurement` object

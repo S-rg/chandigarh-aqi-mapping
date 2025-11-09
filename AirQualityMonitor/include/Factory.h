@@ -100,6 +100,9 @@ public:
         if (std::string(sensor_cfg->type) == "DFRobotOxygenSensor") {
             return new DFRobotOxygenSensor(sensor_cfg, assignCommPtr(sensor_cfg));
         }
+        if (std::string(sensor_cfg->type) == "SO2Sensor") {
+            return new SO2Sensor(sensor_cfg, assignCommPtr(sensor_cfg));
+        }
         return nullptr;
     }
 };
