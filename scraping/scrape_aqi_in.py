@@ -212,6 +212,8 @@ def sensor_data_to_sql(sensors_data, logger):
         node_id = sensor_map.get(device['serialNo'])
 
         for sensor in device['realtime']:
+            if sensor['sensorid'] not in sensor_id_map:
+                continue
             sensor_id, measurement_id = sensor_id_map[sensor['sensorid']]
 
             data = {
