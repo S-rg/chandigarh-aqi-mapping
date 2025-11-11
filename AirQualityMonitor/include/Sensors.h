@@ -526,7 +526,8 @@ private:
 /**
  * @class DFRobotCOSensor
  * @brief Sensor driver class for Serial (UART) DFRobot CO (Carbon Monoxide) gas sensor.
- * Communicates using the DFRobot MultiGasSensor protocol via Hardware Serial.
+ * Refer to DFRobot CO datasheet and https://github.com/DFRobot/DFRobot_MultiGasSensor for more info
+ * I think the actual sensor used is a winsen one from the same lineup as the above SO2 sensor.
  */
 class DFRobotCOSensor : public SensorBase {
 public:
@@ -574,40 +575,31 @@ public:
 			return;
 		}
 
-		// Extract concentration value from response
-		// Response format: [head, cmd, conc_h, conc_l, gas_type, decimals, temp_h, temp_l, checksum]
-		// CO concentration is in bytes 2 (high) and 3 (low)
-		uint16_t conc = (responseBuffer[2] << 8) | responseBuffer[3];
-		uint8_t decimals = responseBuffer[5];
-
-		// Apply decimal scaling
-		float concentration = static_cast<float>(conc);
-		if (decimals == 1)
-			concentration *= 0.1f;
-		else if (decimals == 2)
-			concentration *= 0.01f;
+		float conc = ((responseBuffer[2] << 8) | responseBuffer[3]) * RESOLUTION;
+		
 
 		buffer->timestamp = SensorBase::getCurrentTime();
-		buffer->value = concentration; // Units: ppm
+		buffer->value = conc; // Units: ppm
 
 		if (SENSORS_DEBUG) {
-			Serial.printf("[DEBUG] DFRobotCOSensor ID %d: CO concentration = %.2f ppm\n", _cfg->sensor_id, concentration);
+			Serial.printf("[DEBUG] DFRobotCOSensor ID %d: CO concentration = %.2f ppm\n", _cfg->sensor_id, conc);
 		}
 	}
 
 private:
 	static byte qaModeOnCommand[commandSize];
 	static byte getValueCommand[commandSize];
+	static float RESOLUTION;
 
 	void _startQAMode()
 	{
-		if (SENSORS_DEBUG) printf("ENtered Start QA MOde");
+		if (SENSORS_DEBUG) printf("Entered Start QA MOde");
 		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
 		{
 			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
 
 			commInterface->sendBuffer(qaModeOnCommand, commandSize);
-			delay(delayTime);
+			delay(delayTime * 4); // Needed longer time to switch tgo QA mode
 
 			byte response[responseSize] = {0};
 			commInterface->receiveBuffer(response, responseSize);
@@ -624,11 +616,6 @@ private:
 		}
 	}
 
-	/**
-	 * @brief Verify checksum using two's complement
-	 * @param responseBuffer Buffer containing response from sensor
-	 * @return true if checksum is valid, false otherwise
-	 */
 	uint8_t _verifyChecksum(byte *responseBuffer)
 	{
 		unsigned char checksum = 0;
@@ -664,3 +651,4 @@ int DFRobotOxygenSensor::GET_KEY_REGISTER = 0x0A;
 
 byte DFRobotCOSensor::qaModeOnCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
 byte DFRobotCOSensor::getValueCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+float DFRobotCOSensor::RESOLUTION = 0.1; // ppm

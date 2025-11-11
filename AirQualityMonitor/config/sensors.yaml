@@ -13,8 +13,9 @@ Sensors:
     id: 20
     type: "DFRobotCOSensor"
     part_name: "DFRobot CO Sensor"
-    comms: "HARDWARE_SERIAL"
-    port_no: 1
+    comms: "SOFTWARE_SERIAL"
+    rx_pin: 0
+    tx_pin: 1
     baud_rate: 9600
     measurements:
         - measurement_id: 1

@@ -41,7 +41,7 @@ static const MeasurementInfo DFROBOTCOSENSOR_MEASUREMENTS[] = {
 
 // Sensor table
 static const SensorInfo sensors_config[] = {
-  { (uint16_t)20, "DFRobotCOSensor", "DFRobot CO Sensor", "DFRobotCOSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, DFROBOTCOSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)20, "DFRobotCOSensor", "DFRobot CO Sensor", "DFRobotCOSensor", COMM_SOFTWARE_SERIAL, (int32_t)-1, (uint16_t)-1, (int16_t)0, (int16_t)1, (int32_t)9600, DFROBOTCOSENSOR_MEASUREMENTS, (uint8_t)1 },
 };
 
 #define SENSOR_COUNT 1
