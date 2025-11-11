@@ -4,11 +4,6 @@ Base Classes for
 - Comms Interfaces
 */
 
-/*
-	TODO: change serialStream to a pointer so you can set it to nullptr in case of problems
-	TODO: not return nullptr in I2C begin
-*/
-
 #pragma once
 #include "DataTypes.h"
 #include "SensorsConfig.h"
