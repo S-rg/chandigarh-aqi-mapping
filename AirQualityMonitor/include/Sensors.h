@@ -390,18 +390,18 @@ public:
 		}
 	}
 
-	void read_measurement_1(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 4, buffer); }
-	void read_measurement_2(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 6, buffer); }
-	void read_measurement_3(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 8, buffer); }
-	void read_measurement_4(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 10, buffer); }
-	void read_measurement_5(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 12, buffer); }
-	void read_measurement_6(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 14, buffer); }
-	void read_measurement_7(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 16, buffer); }
-	void read_measurement_8(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 18, buffer); }
-	void read_measurement_9(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 20, buffer); }
-	void read_measurement_10(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 22, buffer); }
-	void read_measurement_11(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 24, buffer); }
-	void read_measurement_12(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 26, buffer); }
+	void read_measurement_1(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 10, buffer); }
+	void read_measurement_2(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 12, buffer); }
+	void read_measurement_3(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 14, buffer); }
+	void read_measurement_4(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 16, buffer); }
+	void read_measurement_5(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 18, buffer); }
+	void read_measurement_6(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 20, buffer); }
+	void read_measurement_7(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 22, buffer); }
+	void read_measurement_8(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 24, buffer); }
+	void read_measurement_9(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 26, buffer); }
+	void read_measurement_10(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 4, buffer); }
+	void read_measurement_11(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 6, buffer); }
+	void read_measurement_12(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 8, buffer); }
 
 private:
 	static byte qaModeOnCommand[commandSize];

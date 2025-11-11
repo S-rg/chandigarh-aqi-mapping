@@ -6,7 +6,7 @@
   - Fixed with new design
 
 ## TODO
-- [ ] Make PMSensor Measurement ID consistent with Arnav's db config id he has used. 
+- [x] Make PMSensor Measurement ID consistent with Arnav's db config id he has used. 
 - [x] Fix: Config file's sensor table should have an i2c address for each sensor.
 - [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
 - [x] FUNC: Sensor Factory
@@ -80,18 +80,18 @@ Initial Plan:
 #### PMS7003Sensor (Plantower PMS7003)
 | Measurement ID | Measurement name | Unit |
 |---:|---|---|
-| 1 | PM1.0 (standard, CF=1) | µg/m³ |
-| 2 | PM2.5 (standard, CF=1) | µg/m³ |
-| 3 | PM10 (standard, CF=1) | µg/m³ |
-| 4 | PM1.0 (atmospheric) | µg/m³ |
-| 5 | PM2.5 (atmospheric) | µg/m³ |
-| 6 | PM10 (atmospheric) | µg/m³ |
-| 7 | Particle count ≥ 0.3 µm | particles / 0.1 L |
-| 8 | Particle count ≥ 0.5 µm | particles / 0.1 L |
-| 9 | Particle count ≥ 1.0 µm | particles / 0.1 L |
-| 10 | Particle count ≥ 2.5 µm | particles / 0.1 L |
-| 11 | Particle count ≥ 5.0 µm | particles / 0.1 L |
-| 12 | Particle count ≥ 10 µm | particles / 0.1 L |
+| 1 | PM1.0 (atmospheric) | µg/m³ |
+| 2 | PM2.5 (atmospheric) | µg/m³ |
+| 3 | PM10 (atmospheric) | µg/m³ |
+| 4 | Particle count ≥ 0.3 µm | particles / 0.1 L |
+| 5 | Particle count ≥ 0.5 µm | particles / 0.1 L |
+| 6 | Particle count ≥ 1.0 µm | particles / 0.1 L |
+| 7 | Particle count ≥ 2.5 µm | particles / 0.1 L |
+| 8 | Particle count ≥ 5.0 µm | particles / 0.1 L |
+| 9 | Particle count ≥ 10 µm | particles / 0.1 L |
+| 10 | PM1.0 (standard, CF=1) | µg/m³ |
+| 11 | PM2.5 (standard, CF=1) | µg/m³ |
+| 12 | PM10 (standard, CF=1) | µg/m³ |
 
 #### Oxygen Sensor (DFRobotOxygen with Winsen MEO2)
 | Measurement ID | Measurement name | Unit | Min-Max
@@ -166,6 +166,12 @@ All Tasks and TODOs at the top
 
 - **Comms:** I2C
 - Has library, but needs integration with our commands
+- Upon seeing the library, it looks like they get a 'key' from the sensor. This key is calculated based on the temp for sensors which support temperature compensation. The sensor we have, doesn't support it and the query to the temp registor and the subsequent calculations return a constant number which i didn't bother hardcoding. The key which is hardcoded in my sensor library code is the fallback in the DFrobot library as well, which i think is for 0 deg C (just a guess).
+
+## CO
+- **Comms:** Serial
+- **Problems:**
+  - The sensor takes some time to switch into QA mode and that was messing up some of the logic in my code.
 
 ## Pressure Sensor
 
