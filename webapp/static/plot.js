@@ -40,13 +40,13 @@ async function initializeDashboard() {
         // Fetch measurements for each sensor
         const measurementPromises = nodeData.sensors.map(async (sensorId) => {
             try {
-                const sensorResponse = await fetch(`/api/sensor/1/${sensorId}`);
+                const sensorResponse = await fetch(`/api/sensor/${nodeId}/${sensorId}`);
                 const sensorData = await sensorResponse.json();
                 
                 // API returns {measurements: [id1, id2, id3, ...]}
                 if (sensorData.measurements && Array.isArray(sensorData.measurements)) {
                     return sensorData.measurements.map(measurementId => ({
-                        nodeId: '1',
+                        nodeId: nodeId,
                         sensorId: sensorId,
                         measurementId: measurementId,
                         measurementName: `Sensor ${sensorId} - Measurement ${measurementId}`,
