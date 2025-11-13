@@ -73,6 +73,16 @@ def get_sensor_data(table, sensor):
         cursor.close()
         connection.close()
 
+@app.route("/api/get_all_nodes")
+def get_all_nodes():
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute("SELECT DISTINCT node_id FROM Node;")
+
+    result = cursor.fetchall()
+    return {"nodes": [row[0] for row in result]}, 200
+
 @app.route("/api/node/<string:node_id>")
 def get_all_sensors(node_id):
     connection = get_connection()
@@ -131,6 +141,36 @@ def post_data(node_id, sensor_id, measurement_id):
         print(e)
         return {"error": str(e)}, 500
 
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route("/api/get_sensor_mapping/<string:node_id>")
+def get_sensor_mapping(node_id):
+    query = f"""
+        SELECT sensor_id, measurement_id, measurement_name FROM Sensor WHERE node_id = %s;
+    """
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        cursor.execute(query, (node_id,))
+        result = cursor.fetchall()
+
+        if not result:
+            return {"error": "No data found"}, 404
+
+        mapping = {
+            (row[0], row[1]): row[2]
+            for row in result
+        }
+        return {"mapping": mapping}, 200
+    
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    
     finally:
         cursor.close()
         connection.close()

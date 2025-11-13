@@ -2,9 +2,8 @@ let autoUpdate = true;
 let updateIntervalId = null;
 let sensorData = {};
 let maxDataPoints = 50;
-let measurements = []; // Store all measurements info
+let measurements = []; 
 
-// Initialize sensor data structure
 for (let i = 1; i <= 20; i++) {
     sensorData[i] = {
         timestamps: [],
@@ -16,7 +15,6 @@ for (let i = 1; i <= 20; i++) {
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     
-    // Set up interval selector
     const intervalSelect = document.getElementById('updateIntervalSelect');
     if (intervalSelect) {
         intervalSelect.addEventListener('change', function() {
@@ -25,16 +23,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Start auto-update with default interval (5 seconds)
     setupAutoUpdate(5000);
 });
 
 async function initializeDashboard() {
     try {
-        showLoading(true);
-        
-        // Fetch node 1 data to get sensors
-        const nodeResponse = await fetch('/api/node/1');
+        showLoading(true);        
+        const nodeResponse = await fetch(`/api/node/${nodeId}`);
         const nodeData = await nodeResponse.json();
         
         if (!nodeData.sensors || !Array.isArray(nodeData.sensors)) {
@@ -70,10 +65,8 @@ async function initializeDashboard() {
         
         console.log('Total measurements found:', measurements.length);
         
-        // Create graphs for all measurements
         createGraphs();
         
-        // Load initial data
         await loadAllMeasurementData();
         
         showLoading(false);

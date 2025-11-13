@@ -10,15 +10,15 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():            
-    return "WHEEEEEEEEEEEEEE SERVER WOOOOOOOOOOOOOOOO"
+    return render_template('index.html')
 
 @app.route('/winsen')
 def winsen():
     return render_template('winsen_plot.html')
 
-@app.route('/plot')
-def plot():
-    return render_template('plot.html') 
+@app.route('/plot/<string:node_id>')
+def plot(node_id):
+    return render_template('plot.html', node_id=node_id)
 
 import api_routes
 
