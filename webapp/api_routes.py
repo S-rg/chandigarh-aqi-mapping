@@ -149,7 +149,7 @@ def post_data(node_id, sensor_id, measurement_id):
 @app.route("/api/get_sensor_mapping/<string:node_id>")
 def get_sensor_mapping(node_id):
     query = f"""
-        SELECT sensor_id, measurement_id, measurement_name, unit FROM Sensor WHERE node_id = %s;
+        SELECT sensor_id, measurement_id, measurement_name, unit, sensor_type FROM Sensor WHERE node_id = %s;
     """
 
     connection = get_connection()
@@ -162,7 +162,7 @@ def get_sensor_mapping(node_id):
             return {"error": "No data found"}, 404
 
         mapping = {
-            f"{row[0]},{row[1]}": [row[2], row[3]]
+            f"{row[0]},{row[1]}": [row[2], row[3], row[4]]
             for row in result
         }
         return {"mapping": mapping}, 200

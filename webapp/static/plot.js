@@ -61,7 +61,8 @@ async function initializeDashboard() {
                         sensorId: sensorId,
                         measurementId: measurementId,
                         measurementName: mapping[sensorId][measurementId][0] || '',
-                        unit: mapping[sensorId][measurementId][1] || ''
+                        unit: mapping[sensorId][measurementId][1] || '',
+                        sensorType: mapping[sensorId][measurementId][2] || ''
                     }));
                 }
                 return [];
@@ -123,7 +124,7 @@ function createMeasurementCard(measurement, index) {
         </div>
         <div class="sensor-info-header">
             <span class="sensor-name">${measurement.measurementName}</span>
-            <span class="sensor-subtitle">Node ${measurement.nodeId} - Sensor ${measurement.sensorId}</span>
+            <span class="sensor-subtitle">${measurement.sensorType}</span>
         </div>
         <div class="sensor-value-container" id="value-container-${index}">
             <span class="sensor-value" id="current-value-${index}">--</span>
