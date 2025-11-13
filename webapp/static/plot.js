@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initializeDashboard() {
     try {
         showLoading(true);
-        const response = await fetch(`/api/get_sensor_mapping/${node_id}`);
+        const response = await fetch(`/api/get_sensor_mapping/${nodeId}`);
         const data = await response.json();
         const mapping_ = data.mapping;
 
