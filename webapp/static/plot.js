@@ -28,7 +28,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function initializeDashboard() {
     try {
-        showLoading(true);        
+        showLoading(true);
+        const response = await fetch(`/api/get_sensor_mapping/${node_id}`);
+        const data = await response.json();
+        const mapping_ = data.mapping;
+
+        const mapping = {};
+        for (const [key, values] of Object.entries(mapping_)) {
+            const [sensorId, measurementId] = key.split(",");
+            if (!mapping[sensorId]) mapping[sensorId] = {};
+            mapping[sensorId][measurementId] = values;
+        }
+
         const nodeResponse = await fetch(`/api/node/${nodeId}`);
         const nodeData = await nodeResponse.json();
         
@@ -49,8 +60,8 @@ async function initializeDashboard() {
                         nodeId: nodeId,
                         sensorId: sensorId,
                         measurementId: measurementId,
-                        measurementName: `Sensor ${sensorId} - Measurement ${measurementId}`,
-                        unit: '' // Will be populated from actual data if available
+                        measurementName: mapping[sensorId][measurementId][0] || '',
+                        unit: mapping[sensorId][measurementId][1] || ''
                     }));
                 }
                 return [];
