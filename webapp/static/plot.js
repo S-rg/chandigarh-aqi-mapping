@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    setupAutoUpdate(5000);
+    setupAutoUpdate(5000000);
 });
 
 async function initializeDashboard() {
