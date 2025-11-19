@@ -1,14 +1,39 @@
-// Map initialization and node management
+// Map initialization and AQI location management
 let map;
+let markerCluster;
 let markers = [];
-let nodeData = [];
+let locationData = [];
 let selectedMarker = null;
 let nodeModal;
+
+// AQI color coding based on AQI_IN (Indian AQI standards)
+function getAQIColor(aqi) {
+    if (aqi === null || aqi === undefined) return '#808080'; // Gray for no data
+    
+    if (aqi <= 50) return '#00E400';      // Good - Green
+    if (aqi <= 100) return '#FFFF00';     // Satisfactory - Yellow
+    if (aqi <= 200) return '#FF7E00';      // Moderate - Orange
+    if (aqi <= 300) return '#FF0000';     // Poor - Red
+    if (aqi <= 400) return '#8F3F97';     // Very Poor - Purple
+    return '#7E0023';                     // Severe - Dark Red
+}
+
+// Get AQI category text
+function getAQICategory(aqi) {
+    if (aqi === null || aqi === undefined) return 'No Data';
+    
+    if (aqi <= 50) return 'Good';
+    if (aqi <= 100) return 'Satisfactory';
+    if (aqi <= 200) return 'Moderate';
+    if (aqi <= 300) return 'Poor';
+    if (aqi <= 400) return 'Very Poor';
+    return 'Severe';
+}
 
 // Initialize map when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initializeMap();
-    loadNodes();
+    loadAQIData();
     setupEventListeners();
     
     // Initialize Bootstrap modal
@@ -17,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize Leaflet map
 function initializeMap() {
-    // Default center (Chandigarh, India)
-    const defaultCenter = [30.7333, 76.7794];
-    const defaultZoom = 12;
+    // Default center (Nepal/Kathmandu area based on your data)
+    const defaultCenter = [27.7, 85.3];
+    const defaultZoom = 11;
 
     // Create map
     map = L.map('map', {
@@ -36,17 +61,24 @@ function initializeMap() {
 
     // Add custom controls
     L.control.scale({ imperial: false }).addTo(map);
+    
+    // Initialize marker cluster group
+    markerCluster = L.markerClusterGroup({
+        chunkedLoading: true,
+        maxClusterRadius: 50
+    });
+    map.addLayer(markerCluster);
 }
 
-// Load nodes from API
-async function loadNodes() {
+// Load AQI data from API
+async function loadAQIData() {
     const nodeList = document.getElementById('nodeList');
     const nodeCount = document.getElementById('nodeCount');
     
     try {
-        nodeList.innerHTML = '<div class="loading-message">Loading nodes...</div>';
+        nodeList.innerHTML = '<div class="loading-message">Loading AQI data...</div>';
         
-        const response = await fetch('/api/get_all_nodes_with_locations');
+        const response = await fetch('/api/get_latest_aqi_data');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -57,24 +89,24 @@ async function loadNodes() {
             throw new Error(data.error);
         }
         
-        nodeData = data.nodes || [];
+        locationData = data.locations || [];
         
-        if (nodeData.length === 0) {
-            nodeList.innerHTML = '<div class="empty-message">No nodes found in database</div>';
-            nodeCount.textContent = '0 nodes';
+        if (locationData.length === 0) {
+            nodeList.innerHTML = '<div class="empty-message">No AQI data found in database</div>';
+            nodeCount.textContent = '0 locations';
             return;
         }
         
-        // Update node count
-        nodeCount.textContent = `${nodeData.length} ${nodeData.length === 1 ? 'node' : 'nodes'}`;
+        // Update location count
+        nodeCount.textContent = `${locationData.length} ${locationData.length === 1 ? 'location' : 'locations'}`;
         
         // Clear existing markers
         clearMarkers();
         
         // Add markers and populate sidebar
-        nodeData.forEach(node => {
-            addMarker(node);
-            addNodeToList(node);
+        locationData.forEach(location => {
+            addMarker(location);
+            addLocationToList(location);
         });
         
         // Fit map to show all markers
@@ -83,52 +115,116 @@ async function loadNodes() {
         }
         
     } catch (error) {
-        console.error('Error loading nodes:', error);
-        nodeList.innerHTML = `<div class="error-message">Error loading nodes: ${error.message}</div>`;
+        console.error('Error loading AQI data:', error);
+        nodeList.innerHTML = `<div class="error-message">Error loading AQI data: ${error.message}</div>`;
         nodeCount.textContent = 'Error';
     }
 }
 
-// Add marker to map
-function addMarker(node) {
-    const marker = L.marker([node.latitude, node.longitude], {
-        icon: createCustomIcon()
-    }).addTo(map);
+// Add marker to map with clustering
+function addMarker(location) {
+    const aqi = location.AQI_IN || location.AQI_US;
+    const color = getAQIColor(aqi);
     
-    // Create popup content
-    const popupContent = `
-        <div class="popup-header">Node ${node.node_id}</div>
-        <div class="popup-location">${node.location || 'Unknown Location'}</div>
-        <div class="popup-coords">${node.latitude.toFixed(6)}, ${node.longitude.toFixed(6)}</div>
-        <a href="/plot/${node.node_id}" class="popup-link">View Details</a>
-    `;
+    // Create custom colored marker icon
+    const icon = createColoredIcon(color, aqi);
     
+    const marker = L.marker([location.lat, location.lon], {
+        icon: icon
+    });
+    
+    // Create popup content with AQI information
+    const popupContent = createPopupContent(location);
     marker.bindPopup(popupContent);
     
     // Add click event
     marker.on('click', function() {
-        selectNode(node.node_id);
-        showNodeModal(node);
+        selectLocation(location.locationId);
+        showLocationModal(location);
     });
     
-    // Store marker with node data
-    marker.nodeData = node;
+    // Store marker with location data
+    marker.locationData = location;
     markers.push(marker);
+    
+    // Add to cluster group
+    markerCluster.addLayer(marker);
 }
 
-// Create custom marker icon
-function createCustomIcon() {
+// Create colored marker icon
+function createColoredIcon(color, aqi) {
+    const size = 20;
+    const html = `
+        <div style="
+            background-color: ${color};
+            width: ${size}px;
+            height: ${size}px;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        "></div>
+    `;
+    
     return L.divIcon({
-        className: 'custom-marker',
-        html: '<div class="custom-marker-icon"></div>',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
-        popupAnchor: [0, -10]
+        className: 'aqi-marker',
+        html: html,
+        iconSize: [size, size],
+        iconAnchor: [size/2, size/2],
+        popupAnchor: [0, -size/2]
     });
 }
 
-// Add node to sidebar list
-function addNodeToList(node) {
+// Create popup content
+function createPopupContent(location) {
+    const aqi = location.AQI_IN || location.AQI_US;
+    const aqiCategory = getAQICategory(aqi);
+    const aqiColor = getAQIColor(aqi);
+    
+    const locationName = location.city || location.locationId || 'Unknown Location';
+    const stateCountry = [location.state, location.country].filter(Boolean).join(', ');
+    
+    let content = `
+        <div class="popup-header" style="margin-bottom: 0.5rem;">
+            <strong>${locationName}</strong>
+        </div>
+    `;
+    
+    if (stateCountry) {
+        content += `<div class="popup-location" style="margin-bottom: 0.5rem;">${stateCountry}</div>`;
+    }
+    
+    if (aqi !== null && aqi !== undefined) {
+        content += `
+            <div style="margin-bottom: 0.75rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                    <div style="width: 16px; height: 16px; background-color: ${aqiColor}; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.2);"></div>
+                    <strong>AQI: ${aqi} (${aqiCategory})</strong>
+                </div>
+        `;
+        
+        if (location.PM2_5_UGM3 !== null && location.PM2_5_UGM3 !== undefined) {
+            content += `<div style="font-size: 0.85em; color: #666;">PM2.5: ${location.PM2_5_UGM3.toFixed(1)} µg/m³</div>`;
+        }
+        if (location.PM10_UGM3 !== null && location.PM10_UGM3 !== undefined) {
+            content += `<div style="font-size: 0.85em; color: #666;">PM10: ${location.PM10_UGM3.toFixed(1)} µg/m³</div>`;
+        }
+        if (location.T_C !== null && location.T_C !== undefined) {
+            content += `<div style="font-size: 0.85em; color: #666;">Temp: ${location.T_C.toFixed(1)}°C</div>`;
+        }
+        
+        content += `</div>`;
+    }
+    
+    if (location.last_updated) {
+        const date = new Date(location.last_updated);
+        content += `<div style="font-size: 0.75em; color: #999; margin-top: 0.5rem;">Updated: ${date.toLocaleString()}</div>`;
+    }
+    
+    return content;
+}
+
+// Add location to sidebar list
+function addLocationToList(location) {
     const nodeList = document.getElementById('nodeList');
     
     // Remove loading message if present
@@ -137,88 +233,190 @@ function addNodeToList(node) {
         loadingMsg.remove();
     }
     
-    const nodeItem = document.createElement('div');
-    nodeItem.className = 'node-item';
-    nodeItem.dataset.nodeId = node.node_id;
+    const locationItem = document.createElement('div');
+    locationItem.className = 'node-item';
+    locationItem.dataset.locationId = location.locationId;
     
-    nodeItem.innerHTML = `
+    const aqi = location.AQI_IN || location.AQI_US;
+    const aqiColor = getAQIColor(aqi);
+    const aqiCategory = getAQICategory(aqi);
+    const locationName = location.city || `Location ${location.locationId}`;
+    
+    locationItem.innerHTML = `
         <div class="node-item-header">
-            <div class="node-item-name">${node.location || 'Unknown Location'}</div>
-            <div class="node-item-id">${node.node_id}</div>
+            <div class="node-item-name">${locationName}</div>
+            ${aqi !== null && aqi !== undefined ? `
+                <div style="display: flex; align-items: center; gap: 0.25rem;">
+                    <div style="width: 12px; height: 12px; background-color: ${aqiColor}; border-radius: 50%; border: 1px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.2);"></div>
+                    <span style="font-size: 0.75rem; font-weight: 600; color: ${aqiColor};">${aqi}</span>
+                </div>
+            ` : ''}
         </div>
-        <div class="node-item-location">${node.location || 'No location specified'}</div>
-        <div class="node-item-coords">${node.latitude.toFixed(6)}, ${node.longitude.toFixed(6)}</div>
+        <div class="node-item-location">${location.state || ''} ${location.country || ''}</div>
+        ${aqi !== null && aqi !== undefined ? `
+            <div style="font-size: 0.75rem; color: #666; margin-top: 0.25rem;">AQI: ${aqiCategory}</div>
+        ` : ''}
+        <div class="node-item-coords">${location.lat.toFixed(4)}, ${location.lon.toFixed(4)}</div>
     `;
     
     // Add click event
-    nodeItem.addEventListener('click', function() {
-        selectNode(node.node_id);
-        const marker = markers.find(m => m.nodeData.node_id === node.node_id);
+    locationItem.addEventListener('click', function() {
+        selectLocation(location.locationId);
+        const marker = markers.find(m => m.locationData.locationId === location.locationId);
         if (marker) {
-            map.setView([node.latitude, node.longitude], 15);
+            map.setView([location.lat, location.lon], 15);
             marker.openPopup();
-            showNodeModal(node);
+            showLocationModal(location);
         }
     });
     
-    nodeList.appendChild(nodeItem);
+    nodeList.appendChild(locationItem);
 }
 
-// Select a node (highlight in sidebar and map)
-function selectNode(nodeId) {
+// Select a location (highlight in sidebar and map)
+function selectLocation(locationId) {
     // Remove active class from all items
     document.querySelectorAll('.node-item').forEach(item => {
         item.classList.remove('active');
     });
     
     // Add active class to selected item
-    const nodeItem = document.querySelector(`.node-item[data-node-id="${nodeId}"]`);
-    if (nodeItem) {
-        nodeItem.classList.add('active');
-        nodeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const locationItem = document.querySelector(`.node-item[data-location-id="${locationId}"]`);
+    if (locationItem) {
+        locationItem.classList.add('active');
+        locationItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     
     // Highlight marker
     markers.forEach(marker => {
-        if (marker.nodeData.node_id === nodeId) {
+        if (marker.locationData.locationId === locationId) {
             selectedMarker = marker;
-            // You can add custom styling here if needed
         }
     });
 }
 
-// Show node modal
-function showNodeModal(node) {
+// Show location modal
+function showLocationModal(location) {
     const modalTitle = document.getElementById('nodeModalTitle');
     const modalBody = document.getElementById('nodeModalBody');
     const viewDetailsLink = document.getElementById('viewDetailsLink');
     
-    modalTitle.textContent = `Node ${node.node_id}`;
-    viewDetailsLink.href = `/plot/${node.node_id}`;
+    const locationName = location.city || `Location ${location.locationId}`;
+    modalTitle.textContent = locationName;
+    viewDetailsLink.style.display = 'none'; // Hide view details link for AQI data
     
-    modalBody.innerHTML = `
+    const aqi = location.AQI_IN || location.AQI_US;
+    const aqiColor = getAQIColor(aqi);
+    const aqiCategory = getAQICategory(aqi);
+    
+    let modalHTML = `
         <div class="node-info-item">
             <div class="info-label">Location</div>
-            <div class="info-value">${node.location || 'Unknown Location'}</div>
-        </div>
-        <div class="node-info-item">
-            <div class="info-label">Node ID</div>
-            <div class="info-value">${node.node_id}</div>
-        </div>
-        <div class="node-info-item">
-            <div class="info-label">Coordinates</div>
-            <div class="info-value">${node.latitude.toFixed(6)}, ${node.longitude.toFixed(6)}</div>
+            <div class="info-value">${locationName}</div>
         </div>
     `;
     
+    if (location.state || location.country) {
+        modalHTML += `
+            <div class="node-info-item">
+                <div class="info-label">State/Country</div>
+                <div class="info-value">${[location.state, location.country].filter(Boolean).join(', ')}</div>
+            </div>
+        `;
+    }
+    
+    if (location.locationId) {
+        modalHTML += `
+            <div class="node-info-item">
+                <div class="info-label">Location ID</div>
+                <div class="info-value">${location.locationId}</div>
+            </div>
+        `;
+    }
+    
+    modalHTML += `
+        <div class="node-info-item">
+            <div class="info-label">Coordinates</div>
+            <div class="info-value">${location.lat.toFixed(6)}, ${location.lon.toFixed(6)}</div>
+        </div>
+    `;
+    
+    if (aqi !== null && aqi !== undefined) {
+        modalHTML += `
+            <div class="node-info-item">
+                <div class="info-label">Air Quality Index</div>
+                <div class="info-value" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 20px; height: 20px; background-color: ${aqiColor}; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 2px rgba(0,0,0,0.2);"></div>
+                    <strong>${aqi} (${aqiCategory})</strong>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Add sensor readings
+    const readings = [];
+    if (location.PM2_5_UGM3 !== null && location.PM2_5_UGM3 !== undefined) {
+        readings.push(`PM2.5: ${location.PM2_5_UGM3.toFixed(1)} µg/m³`);
+    }
+    if (location.PM10_UGM3 !== null && location.PM10_UGM3 !== undefined) {
+        readings.push(`PM10: ${location.PM10_UGM3.toFixed(1)} µg/m³`);
+    }
+    if (location.PM1_UGM3 !== null && location.PM1_UGM3 !== undefined) {
+        readings.push(`PM1: ${location.PM1_UGM3.toFixed(1)} µg/m³`);
+    }
+    if (location.CO_PPB !== null && location.CO_PPB !== undefined) {
+        readings.push(`CO: ${location.CO_PPB.toFixed(1)} ppb`);
+    }
+    if (location.NO2_PPB !== null && location.NO2_PPB !== undefined) {
+        readings.push(`NO₂: ${location.NO2_PPB.toFixed(1)} ppb`);
+    }
+    if (location.O3_PPB !== null && location.O3_PPB !== undefined) {
+        readings.push(`O₃: ${location.O3_PPB.toFixed(1)} ppb`);
+    }
+    if (location.SO2_PPB !== null && location.SO2_PPB !== undefined) {
+        readings.push(`SO₂: ${location.SO2_PPB.toFixed(1)} ppb`);
+    }
+    if (location.T_C !== null && location.T_C !== undefined) {
+        readings.push(`Temperature: ${location.T_C.toFixed(1)}°C`);
+    }
+    if (location.H_PERCENT !== null && location.H_PERCENT !== undefined) {
+        readings.push(`Humidity: ${location.H_PERCENT.toFixed(1)}%`);
+    }
+    if (location.TVOC_PPM !== null && location.TVOC_PPM !== undefined) {
+        readings.push(`TVOC: ${location.TVOC_PPM.toFixed(2)} ppm`);
+    }
+    if (location.Noise_DB !== null && location.Noise_DB !== undefined) {
+        readings.push(`Noise: ${location.Noise_DB.toFixed(1)} dB`);
+    }
+    
+    if (readings.length > 0) {
+        modalHTML += `
+            <div class="node-info-item">
+                <div class="info-label">Sensor Readings</div>
+                <div class="info-value" style="font-size: 0.9em; line-height: 1.6;">
+                    ${readings.join('<br>')}
+                </div>
+            </div>
+        `;
+    }
+    
+    if (location.last_updated) {
+        const date = new Date(location.last_updated);
+        modalHTML += `
+            <div class="node-info-item">
+                <div class="info-label">Last Updated</div>
+                <div class="info-value">${date.toLocaleString()}</div>
+            </div>
+        `;
+    }
+    
+    modalBody.innerHTML = modalHTML;
     nodeModal.show();
 }
 
 // Clear all markers
 function clearMarkers() {
-    markers.forEach(marker => {
-        map.removeLayer(marker);
-    });
+    markerCluster.clearLayers();
     markers = [];
 }
 
@@ -234,7 +432,7 @@ function fitMapToMarkers() {
 function setupEventListeners() {
     // Refresh button
     document.getElementById('refreshBtn').addEventListener('click', function() {
-        loadNodes();
+        loadAQIData();
     });
     
     // Fit bounds button
@@ -246,21 +444,30 @@ function setupEventListeners() {
     const searchInput = document.getElementById('nodeSearch');
     searchInput.addEventListener('input', function(e) {
         const searchTerm = e.target.value.toLowerCase();
-        filterNodes(searchTerm);
+        filterLocations(searchTerm);
     });
 }
 
-// Filter nodes in sidebar
-function filterNodes(searchTerm) {
-    const nodeItems = document.querySelectorAll('.node-item');
+// Filter locations in sidebar
+function filterLocations(searchTerm) {
+    const locationItems = document.querySelectorAll('.node-item');
     
-    nodeItems.forEach(item => {
-        const nodeId = item.dataset.nodeId;
-        const node = nodeData.find(n => n.node_id === nodeId);
+    locationItems.forEach(item => {
+        const locationId = item.dataset.locationId;
+        const location = locationData.find(l => l.locationId === locationId);
         
-        if (!node) return;
+        if (!location) return;
         
-        const searchableText = `${node.node_id} ${node.location || ''} ${node.latitude} ${node.longitude}`.toLowerCase();
+        const searchableText = `
+            ${location.locationId} 
+            ${location.city || ''} 
+            ${location.state || ''} 
+            ${location.country || ''} 
+            ${location.lat} 
+            ${location.lon}
+            ${location.AQI_IN || ''}
+            ${location.AQI_US || ''}
+        `.toLowerCase();
         
         if (searchableText.includes(searchTerm)) {
             item.style.display = 'block';
@@ -269,4 +476,3 @@ function filterNodes(searchTerm) {
         }
     });
 }
-

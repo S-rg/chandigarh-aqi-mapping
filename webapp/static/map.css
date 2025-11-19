@@ -352,6 +352,37 @@ body {
     box-shadow: var(--shadow-medium);
 }
 
+/* AQI Marker Styles */
+.aqi-marker {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* MarkerCluster Styles Override */
+.marker-cluster-small {
+    background-color: rgba(74, 144, 226, 0.6);
+}
+
+.marker-cluster-small div {
+    background-color: rgba(74, 144, 226, 0.8);
+}
+
+.marker-cluster-medium {
+    background-color: rgba(255, 140, 66, 0.6);
+}
+
+.marker-cluster-medium div {
+    background-color: rgba(255, 140, 66, 0.8);
+}
+
+.marker-cluster-large {
+    background-color: rgba(220, 53, 69, 0.6);
+}
+
+.marker-cluster-large div {
+    background-color: rgba(220, 53, 69, 0.8);
+}
+
 /* Modal Styles */
 .modal-content {
     border-radius: 12px;

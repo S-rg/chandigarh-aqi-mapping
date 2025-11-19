@@ -110,6 +110,78 @@ def get_all_nodes_with_locations():
         cursor.close()
         connection.close()
 
+@app.route("/api/get_latest_aqi_data")
+def get_latest_aqi_data():
+    """
+    Get the most recent AQI data for each location from AqiInScrape table.
+    Returns only the latest record for each locationId.
+    """
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        
+        # Get the most recent record for each locationId
+        # Using a subquery to find max scrape_id for each locationId
+        query = """
+            SELECT a.* 
+            FROM AqiInScrape a
+            INNER JOIN (
+                SELECT locationId, MAX(scrape_id) as max_scrape_id
+                FROM AqiInScrape
+                WHERE lat IS NOT NULL AND lon IS NOT NULL
+                GROUP BY locationId
+            ) b ON a.locationId = b.locationId AND a.scrape_id = b.max_scrape_id
+            ORDER BY a.locationId;
+        """
+        
+        cursor.execute(query)
+        result = cursor.fetchall()
+        
+        # Get column names
+        columns = [desc[0] for desc in cursor.description]
+        
+        locations = []
+        for row in result:
+            # Convert row to dictionary
+            row_dict = dict(zip(columns, row))
+            
+            location = {
+                "scrape_id": row_dict.get("scrape_id"),
+                "lat": float(row_dict.get("lat")) if row_dict.get("lat") is not None else None,
+                "lon": float(row_dict.get("lon")) if row_dict.get("lon") is not None else None,
+                "locationId": str(row_dict.get("locationId")) if row_dict.get("locationId") is not None else None,
+                "city": row_dict.get("city"),
+                "state": row_dict.get("state"),
+                "country": row_dict.get("country"),
+                "last_updated": row_dict.get("last_updated").isoformat() if row_dict.get("last_updated") else None,
+                "AQI_IN": int(row_dict.get("AQI_IN")) if row_dict.get("AQI_IN") is not None else None,
+                "AQI_US": int(row_dict.get("AQI_US")) if row_dict.get("AQI_US") is not None else None,
+                "CO_PPB": float(row_dict.get("CO_PPB")) if row_dict.get("CO_PPB") is not None else None,
+                "H_PERCENT": float(row_dict.get("H_PERCENT")) if row_dict.get("H_PERCENT") is not None else None,
+                "NO2_PPB": float(row_dict.get("NO2_PPB")) if row_dict.get("NO2_PPB") is not None else None,
+                "O3_PPB": float(row_dict.get("O3_PPB")) if row_dict.get("O3_PPB") is not None else None,
+                "PM10_UGM3": float(row_dict.get("PM10_UGM3")) if row_dict.get("PM10_UGM3") is not None else None,
+                "PM2_5_UGM3": float(row_dict.get("PM2_5_UGM3")) if row_dict.get("PM2_5_UGM3") is not None else None,
+                "SO2_PPB": float(row_dict.get("SO2_PPB")) if row_dict.get("SO2_PPB") is not None else None,
+                "T_C": float(row_dict.get("T_C")) if row_dict.get("T_C") is not None else None,
+                "PM1_UGM3": float(row_dict.get("PM1_UGM3")) if row_dict.get("PM1_UGM3") is not None else None,
+                "TVOC_PPM": float(row_dict.get("TVOC_PPM")) if row_dict.get("TVOC_PPM") is not None else None,
+                "Noise_DB": float(row_dict.get("Noise_DB")) if row_dict.get("Noise_DB") is not None else None
+            }
+            # Only add locations with valid coordinates
+            if location["lat"] is not None and location["lon"] is not None:
+                locations.append(location)
+        
+        return {"locations": locations}, 200
+    
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 @app.route("/api/node/<string:node_id>")
 def get_all_sensors(node_id):
     connection = get_connection()
