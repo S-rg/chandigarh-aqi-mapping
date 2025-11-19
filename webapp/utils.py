@@ -73,7 +73,6 @@ def get_index_stats():
 
     conn = None
     cursor = None
-    result = {}
 
     try:
         conn = mysql.connector.connect(**db_config)
@@ -223,6 +222,7 @@ def get_index_stats():
 
     except mysql.connector.Error as e:
         print("Database error:", e)
+        return {"error": str(e)}
 
     finally:
         if cursor:
