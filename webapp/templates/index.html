@@ -92,28 +92,28 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
                                 <div class="flex flex-col gap-2 rounded-xl p-6 bg-white/5 border border-white/10 dashboard-tile">
                                     <p class="text-white/80 text-base font-medium leading-normal">Overall Average AQI</p>
-                                    <p class="text-[#00E400] tracking-light text-4xl font-bold leading-tight">42</p>
+                                    <p class="text-[#00E400] tracking-light text-4xl font-bold leading-tight">{{ stats.avg_aqi }}</p>
                                     <p class="text-primary text-sm font-medium leading-normal flex items-center gap-1">
                                         <span class="material-symbols-outlined text-base">arrow_upward</span>+5% vs last 24h
                                     </p>
                                 </div>
                                 <div class="flex flex-col gap-2 rounded-xl p-6 bg-white/5 border border-white/10 dashboard-tile">
                                     <p class="text-white/80 text-base font-medium leading-normal">Active Nodes</p>
-                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">1,204</p>
+                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">{{ stats.active_nodes }}</p>
                                     <p class="text-[#FF0000] text-sm font-medium leading-normal flex items-center gap-1">
                                         <span class="material-symbols-outlined text-base">arrow_downward</span>-1% vs last 24h
                                     </p>
                                 </div>
                                 <div class="flex flex-col gap-2 rounded-xl p-6 bg-white/5 border border-white/10 dashboard-tile">
                                     <p class="text-white/80 text-base font-medium leading-normal">High-Level Alerts</p>
-                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">15</p>
+                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">{{ stats.alerts }}</p>
                                     <p class="text-primary text-sm font-medium leading-normal flex items-center gap-1">
                                         <span class="material-symbols-outlined text-base">arrow_upward</span>+10% vs last 24h
                                     </p>
                                 </div>
                                 <div class="flex flex-col gap-2 rounded-xl p-6 bg-white/5 border border-white/10 dashboard-tile">
                                     <p class="text-white/80 text-base font-medium leading-normal">Most Common Pollutant</p>
-                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">PM2.5</p>
+                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">{{ stats.most_common_pollutant }}</p>
                                     <p class="text-primary text-sm font-medium leading-normal flex items-center gap-1">
                                         <span class="material-symbols-outlined text-base">arrow_upward</span>+2% vs last 24h
                                     </p>
@@ -129,8 +129,8 @@
                                     </div>
                                     <div class="flex min-h-[240px] flex-1 flex-col justify-end gap-8 py-4">
                                         <svg fill="none" height="100%" preserveAspectRatio="none" viewBox="0 0 472 150" width="100%" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H0V109Z" fill="url(#paint0_linear_chart)"></path>
-                                            <path d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25" stroke="#13ec80" stroke-linecap="round" stroke-width="3"></path>
+                                            <path d="{{ stats.aqi_trend_path[0] }}" fill="url(#paint0_linear_chart)"></path>
+                                            <path d="{{ stats.aqi_trend_path[1] }}" stroke="#13ec80" stroke-linecap="round" stroke-width="3"></path>
                                             <defs>
                                                 <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_chart" x1="236" x2="236" y1="1" y2="149">
                                                     <stop stop-color="#13ec80" stop-opacity="0.3"></stop>
@@ -139,13 +139,13 @@
                                             </defs>
                                         </svg>
                                         <div class="flex justify-around">
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">00:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">04:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">08:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">12:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">16:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">20:00</p>
-                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">24:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[0]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[1]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[2]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[3]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[4]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[5]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[6]}}:00</p>
                                         </div>
                                     </div>
                                 </div>
@@ -156,13 +156,13 @@
                                     <div class="flex flex-1 items-center justify-center min-h-[240px] py-4">
                                         <div class="relative w-48 h-48">
                                             <svg class="w-full h-full" viewBox="0 0 36 36">
-                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#00E400" stroke-dasharray="45 100" stroke-dashoffset="0" stroke-width="4"></circle>
-                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FFFF00" stroke-dasharray="30 100" stroke-dashoffset="-45" stroke-width="4"></circle>
-                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FF7E00" stroke-dasharray="15 100" stroke-dashoffset="-75" stroke-width="4"></circle>
-                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FF0000" stroke-dasharray="10 100" stroke-dashoffset="-90" stroke-width="4"></circle>
+                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#00E400" stroke-dasharray="{{ stats.good }} 100" stroke-dashoffset="0" stroke-width="4"></circle>
+                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FFFF00" stroke-dasharray="{{ stats.moderate }} 100" stroke-dashoffset="-{{ stats.good }}" stroke-width="4"></circle>
+                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FF7E00" stroke-dasharray="{{ stats.unhealthy }} 100" stroke-dashoffset="-{{ stats.good + stats.moderate }}" stroke-width="4"></circle>
+                                                <circle cx="18" cy="18" fill="transparent" r="15.91549430918954" stroke="#FF0000" stroke-dasharray="{{ stats.hazardous }} 100" stroke-dashoffset="-{{ stats.good + stats.moderate + stats.unhealthy }}" stroke-width="4"></circle>
                                             </svg>
                                             <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                                <span class="text-white text-3xl font-bold">1,204</span>
+                                                <span class="text-white text-3xl font-bold">{{ stats.active_nodes }}</span>
                                                 <span class="text-white/60 text-sm">Total Nodes</span>
                                             </div>
                                         </div>
@@ -170,19 +170,19 @@
                                     <div class="flex flex-col gap-3 pl-8">
                                         <div class="flex items-center gap-2">
                                             <div class="w-3 h-3 rounded-full bg-[#00E400]"></div>
-                                            <span class="text-white text-sm">Good (45%)</span>
+                                            <span class="text-white text-sm">Good ({{ stats.good }}%)</span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <div class="w-3 h-3 rounded-full bg-[#FFFF00]"></div>
-                                            <span class="text-white text-sm">Moderate (30%)</span>
+                                            <span class="text-white text-sm">Moderate ({{ stats.moderate }}%)</span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <div class="w-3 h-3 rounded-full bg-[#FF7E00]"></div>
-                                            <span class="text-white text-sm">Unhealthy (15%)</span>
+                                            <span class="text-white text-sm">Unhealthy ({{ stats.unhealthy }}%)</span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <div class="w-3 h-3 rounded-full bg-[#FF0000]"></div>
-                                            <span class="text-white text-sm">Hazardous (10%)</span>
+                                            <span class="text-white text-sm">Hazardous ({{ stats.hazardous }}%)</span>
                                         </div>
                                     </div>
                                 </div>
@@ -211,51 +211,51 @@
                                     <div class="flex flex-col gap-3 mt-4">
                                         <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
                                             <div>
-                                                <p class="text-white font-medium">Downtown, LA</p>
-                                                <p class="text-white/60 text-sm">California, USA</p>
+                                                <p class="text-white font-medium">{{stats.worst1.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst1.location}}</p>
                                             </div>
                                             <div class="text-center">
-                                                <p class="text-[#FF0000] font-bold text-lg">158</p>
+                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst1.aqi}}</p>
                                                 <p class="text-white/60 text-xs">AQI</p>
                                             </div>
                                         </div>
                                         <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
                                             <div>
-                                                <p class="text-white font-medium">Shinjuku</p>
-                                                <p class="text-white/60 text-sm">Tokyo, Japan</p>
+                                                <p class="text-white font-medium">{{stats.worst2.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst2.location}}</p>
                                             </div>
                                             <div class="text-center">
-                                                <p class="text-[#FF0000] font-bold text-lg">145</p>
+                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst2.aqi}}</p>
                                                 <p class="text-white/60 text-xs">AQI</p>
                                             </div>
                                         </div>
                                         <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
                                             <div>
-                                                <p class="text-white font-medium">Sector 18</p>
-                                                <p class="text-white/60 text-sm">Delhi, India</p>
+                                                <p class="text-white font-medium">{{stats.worst3.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst3.location}}</p>
                                             </div>
                                             <div class="text-center">
-                                                <p class="text-[#FF7E00] font-bold text-lg">121</p>
+                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst3.aqi}}</p>
                                                 <p class="text-white/60 text-xs">AQI</p>
                                             </div>
                                         </div>
                                         <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
                                             <div>
-                                                <p class="text-white font-medium">The Bund</p>
-                                                <p class="text-white/60 text-sm">Shanghai, China</p>
+                                                <p class="text-white font-medium">{{stats.worst4.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst4.location}}</p>
                                             </div>
                                             <div class="text-center">
-                                                <p class="text-[#FF7E00] font-bold text-lg">115</p>
+                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst4.aqi}}</p>
                                                 <p class="text-white/60 text-xs">AQI</p>
                                             </div>
                                         </div>
                                         <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
                                             <div>
-                                                <p class="text-white font-medium">Central London</p>
-                                                <p class="text-white/60 text-sm">London, UK</p>
+                                                <p class="text-white font-medium">{{stats.worst5.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst5.location}}</p>
                                             </div>
                                             <div class="text-center">
-                                                <p class="text-[#FFFF00] font-bold text-lg">98</p>
+                                                <p class="text-[#FFFF00] font-bold text-lg">{{stats.worst5.aqi}}</p>
                                                 <p class="text-white/60 text-xs">AQI</p>
                                             </div>
                                         </div>
