@@ -95,7 +95,7 @@ def get_index_stats():
         # -------------------------------------------------------------
         # 2. Load basic node metadata
         # -------------------------------------------------------------
-        cursor.execute("SELECT node_id, location FROM node")
+        cursor.execute("SELECT node_id, location FROM Node")
         nodes = cursor.fetchall()
         node_locations = {n["node_id"]: n["location"] for n in nodes}
 
