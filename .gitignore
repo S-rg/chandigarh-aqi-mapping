@@ -1,1 +1,8 @@
 .vscode/
+.env
+aqi-env/
+webapp/db_scripts/temp_data.py
+aqi.log
+requirements.txt
+__pycache__/
+**/__pycache__/

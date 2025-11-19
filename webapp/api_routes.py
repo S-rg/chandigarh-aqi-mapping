@@ -2,42 +2,22 @@ from app import app
 import os
 from mysql.connector import connect, Error
 from typing import List
-import json
+from flask import request, render_template
 
 def get_connection():
-    try:
-        return connect(
-            host=os.getenv("DB_HOST", "localhost"),
-            user=os.getenv("DB_USER", ""),
-            password=os.getenv("DB_PASSWORD", ""),
-            database=os.getenv("DB_NAME", "aqi_monitoring")
-        )
-    except Error as e:
-        print(f"Database connection error: {e}")
-        raise e
+    return connect(
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", ""),
+        password=os.getenv("DB_PASSWORD", ""),
+        database=os.getenv("DB_NAME", "SMAQI")
+    )
 
 def get_data(table: str, cols: List[str]):
-    # Validate table name for security
-    is_valid, error_msg = validate_table_sensor_names(table, None)
-    if not is_valid:
-        return {"error": error_msg}, 400
-    
     connection = get_connection()
     cols_str = ",".join(cols)
     try:
         cursor = connection.cursor(buffered=True)
-        
-        # Fix: Handle empty tables properly - check if table has data first
-        # Table name is validated above
-        cursor.execute(f"SELECT COUNT(*) FROM {table}")
-        count = cursor.fetchone()[0]
-        
-        if count == 0:
-            return {"error": "No data found"}, 404
-        
-        # Fix: Use COALESCE to handle NULL values in MAX(id)
-        # Table name is validated above
-        query = f"SELECT {cols_str} FROM {table} WHERE id > COALESCE((SELECT MAX(id) - 1000 FROM {table}), 0);"
+        query = f"SELECT {cols_str} FROM {table} WHERE id > (SELECT MAX(id) - 1000 FROM {table});"
         cursor.execute(query)
         result = cursor.fetchall()
 
@@ -55,89 +35,12 @@ def get_data(table: str, cols: List[str]):
         cursor.close()
         connection.close()
 
-# NEW: Gas-specific endpoint for latest reading (replaces sensor ID mapping)
-@app.route("/api/gas/<string:table>/<string:gas>/latest")
-def get_gas_latest_reading(table, gas):
-    """Get latest reading for a specific gas from a specific table"""
-    # Validate inputs
-    is_valid, error_msg = validate_table_sensor_names(table, gas)
-    if not is_valid:
-        return {"error": error_msg}, 400
-    
-    connection = get_connection()
-    try:
-        cursor = connection.cursor(buffered=True)
-        
-        # Get the latest gas reading
-        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 1".format(
-            gas, table, gas
-        )
-        cursor.execute(query)
-        result = cursor.fetchone()
-
-        if not result:
-            return {"error": "No data found"}, 404
-
-        return {
-            "value": float(result[0]) if result[0] is not None else 0,
-            "unit": get_sensor_unit(gas),
-            "timestamp": result[1].isoformat() if result[1] else None,
-            "gas": gas,
-            "table": table
-        }, 200
-
-    except Error as e:
-        print(e)
-        return {"error": str(e)}, 500
-    finally:
-        cursor.close()
-        connection.close()
-
-# NEW: Gas-specific endpoint for historical data
-@app.route("/api/gas/<string:table>/<string:gas>/history")
-def get_gas_history(table, gas):
-    """Get historical data for a specific gas from a specific table"""
-    # Validate inputs
-    is_valid, error_msg = validate_table_sensor_names(table, gas)
-    if not is_valid:
-        return {"error": error_msg}, 400
-    
-    connection = get_connection()
-    try:
-        cursor = connection.cursor(buffered=True)
-        
-        # Get recent gas data (last 100 readings)
-        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL ORDER BY timestamp DESC LIMIT 100".format(
-            gas, table, gas
-        )
-        cursor.execute(query)
-        result = cursor.fetchall()
-
-        if not result:
-            return {"error": "No data found"}, 404
-
-        data = [
-            {"sensor_value": row[0], "timestamp": row[1].isoformat()}
-            for row in result if row[0] is not None
-        ]
-        return {
-            "data": data,
-            "gas": gas,
-            "table": table
-        }, 200
-
-    except Error as e:
-        print(e)
-        return {"error": str(e)}, 500
-    finally:
-        cursor.close()
-        connection.close()
-
 @app.route("/api/tvoc")
 def get_tvoc_data():
     cols = ["val", "ts"]
-    data, status_code = get_data("tvoc_data", cols)
-    return data, status_code
+    data = get_data("tvoc_data", cols)
+    return data
+
 
 @app.route("/api/temp/<string:table>/<string:sensor>")
 def get_sensor_data(table, sensor):
@@ -150,16 +53,13 @@ def get_sensor_data(table, sensor):
     connection = get_connection()
     try:
         cursor = connection.cursor(buffered=True)
-        
-        # Fix: Use parameterized query for better security
-        query = "SELECT {}, timestamp FROM {} WHERE {} IS NOT NULL".format(sensor, table, sensor)
+        query = f"SELECT {sensor}, timestamp FROM {table};"
         cursor.execute(query)
         result = cursor.fetchall()
 
         if not result:
             return {"error": "No data found"}, 404
 
-        # Fix: Remove hard-coded filter, let frontend handle data validation
         data = [
             {"sensor_value": row[0], "timestamp": row[1].isoformat()}
             for row in result if row[0] is not None and row[0] <= 4000
@@ -173,48 +73,104 @@ def get_sensor_data(table, sensor):
         cursor.close()
         connection.close()
 
-# LEGACY: Keep old sensor ID route for backward compatibility (can be removed later)
-@app.route("/api/sensor<int:sensor_id>")
-def get_sensor_data_by_id(sensor_id):
-    """LEGACY: Route for individual sensor data (will be deprecated)"""
-    # This route will be removed once frontend is updated
-    return {"error": "This endpoint is deprecated. Use /api/gas/{table}/{gas}/latest instead"}, 410
+@app.route("/api/get_all_nodes")
+def get_all_nodes():
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
 
-# LEGACY: Keep old winsen route for backward compatibility
-@app.route("/api/<string:table>/<string:sensor>")
-def get_winsen_sensor_data(table, sensor):
-    """LEGACY: Route for winsen sensor data (will be deprecated)"""
-    return {"error": "This endpoint is deprecated. Use /api/gas/{table}/{sensor}/history instead"}, 410
+    cursor.execute("SELECT DISTINCT node_id FROM Node;")
 
-def validate_table_sensor_names(table, sensor):
-    """Validate table and sensor names for security"""
-    allowed_tables = ["winsen1", "winsen2", "tvoc_data"]
-    allowed_sensors = ["pm1", "pm25", "pm10", "co2", "voc", "temp", "humidity", "ch2o", "co", "o3", "no2", "val", "ts"]
-    
-    # Validate table name
-    if table not in allowed_tables:
-        return False, f"Invalid table name: {table}"
-    
-    # Validate sensor name (if provided)
-    if sensor and sensor not in allowed_sensors:
-        return False, f"Invalid sensor name: {sensor}"
-    
-    return True, None
+    result = cursor.fetchall()
+    return {"nodes": [row[0] for row in result]}, 200
 
-def get_sensor_unit(sensor_type):
-    """Helper function to get appropriate unit for sensor type"""
-    units = {
-        "pm1": "μg/m³",
-        "pm25": "μg/m³", 
-        "pm10": "μg/m³",
-        "co2": "ppm",
-        "voc": "ppm",
-        "temp": "°C",
-        "humidity": "%",
-        "ch2o": "μg/m³",
-        "co": "ppm",
-        "o3": "ppb",
-        "no2": "ppb",
-        "tvoc": "ppb"
-    }
-    return units.get(sensor_type, "units")
+@app.route("/api/node/<string:node_id>")
+def get_all_sensors(node_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT sensor_id FROM Sensor WHERE node_id = {node_id};""")
+
+    result = cursor.fetchall()
+    return {"sensors": [row[0] for row in result]}, 200
+
+@app.route("/api/sensor/<string:node_id>/<int:sensor_id>")
+def get_all_measurements(node_id, sensor_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT measurement_id FROM Sensor WHERE node_id = {node_id} AND sensor_id = {sensor_id};""")
+
+    result = cursor.fetchall()
+    return {"measurements": [row[0] for row in result]}, 200
+
+@app.route("/api/measurement/<string:node_id>/<int:sensor_id>/<int:measurement_id>")
+def get_measurement_data(node_id, sensor_id, measurement_id):
+    connection = get_connection()
+    cursor = connection.cursor(buffered=True)
+
+    cursor.execute(f"""SELECT timestamp, value FROM {node_id}_{sensor_id}_{measurement_id};""")
+
+    result = cursor.fetchall()
+    data = [{"timestamp": row[0].isoformat(), "value": row[1]} for row in result]
+    return {"data": data}, 200
+
+
+@app.route("/api/postdata/<string:node_id>/<int:sensor_id>/<int:measurement_id>", methods=["POST"])
+def post_data(node_id, sensor_id, measurement_id):
+    try:
+        data = request.get_json()
+        if not data or "timestamp" not in data or "value" not in data:
+            return {"error": "Invalid data"}, 400
+
+        timestamp = data["timestamp"]
+        value = data["value"]
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        query = f"""
+            INSERT INTO {node_id}_{sensor_id}_{measurement_id} (timestamp, value)
+            VALUES (%s, %s);
+        """
+        cursor.execute(query, (timestamp, value))
+        connection.commit()
+
+        return {"message": "Data inserted successfully"}, 200
+
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
+@app.route("/api/get_sensor_mapping/<string:node_id>")
+def get_sensor_mapping(node_id):
+    query = f"""
+        SELECT sensor_id, measurement_id, measurement_name, unit, sensor_type FROM Sensor WHERE node_id = %s;
+    """
+
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        cursor.execute(query, (node_id,))
+        result = cursor.fetchall()
+
+        if not result:
+            return {"error": "No data found"}, 404
+
+        mapping = {
+            f"{row[0]},{row[1]}": [row[2], row[3], row[4]]
+            for row in result
+        }
+        return {"mapping": mapping}, 200
+    
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    
+    finally:
+        cursor.close()
+        connection.close()
