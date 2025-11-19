@@ -83,6 +83,33 @@ def get_all_nodes():
     result = cursor.fetchall()
     return {"nodes": [row[0] for row in result]}, 200
 
+@app.route("/api/get_all_nodes_with_locations")
+def get_all_nodes_with_locations():
+    connection = get_connection()
+    try:
+        cursor = connection.cursor(buffered=True)
+        cursor.execute("SELECT node_id, location, latitude, longitude FROM Node;")
+        result = cursor.fetchall()
+        
+        nodes = [
+            {
+                "node_id": row[0],
+                "location": row[1],
+                "latitude": float(row[2]),
+                "longitude": float(row[3])
+            }
+            for row in result
+        ]
+        return {"nodes": nodes}, 200
+    
+    except Error as e:
+        print(e)
+        return {"error": str(e)}, 500
+    
+    finally:
+        cursor.close()
+        connection.close()
+
 @app.route("/api/node/<string:node_id>")
 def get_all_sensors(node_id):
     connection = get_connection()

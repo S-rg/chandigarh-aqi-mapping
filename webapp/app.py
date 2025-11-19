@@ -20,6 +20,10 @@ def winsen():
 def plot(node_id):
     return render_template('plot.html', node_id=node_id)
 
+@app.route('/map')
+def map_page():
+    return render_template('map.html')
+
 import api_routes
 
 load_dotenv()
