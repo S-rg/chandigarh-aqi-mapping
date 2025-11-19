@@ -220,6 +220,14 @@ def get_index_stats():
                 'location': w["location"]
             }
 
+        if len(worst_list) < 5:
+            for i in range(len(worst_list), 5):
+                result[f"worst{i+1}"] = {
+                    'name': None,
+                    'aqi': None,
+                    'location': None
+                }
+
     except mysql.connector.Error as e:
         print("Database error:", e)
         return {"error": str(e)}
