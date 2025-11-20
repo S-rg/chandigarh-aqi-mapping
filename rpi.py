@@ -1,6 +1,7 @@
 import serial
 import re
-import requests
+import subprocess
+import json
 
 def extract_numbers(input_string):
     match = re.search(r"sensor=(\d+), measurement=(\d+), value=([\d.]+), ts=(\d+)", line)
@@ -11,6 +12,15 @@ def extract_numbers(input_string):
         ts = int(match.group(4))
 
         return sensor, measurement, value, ts
+    
+def send_curl(url, data):
+    subprocess.Popen([
+        "curl",
+        "-X", "POST",
+        "-H", "Content-Type: application/json",
+        "-d", json.dumps(data),
+        url
+    ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 if __name__ == "__main__":
     node_id = "A01"
@@ -30,7 +40,8 @@ if __name__ == "__main__":
                     "value": value,
                     "ts": None
                 }
-                response = requests.post(url, json=data)
+                send_curl(url, data)
+                print(f"Sent data to {url}: {data}")
                 
 
     except KeyboardInterrupt:
