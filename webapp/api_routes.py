@@ -1,4 +1,8 @@
-from app import app
+try:
+    from app import app  # when imported via WSGI/server
+except ImportError:
+    # When running `python app.py`, the module name is __main__
+    from __main__ import app
 import os
 from mysql.connector import connect, Error
 from typing import List
