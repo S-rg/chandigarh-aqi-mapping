@@ -1,6 +1,6 @@
 DEBUG: true 
 
-sampling_rate: 3000 # ms
+sampling_rate: 5000 # ms
 
 Node:
   id: "A01"
@@ -13,9 +13,8 @@ Sensors:
     id: 1
     type: "DFRobotCOSensor"
     part_name: "DFRobot CO Sensor"
-    comms: "SOFTWARE_SERIAL"
-    rx_pin: 0
-    tx_pin: 1
+    comms: "HARDWARE_SERIAL"
+    port_no: 8
     baud_rate: 9600
     measurements:
         - measurement_id: 1
@@ -26,7 +25,7 @@ Sensors:
     type: "SO2Sensor"
     part_name: "Winsen ZE-03"
     comms: "HARDWARE_SERIAL"
-    port_no: 1 # 0 or 1 or 2 or 3 depending on which i2c it is
+    port_no: 7 # 0 or 1 or 2 or 3 depending on which i2c it is
     baud_rate: 9600
     measurements:
         - measurement_id: 1
@@ -43,24 +42,23 @@ Sensors:
         measurement_id: 1
         name: "tvoc"
         unit: "ppb"
-  FormSensor:
-    id: 4
-    type: "CH2OSensor"
-    part_name : "Dart Sensors WZ-S-K"
-    comms: "SOFTWARE_SERIAL"
-    rx_pin: 26
-    tx_pin: 27
-    baud_rate: 9600
-    measurements:
-        measurement_id: 1
-        name: "formaldehyde"
-        unit: "ppb"
+  # FormSensor:
+  #   id: 6
+  #   type: "CH2OSensor"
+  #   part_name : "Dart Sensors WZ-S-K"
+  #   comms: "HARDWARE_SERIAL"
+  #   port_no: 5
+  #   baud_rate: 9600
+  #   measurements:
+  #       measurement_id: 1
+  #       name: "formaldehyde"
+  #       unit: "ppb"
   PMSensor:
-    id: 5
+    id: 4
     type: "PMS7003Sensor"
     part_name : "Plantower PMS7003"
     comms: "HARDWARE_SERIAL"
-    port_no: 2 
+    port_no: 5
     baud_rate: 9600
     measurements:
       - measurement_id: 1
@@ -100,7 +98,7 @@ Sensors:
         name: "PM10 (standard, CF=1)"
         unit: "µg/m³"
   OxygenSensor:
-    id: 6
+    id: 5
     type: "DFRobotOxygenSensor"
     part_name: "DFRobot Oxygen Winsen ME-O2"
     comms: "I2C"

@@ -7,7 +7,7 @@
 
 #define SENSORS_DEBUG 1
 
-#define SAMPLING_RATE 3000
+#define SAMPLING_RATE 5000
 
 #define NODE_ID "A01"
 
@@ -39,29 +39,95 @@ static const MeasurementInfo DFROBOTCOSENSOR_MEASUREMENTS[] = {
   { (uint8_t)1, "CO", "ppm" },
 };
 
-// Sensor table
-static const SensorInfo sensors_config[] = {
-  { (uint16_t)20, "DFRobotCOSensor", "DFRobot CO Sensor", "DFRobotCOSensor", COMM_SOFTWARE_SERIAL, (int32_t)-1, (uint16_t)-1, (int16_t)0, (int16_t)1, (int32_t)9600, DFROBOTCOSENSOR_MEASUREMENTS, (uint8_t)1 },
+static const MeasurementInfo SO2SENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "SO2", "ppm" },
 };
 
-#define SENSOR_COUNT 1
+static const MeasurementInfo TVOCSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "tvoc", "ppb" },
+};
+
+static const MeasurementInfo PMSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "PM1.0 (atmospheric)", "µg/m³" },
+  { (uint8_t)2, "PM2.5 (atmospheric)", "µg/m³" },
+  { (uint8_t)3, "PM10 (atmospheric)", "µg/m³" },
+  { (uint8_t)4, "Particle count ≥ 0.3 µm", "particles / 0.1 L" },
+  { (uint8_t)5, "Particle count ≥ 0.5 µm", "particles / 0.1 L" },
+  { (uint8_t)6, "Particle count ≥ 1.0 µm", "particles / 0.1 L" },
+  { (uint8_t)7, "Particle count ≥ 2.5 µm", "particles / 0.1 L" },
+  { (uint8_t)8, "Particle count ≥ 5.0 µm", "particles / 0.1 L" },
+  { (uint8_t)9, "Particle count ≥ 10 µm", "particles / 0.1 L" },
+  { (uint8_t)10, "PM1.0 (standard, CF=1)", "µg/m³" },
+  { (uint8_t)11, "PM2.5 (standard, CF=1)", "µg/m³" },
+  { (uint8_t)12, "PM10 (standard, CF=1)", "µg/m³" },
+};
+
+static const MeasurementInfo OXYGENSENSOR_MEASUREMENTS[] = {
+  { (uint8_t)1, "pm1", "ppm" },
+};
+
+// Sensor table
+static const SensorInfo sensors_config[] = {
+  { (uint16_t)1, "DFRobotCOSensor", "DFRobot CO Sensor", "DFRobotCOSensor", COMM_HARDWARE_SERIAL, (int32_t)8, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, DFROBOTCOSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)2, "SO2Sensor", "Winsen ZE-03", "SO2Sensor", COMM_HARDWARE_SERIAL, (int32_t)7, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, SO2SENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)3, "TVOCSensor", "ZE40A-TVOC", "TVOCSensor", COMM_HARDWARE_SERIAL, (int32_t)1, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, TVOCSENSOR_MEASUREMENTS, (uint8_t)1 },
+  { (uint16_t)4, "PMSensor", "Plantower PMS7003", "PMS7003Sensor", COMM_HARDWARE_SERIAL, (int32_t)5, (uint16_t)-1, (int16_t)-1, (int16_t)-1, (int32_t)9600, PMSENSOR_MEASUREMENTS, (uint8_t)12 },
+  { (uint16_t)5, "OxygenSensor", "DFRobot Oxygen Winsen ME-O2", "DFRobotOxygenSensor", COMM_I2C, (int32_t)2, (uint16_t)115, (int16_t)-1, (int16_t)-1, (int32_t)-1, OXYGENSENSOR_MEASUREMENTS, (uint8_t)1 },
+};
+
+#define SENSOR_COUNT 5
 
 // Convenience macros for sensor IDs and measurement IDs
-#define SENSOR_ID_DFROBOTCOSENSOR 20
+#define SENSOR_ID_DFROBOTCOSENSOR 1
 #define MEAS_DFROBOTCOSENSOR_CO 1
+
+#define SENSOR_ID_SO2SENSOR 2
+#define MEAS_SO2SENSOR_SO2 1
+
+#define SENSOR_ID_TVOCSENSOR 3
+#define MEAS_TVOCSENSOR_TVOC 1
+
+#define SENSOR_ID_PMSENSOR 4
+#define MEAS_PMSENSOR_PM1_0_ATMOSPHERIC 1
+#define MEAS_PMSENSOR_PM2_5_ATMOSPHERIC 2
+#define MEAS_PMSENSOR_PM10_ATMOSPHERIC 3
+#define MEAS_PMSENSOR_PARTICLE_COUNT_0_3_M 4
+#define MEAS_PMSENSOR_PARTICLE_COUNT_0_5_M 5
+#define MEAS_PMSENSOR_PARTICLE_COUNT_1_0_M 6
+#define MEAS_PMSENSOR_PARTICLE_COUNT_2_5_M 7
+#define MEAS_PMSENSOR_PARTICLE_COUNT_5_0_M 8
+#define MEAS_PMSENSOR_PARTICLE_COUNT_10_M 9
+#define MEAS_PMSENSOR_PM1_0_STANDARD_CF_1 10
+#define MEAS_PMSENSOR_PM2_5_STANDARD_CF_1 11
+#define MEAS_PMSENSOR_PM10_STANDARD_CF_1 12
+
+#define SENSOR_ID_OXYGENSENSOR 5
+#define MEAS_OXYGENSENSOR_PM1 1
 
 // Debug helpers: arrays of names (useful when SENSORS_DEBUG == 1)
 static const char* const sensor_config_key[] = {
   "DFRobotCOSensor",
+  "SO2Sensor",
+  "TVOCSensor",
+  "PMSensor",
+  "OxygenSensor",
 };
 
 static const char* const sensor_part_name[] = {
   "DFRobot CO Sensor",
+  "Winsen ZE-03",
+  "ZE40A-TVOC",
+  "Plantower PMS7003",
+  "DFRobot Oxygen Winsen ME-O2",
 };
 
 // For debug: measurement names by sensor (array of arrays).
 static const MeasurementInfo* const sensor_measurements[] = {
   DFROBOTCOSENSOR_MEASUREMENTS,
+  SO2SENSOR_MEASUREMENTS,
+  TVOCSENSOR_MEASUREMENTS,
+  PMSENSOR_MEASUREMENTS,
+  OXYGENSENSOR_MEASUREMENTS,
 };
 
 /*

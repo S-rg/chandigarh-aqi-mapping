@@ -4,7 +4,7 @@
 #include "Sensors.h"
 #include "Manager.h"
 
-Manager manager(15);
+Manager manager(100);
 
 void setup() {
 	delay(1000);
