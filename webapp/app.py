@@ -21,7 +21,7 @@ def plot(node_id):
 
 @app.route('/node/<string:node_id>')
 def node(node_id):
-    return render_template('node.html', stats=get_node_stats(node_id))
+    return render_template('node.html', stats=get_node_stats(node_id), node_id=node_id)
 
 import api_routes
 
