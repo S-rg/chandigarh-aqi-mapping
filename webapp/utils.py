@@ -332,7 +332,7 @@ def generate_smooth_path(values, width=472, height=150):
 
     # Normalize Y values (invert SVG Y axis)
     max_val = max(values)
-    scaled = [height - (v / max_val * height) for v in values]
+    scaled = [height - (v / max_val * height + 0.000001) for v in values]
 
     # Evenly spaced X values
     step = width / (n - 1)
