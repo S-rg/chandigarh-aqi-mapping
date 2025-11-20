@@ -109,7 +109,7 @@ def get_node_stats(node_id):
 
         first_hour = min(hours_present) if hours_present else 0
         aqi_time = [f"{str((first_hour + 4 * i) % 24).zfill(2)}" for i in range(6)]
-        result["aqi_path"] = aqi_time
+        result["aqi_time"] = aqi_time
 
         result["aqi_trend_path"] = generate_smooth_path(hourly_aqi)
 
