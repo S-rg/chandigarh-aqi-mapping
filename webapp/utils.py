@@ -76,8 +76,8 @@ def get_node_stats(node_id):
             row = cursor.fetchone()
             value = row["value"] if row else None
             sensor_values.append({
-                "name": sensor["measurement_name"].encode('latin1').decode('utf8'),
-                "unit": sensor["unit"].encode('latin1').decode('utf8'),
+                "name": sensor["measurement_name"],
+                "unit": sensor["unit"],
                 "value": value
             })
 
