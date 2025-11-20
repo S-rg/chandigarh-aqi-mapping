@@ -128,11 +128,15 @@ def post_data(node_id, sensor_id, measurement_id):
         connection = get_connection()
         cursor = connection.cursor()
 
-        query = f"""
-            INSERT INTO {node_id}_{sensor_id}_{measurement_id} (timestamp, value)
-            VALUES (%s, %s);
-        """
-        cursor.execute(query, (timestamp, value))
+        table_name = f"{node_id}_{sensor_id}_{measurement_id}"
+
+        if timestamp is None:
+            query = f"INSERT INTO {table_name} (timestamp, value) VALUES (CURRENT_TIMESTAMP, %s);"
+            cursor.execute(query, (value,))
+        else:
+            query = f"INSERT INTO {table_name} (timestamp, value) VALUES (%s, %s);"
+            cursor.execute(query, (timestamp, value))
+
         connection.commit()
 
         return {"message": "Data inserted successfully"}, 200
