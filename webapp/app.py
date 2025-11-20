@@ -24,7 +24,8 @@ def plot(node_id):
 def map_page():
     return render_template('map.html')
 
-import api_routes
+from api_routes import api_bp
+app.register_blueprint(api_bp)
 
 load_dotenv()
 

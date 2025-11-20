@@ -1,13 +1,9 @@
-try:
-    from app import app  # when imported via WSGI/server
-except ImportError:
-    # When running `python app.py`, the module name is __main__
-    from __main__ import app
 import os
 from mysql.connector import connect, Error
 from typing import List
-from flask import request, render_template
+from flask import request, Blueprint
 
+api_bp = Blueprint("api", __name__)
 def get_connection():
     return connect(
         host=os.getenv("DB_HOST", "localhost"),
@@ -39,14 +35,14 @@ def get_data(table: str, cols: List[str]):
         cursor.close()
         connection.close()
 
-@app.route("/api/tvoc")
+@api_bp.route("/api/tvoc")
 def get_tvoc_data():
     cols = ["val", "ts"]
     data = get_data("tvoc_data", cols)
     return data
 
 
-@app.route("/api/temp/<string:table>/<string:sensor>")
+@api_bp.route("/api/temp/<string:table>/<string:sensor>")
 def get_sensor_data(table, sensor):
     allowed_tables = ["winsen1", "winsen2"]
     allowed_sensors = ["pm1", "pm25", "pm10", "co2", "voc", "temp", "humidity", "ch2o", "co", "o3", "no2"]
@@ -87,7 +83,7 @@ def get_all_nodes():
     result = cursor.fetchall()
     return {"nodes": [row[0] for row in result]}, 200
 
-@app.route("/api/get_all_nodes_with_locations")
+@api_bp.route("/api/get_all_nodes_with_locations")
 def get_all_nodes_with_locations():
     connection = get_connection()
     try:
@@ -114,7 +110,7 @@ def get_all_nodes_with_locations():
         cursor.close()
         connection.close()
 
-@app.route("/api/get_latest_aqi_data")
+@api_bp.route("/api/get_latest_aqi_data")
 def get_latest_aqi_data():
     """
     Get the most recent AQI data for each location from AqiInScrape table.
@@ -186,7 +182,7 @@ def get_latest_aqi_data():
         cursor.close()
         connection.close()
 
-@app.route("/api/node/<string:node_id>")
+@api_bp.route("/api/node/<string:node_id>")
 def get_all_sensors(node_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
@@ -196,7 +192,7 @@ def get_all_sensors(node_id):
     result = cursor.fetchall()
     return {"sensors": [row[0] for row in result]}, 200
 
-@app.route("/api/sensor/<string:node_id>/<int:sensor_id>")
+@api_bp.route("/api/sensor/<string:node_id>/<int:sensor_id>")
 def get_all_measurements(node_id, sensor_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
@@ -206,7 +202,7 @@ def get_all_measurements(node_id, sensor_id):
     result = cursor.fetchall()
     return {"measurements": [row[0] for row in result]}, 200
 
-@app.route("/api/measurement/<string:node_id>/<int:sensor_id>/<int:measurement_id>")
+@api_bp.route("/api/measurement/<string:node_id>/<int:sensor_id>/<int:measurement_id>")
 def get_measurement_data(node_id, sensor_id, measurement_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
@@ -218,7 +214,7 @@ def get_measurement_data(node_id, sensor_id, measurement_id):
     return {"data": data}, 200
 
 
-@app.route("/api/postdata/<string:node_id>/<int:sensor_id>/<int:measurement_id>", methods=["POST"])
+@api_bp.route("/api/postdata/<string:node_id>/<int:sensor_id>/<int:measurement_id>", methods=["POST"])
 def post_data(node_id, sensor_id, measurement_id):
     try:
         data = request.get_json()
@@ -249,7 +245,7 @@ def post_data(node_id, sensor_id, measurement_id):
         connection.close()
 
 
-@app.route("/api/get_sensor_mapping/<string:node_id>")
+@api_bp.route("/api/get_sensor_mapping/<string:node_id>")
 def get_sensor_mapping(node_id):
     query = f"""
         SELECT sensor_id, measurement_id, measurement_name, unit, sensor_type FROM Sensor WHERE node_id = %s;
