@@ -12,6 +12,8 @@ def extract_numbers(input_string):
         ts = int(match.group(4))
 
         return sensor, measurement, value, ts
+    else:
+        return None, None, None, None
     
 def send_curl(url, data):
     subprocess.Popen([
@@ -24,7 +26,7 @@ def send_curl(url, data):
 
 if __name__ == "__main__":
     node_id = "A01"
-    port = '/dev/ttyUSB0'
+    port = '/dev/ttyACM0'
     baudrate = 9600
     timeout = 1
     ser = serial.Serial(port, baudrate, timeout=timeout)
@@ -35,6 +37,8 @@ if __name__ == "__main__":
 
             if line:
                 sensor, measurement, value, ts = extract_numbers(line)
+                if sensor is None:
+                    continue
                 url = f"http://10.1.40.45/api/postdata/{node_id}/{sensor}/{measurement}"
                 data = {
                     "value": value,

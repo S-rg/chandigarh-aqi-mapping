@@ -130,7 +130,7 @@ def post_data(node_id, sensor_id, measurement_id):
 
         table_name = f"{node_id}_{sensor_id}_{measurement_id}"
 
-        if timestamp is None:
+        if not timestamp:
             query = f"INSERT INTO {table_name} (timestamp, value) VALUES (CURRENT_TIMESTAMP, %s);"
             cursor.execute(query, (value,))
         else:
