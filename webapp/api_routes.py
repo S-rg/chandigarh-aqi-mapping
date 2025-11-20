@@ -88,7 +88,7 @@ def get_all_sensors(node_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
 
-    cursor.execute(f"""SELECT sensor_id FROM Sensor WHERE node_id = {node_id};""")
+    cursor.execute("SELECT sensor_id FROM Sensor WHERE node_id = %s;", (node_id,))
 
     result = cursor.fetchall()
     return {"sensors": [row[0] for row in result]}, 200
@@ -98,7 +98,10 @@ def get_all_measurements(node_id, sensor_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
 
-    cursor.execute(f"""SELECT measurement_id FROM Sensor WHERE node_id = {node_id} AND sensor_id = {sensor_id};""")
+    cursor.execute(
+        "SELECT measurement_id FROM Sensor WHERE node_id = %s AND sensor_id = %s;",
+        (node_id, sensor_id)
+    )
 
     result = cursor.fetchall()
     return {"measurements": [row[0] for row in result]}, 200
