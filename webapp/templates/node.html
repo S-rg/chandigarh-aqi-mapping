@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html class="dark" lang="en"></html>
+<html class="dark" lang="en">
     <head>
-        <meta charset="utf-8"/>
-        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-        <title>Air Quality Dashboard</title>
+        <meta charset="utf-8" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <title>Tricity Watch</title>
         <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-        <link href="https://fonts.googleapis.com" rel="preconnect"/>
-        <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+            <style>
+                .dashboard-tile {
+                    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                .dashboard-tile:hover {
+                    transform: scale(1.02) translateZ(20px);
+                    z-index: 2;
+                }
+            </style>
         <script>
             tailwind.config = {
                 darkMode: "class",
                 theme: {
                     extend: {
                         colors: {
-                            "primary": "#13ec80",
-                            "background-light": "#f6f8f7",
-                            "background-dark": "#102219",
+                            "primary": "#3b82f6",
+                            "background-light": "#1e293b",
+                            "background-dark": "#0f172a",
                         },
                         fontFamily: {
                             "display": ["Space Grotesk", "sans-serif"]
@@ -33,148 +40,110 @@
             }
         </script>
     </head>
-    <body class="font-display bg-background-light dark:bg-background-dark">
-        <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-            <div class="flex min-h-screen">
+    <body class="font-display">
+        <div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+            <div class="layout-container flex h-full grow flex-col">
+                <div class="flex flex-1 justify-center py-5">
+                    <div class="layout-content-container flex flex-col max-w-[1280px] flex-1">
+                        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 py-3">
+                            <div class="flex items-center gap-8">
+                                <div class="flex items-center gap-4 text-white">
+                                    <div class="size-6 text-primary">
+                                        <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd" d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z" fill="currentColor" fill-rule="evenodd"></path>
+                                            <path clip-rule="evenodd" d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z" fill="currentColor" fill-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <h2 class="text-white text-xl font-bold leading-tight tracking-[-0.015em]">Tricity Watch</h2>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 justify-end gap-8">
+                                <div class="hidden lg:flex items-center gap-9">
+                                    <a class="text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Dashboard</a>
+                                    <a class="text-white text-sm font-medium leading-normal hover:text-primary" href="#">Nodes</a>
+                                    <a class="text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Alerts</a>
+                                    <a class="text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Reports</a>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/5 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:bg-white/10">
+                                        <span class="material-symbols-outlined">settings</span>
+                                    </button>
+                                    <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/5 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 hover:bg-white/10">
+                                        <span class="material-symbols-outlined">notifications</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </header>
+                        <main class="flex-1 mt-6">
+                            <div class="flex flex-wrap justify-between items-center gap-4 p-4">
+                                <p class="text-white text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Dashboard</p>
+                                <div class="flex gap-2 p-1 bg-white/5 rounded-lg">
+                                    <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-md bg-primary/20 px-4">
+                                        <p class="text-primary text-sm font-medium leading-normal">Last 24 Hours</p>
+                                    </button>
+                                    <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-md px-4 hover:bg-white/10">
+                                        <p class="text-white/80 text-sm font-medium leading-normal">Last 7 Days</p>
+                                    </button>
+                                    <button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-md px-4 hover:bg-white/10">
+                                        <p class="text-white/80 text-sm font-medium leading-normal">Last 30 Days</p>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
 
-                <!-- SideNavBar -->
-                <aside class="flex h-screen min-h-[700px] w-64 flex-col justify-between bg-[#11221a] p-4 border-r border-solid border-[#234836]">
-                    <div class="flex flex-col gap-8">
-                        <div class="flex items-center gap-3 px-3">
-                            <div class="text-primary">
-                                <span class="material-symbols-outlined" style="font-size: 32px;">air</span>
+                                {% for m in stats.measurements %}
+                                <div class="flex flex-col gap-2 rounded-xl p-6 bg-white/5 border border-white/10 dashboard-tile">
+                                    <p class="text-white/80 text-base font-medium leading-normal">
+                                        {{ m.name }}
+                                    </p>
+
+                                    <p class="text-white tracking-light text-4xl font-bold leading-tight">
+                                        {{ m.value }}
+                                        {% if m.unit %}
+                                        <span class="text-white/60 text-xl font-normal">{{ m.unit }}</span>
+                                        {% endif %}
+                                    </p>
+
+                                    <p class="text-primary text-sm font-medium leading-normal flex items-center gap-1"></p>
+                                </div>
+                                {% endfor %}
+
                             </div>
-                            <h1 class="text-white text-xl font-bold leading-normal">Tricity Watch</h1>
-                        </div>
-                        <nav class="flex flex-col gap-2">
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#234836] hover:bg-[#2a503e] transition-colors" href="#">
-                                <span class="material-symbols-outlined text-white">dashboard</span>
-                                <p class="text-white text-sm font-medium leading-normal">Dashboard View</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#234836] transition-colors" href="#">
-                                <span class="material-symbols-outlined text-white">map</span>
-                                <p class="text-white text-sm font-medium leading-normal">Map View</p>
-                            </a>
-                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#234836] transition-colors" href="#">
-                                <span class="material-symbols-outlined text-white">bar_chart</span>
-                                <p class="text-white text-sm font-medium leading-normal">Graph view</p>
-                            </a>
-                        </nav>
-                    </div>
-                    <div class="flex flex-col gap-1">
-                        <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#234836] transition-colors" href="#">
-                            <span class="material-symbols-outlined text-white">settings</span>
-                            <p class="text-white text-sm font-medium leading-normal">Settings</p>
-                        </a>
-                    </div>
-                </aside>
-                
-                <div class="flex flex-1 flex-col">
-                    <!-- TopNavBar -->
-                    <!-- <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#234836] px-10 py-3">
-                        <div class="flex items-center gap-8">
-                            <label class="flex flex-col min-w-40 !h-10 max-w-64">
-                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                                    <div class="text-[#92c9ad] flex border-none bg-[#234836] items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                        <span class="material-symbols-outlined">search</span>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 py-2">
+                                <!-- AQI Trend Tile -->
+                                <div class="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
+                                    <p class="text-white text-lg font-medium leading-normal">AQI Trend</p>
+                                    <div class="flex gap-1">
+                                        <p class="text-white/60 text-sm font-normal leading-normal">Last 24 Hours</p>
+                                        <p class="text-primary text-sm font-medium leading-normal"></p>
                                     </div>
-                                    <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#234836] focus:border-none h-full placeholder:text-[#92c9ad] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search location..." value=""/>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="flex flex-1 justify-end gap-6 items-center">
-                            <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-transparent text-white/80 hover:text-white transition-colors gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
-                                <span class="material-symbols-outlined">notifications</span>
-                            </button>
-                            <button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-transparent text-white/80 hover:text-white transition-colors gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5">
-                                <span class="material-symbols-outlined">settings</span>
-                            </button>
-                            <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDIiXAtuOrFT0k1a6mm2xfHLj_pqy6k5x2DR2mlrnBd97CFKrv1kX4O3D6Bh3KhWp45oq6XyJYPU2zxsTWsRAr-xLlHOvMhUzlI9W7KaYdSIG3bsmPf0Npqp6yy4rH07tsXopUB0suOlqBr8AQ6Q-zGiIIcrIiPJUVJoDJ8DtFxp0lVRe0jUQxFYaH5n8629sH6vOIBFOUOrZcgatfFrZ7_5OBy5PS7h6LdwF4Ag56Yp-YkxdN66rdtwwTW-_aOSqk9ZaqKhuUm2A");'></div>
-                        </div>
-                    </header> -->
-                    <!-- Main Content -->
-                    <main class="flex-1 p-8 overflow-y-auto">
-                        <!-- PageHeading and Filters -->
-                        <div class="flex flex-wrap justify-between gap-4 mb-6 items-center">
-                            <div class="flex flex-col gap-1">
-                                <p class="text-white text-3xl font-bold leading-tight tracking-[-0.033em]">San Francisco, CA</p>
-                                <p class="text-[#92c9ad] text-base font-normal leading-normal">Real-time air quality overview for today.</p>
-                            </div>
-                            <div class="flex gap-2 p-1 bg-[#234836] rounded-lg">
-                                <button class="h-8 shrink-0 items-center justify-center gap-x-2 rounded-md bg-primary/20 px-4 flex">
-                                    <p class="text-primary text-sm font-medium leading-normal">24H</p>
-                                </button>
-                                <button class="h-8 shrink-0 items-center justify-center gap-x-2 rounded-md px-4 flex">
-                                    <p class="text-white text-sm font-medium leading-normal">7D</p>
-                                </button>
-                                <button class="h-8 shrink-0 items-center justify-center gap-x-2 rounded-md px-4 flex">
-                                    <p class="text-white text-sm font-medium leading-normal">1M</p>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Stats Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                            <div class="flex flex-col gap-2 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <p class="text-white text-base font-medium leading-normal">AQI</p>
-                                <p class="text-white tracking-light text-4xl font-bold leading-tight">42</p>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm text-[#0bda46]">arrow_upward</span>
-                                    <p class="text-[#0bda46] text-sm font-medium leading-normal">+2% vs yesterday</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <p class="text-white text-base font-medium leading-normal">PM2.5</p>
-                                <p class="text-white tracking-light text-4xl font-bold leading-tight">12.5 <span class="text-2xl font-medium text-white/70">µg/m³</span></p>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm text-[#fa5538]">arrow_downward</span>
-                                    <p class="text-[#fa5538] text-sm font-medium leading-normal">-5% vs yesterday</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <p class="text-white text-base font-medium leading-normal">CO2</p>
-                                <p class="text-white tracking-light text-4xl font-bold leading-tight">450 <span class="text-2xl font-medium text-white/70">ppm</span></p>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm text-[#0bda46]">arrow_upward</span>
-                                    <p class="text-[#0bda46] text-sm font-medium leading-normal">+1% vs yesterday</p>
-                                </div>
-                            </div>
-                            <div class="flex flex-col gap-2 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <p class="text-white text-base font-medium leading-normal">Humidity</p>
-                                <p class="text-white tracking-light text-4xl font-bold leading-tight">55<span class="text-2xl font-medium text-white/70">%</span></p>
-                                <div class="flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-sm text-[#0bda46]">arrow_upward</span>
-                                    <p class="text-[#0bda46] text-sm font-medium leading-normal">+3% vs yesterday</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Charts Grid -->
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <!-- Line Chart -->
-                            <div class="lg:col-span-2 flex flex-col gap-4 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <h3 class="text-white text-lg font-bold">Pollutant Levels Over Time</h3>
-                                <div class="w-full h-64 flex items-center justify-center">
-                                </div>
-                            </div>
-                            <!-- Gauge Chart -->
-                            <div class="flex flex-col gap-4 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <h3 class="text-white text-lg font-bold">AQI Gauge</h3>
-                                <div class="w-full h-64 flex items-center justify-center"></div>
-                                    <div class="absolute flex flex-col items-center justify-center -translate-y-4">
-                                        <p class="text-white text-5xl font-bold">42</p>
-                                        <p class="text-[#0bda46] text-lg font-semibold">Good</p>
+                                    <div class="flex min-h-[240px] flex-1 flex-col justify-end gap-8 py-4">
+                                        <svg fill="none" height="100%" preserveAspectRatio="none" viewBox="0 0 472 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="{{ stats.aqi_trend_path[0] }}" fill="url(#paint0_linear_chart)"></path>
+                                            <path d="{{ stats.aqi_trend_path[1] }}" stroke="#13ec80" stroke-linecap="round" stroke-width="3"></path>
+                                            <defs>
+                                                <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_chart" x1="236" x2="236" y1="1" y2="149">
+                                                    <stop stop-color="#13ec80" stop-opacity="0.3"></stop>
+                                                    <stop offset="1" stop-color="#13ec80" stop-opacity="0"></stop>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                        <div class="flex justify-around">
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[0]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[1]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[2]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[3]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[4]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[5]}}:00</p>
+                                            <p class="text-white/60 text-xs font-bold leading-normal tracking-[0.015em]">{{ stats.aqi_time[6]}}:00</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Bar Chart -->
-                            <div class="lg:col-span-3 flex flex-col gap-4 rounded-xl p-6 bg-[#11221a] border border-[#32674d]">
-                                <h3 class="text-white text-lg font-bold">Current Pollutant Breakdown</h3>
-                                <div class="w-full h-72 flex items-center justify-center"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
+                        </main>
+                    </div>
                 </div>
             </div>
         </div>
     </body>
-</html>
+</html></div>

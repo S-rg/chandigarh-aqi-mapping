@@ -2,45 +2,128 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 
-# def get_index_stats():
-#     # Dummy implementation for illustration purposes
-#     return {
-#         'avg_aqi': 40,
-#         'active_nodes': 3,
-#         'alerts': 0,
-#         'most_common_pollutant': 'PM2.5',
-#         'aqi_trend_path': generate_smooth_path([random.randint(10, 100) for _ in range(24)]),
-#         'aqi_time': [f"{str(h).zfill(2)}" for h in range(0, 25, 4)],
-#         'good': 70,
-#         'moderate': 20,
-#         'unhealthy': 5,
-#         'hazardous': 5,
-#         'worst1': {
-#             'name': 'Node A',
-#             'aqi': 80,
-#             'location': 'California, USA'
-#         },
-#         'worst2': {
-#             'name': 'Node B',
-#             'aqi': 75,
-#             'location': 'Texas, USA'
-#         },
-#         'worst3': {
-#             'name': 'Node C',
-#             'aqi': 70,
-#             'location': 'Florida, USA'
-#         },
-#         'worst4': {
-#             'name': 'Node D',
-#             'aqi': 65,
-#             'location': 'New York, USA'
-#         },
-#         'worst5': {
-#             'name': 'Node E',
-#             'aqi': 60,
-#             'location': 'Illinois, USA'
-#         }
-#     }
+def get_index_stats_dummy():
+    import random
+    # Dummy implementation for illustration purposes
+    return {
+        'avg_aqi': 40,
+        'active_nodes': 3,
+        'alerts': 0,
+        'most_common_pollutant': 'PM2.5',
+        'aqi_trend_path': generate_smooth_path([random.randint(10, 100) for _ in range(24)]),
+        'aqi_time': [f"{str(h).zfill(2)}" for h in range(0, 25, 4)],
+        'good': 70,
+        'moderate': 20,
+        'unhealthy': 5,
+        'hazardous': 5,
+        'worst1': {
+            'name': 'Node A',
+            'aqi': 80,
+            'location': 'California, USA'
+        },
+        'worst2': {
+            'name': 'Node B',
+            'aqi': 75,
+            'location': 'Texas, USA'
+        },
+        'worst3': {
+            'name': 'Node C',
+            'aqi': 70,
+            'location': 'Florida, USA'
+        },
+        'worst4': {
+            'name': 'Node D',
+            'aqi': 65,
+            'location': 'New York, USA'
+        },
+        'worst5': {
+            'name': 'Node E',
+            'aqi': 60,
+            'location': 'Illinois, USA'
+        }
+    }
+
+def get_node_stats(node_id):
+    result = {}
+    
+    load_dotenv()
+    db_config = {
+        'host': os.getenv('DB_HOST'),
+        'user': os.getenv('DB_USER'),
+        'password': os.getenv('DB_PASSWORD'),
+        'database': os.getenv('DB_NAME')
+    }
+
+    conn = None
+    cursor = None
+
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT node_id, sensor_id, measurement_id, measurement_name, unit FROM Sensor WHERE node_id = %s", (node_id,))
+        sensors = cursor.fetchall()
+
+        sensor_values = []
+        for sensor in sensors:
+            tbl_name = f"{sensor['node_id']}_{sensor['sensor_id']}_{sensor['measurement_id']}"
+            cursor.execute(f"""
+                SELECT value
+                FROM {tbl_name}
+                ORDER BY timestamp DESC
+                LIMIT 1
+            """)
+            row = cursor.fetchone()
+            value = row["value"] if row else None
+            sensor_values.append({
+                "name": sensor["measurement_name"].encode('latin1').decode('utf8'),
+                "unit": sensor["unit"].encode('latin1').decode('utf8'),
+                "value": value
+            })
+
+        result["measurements"] = sensor_values
+
+        tbl_name = f"{node_id}_1_1"
+        cursor.execute(f"""
+            SELECT HOUR(timestamp) AS hr, AVG(value) AS avg_val
+            FROM {tbl_name}
+            WHERE timestamp >= NOW() - INTERVAL 24 HOUR
+            GROUP BY hr
+            ORDER BY hr
+        """)
+        rows = cursor.fetchall()
+
+        hourly_aqi = [None] * 24
+        hours_present = set()
+        for row in rows:
+            hr = row["hr"]
+            hourly_aqi[hr] = row["avg_val"]
+            hours_present.add(hr)
+
+        last_val = None
+        for i in range(24):
+            if hourly_aqi[i] is None:
+                hourly_aqi[i] = last_val
+            else:
+                last_val = hourly_aqi[i]
+
+        first_hour = min(hours_present) if hours_present else 0
+        aqi_time = [f"{str((first_hour + 4 * i) % 24).zfill(2)}" for i in range(6)]
+        result["aqi_path"] = aqi_time
+
+        result["aqi_trend_path"] = generate_smooth_path(hourly_aqi)
+
+    except mysql.connector.Error as e:
+        print("Database error:", e)
+        result = {"error": str(e)}
+    
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
+    return result
 
 
 def get_index_stats():
