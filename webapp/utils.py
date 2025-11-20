@@ -325,6 +325,7 @@ def get_index_stats():
 
 
 def generate_smooth_path(values, width=472, height=150):
+    values = [v if v is not None else 0 for v in values]
     n = len(values)
     if n < 2:
         raise ValueError("Need at least 2 points")
