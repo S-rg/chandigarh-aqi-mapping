@@ -73,7 +73,7 @@ def get_sensor_data(table, sensor):
         cursor.close()
         connection.close()
 
-@app.route("/api/get_all_nodes")
+@api_bp.route("/api/get_all_nodes")
 def get_all_nodes():
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
