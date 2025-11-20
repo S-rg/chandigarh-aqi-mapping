@@ -1,0 +1,110 @@
+DEBUG: true 
+
+sampling_rate: 5000 # ms
+
+Node:
+  id: "A01"
+  location_name: "Prototype Monitor"
+  lat: 30.631701
+  lon: 76.725323
+
+Sensors:
+  DFRobotCOSensor:
+    id: 1
+    type: "DFRobotCOSensor"
+    part_name: "DFRobot CO Sensor"
+    comms: "HARDWARE_SERIAL"
+    port_no: 8
+    baud_rate: 9600
+    measurements:
+        - measurement_id: 1
+          name: "CO"
+          unit: "ppm"
+  SO2Sensor:
+    id: 2
+    type: "SO2Sensor"
+    part_name: "Winsen ZE-03"
+    comms: "HARDWARE_SERIAL"
+    port_no: 7 # 0 or 1 or 2 or 3 depending on which i2c it is
+    baud_rate: 9600
+    measurements:
+        - measurement_id: 1
+          name: "SO2"
+          unit: "ppm"
+  TVOCSensor:
+    id: 3
+    type: "TVOCSensor"
+    part_name : "ZE40A-TVOC"
+    comms: "HARDWARE_SERIAL"
+    port_no: 1 
+    baud_rate: 9600
+    measurements:
+        measurement_id: 1
+        name: "tvoc"
+        unit: "ppb"
+  # FormSensor:
+  #   id: 6
+  #   type: "CH2OSensor"
+  #   part_name : "Dart Sensors WZ-S-K"
+  #   comms: "HARDWARE_SERIAL"
+  #   port_no: 5
+  #   baud_rate: 9600
+  #   measurements:
+  #       measurement_id: 1
+  #       name: "formaldehyde"
+  #       unit: "ppb"
+  PMSensor:
+    id: 4
+    type: "PMS7003Sensor"
+    part_name : "Plantower PMS7003"
+    comms: "HARDWARE_SERIAL"
+    port_no: 5
+    baud_rate: 9600
+    measurements:
+      - measurement_id: 1
+        name: "PM1.0 (atmospheric)"
+        unit: "µg/m³"
+      - measurement_id: 2
+        name: "PM2.5 (atmospheric)"
+        unit: "µg/m³"
+      - measurement_id: 3
+        name: "PM10 (atmospheric)"
+        unit: "µg/m³"
+      - measurement_id: 4
+        name: "Particle count ≥ 0.3 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 5
+        name: "Particle count ≥ 0.5 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 6
+        name: "Particle count ≥ 1.0 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 7
+        name: "Particle count ≥ 2.5 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 8
+        name: "Particle count ≥ 5.0 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 9
+        name: "Particle count ≥ 10 µm"
+        unit: "particles / 0.1 L"
+      - measurement_id: 10
+        name: "PM1.0 (standard, CF=1)"
+        unit: "µg/m³"
+      - measurement_id: 11
+        name: "PM2.5 (standard, CF=1)"
+        unit: "µg/m³"
+      - measurement_id: 12
+        name: "PM10 (standard, CF=1)"
+        unit: "µg/m³"
+  OxygenSensor:
+    id: 5
+    type: "DFRobotOxygenSensor"
+    part_name: "DFRobot Oxygen Winsen ME-O2"
+    comms: "I2C"
+    port_no: 2 # 0 or 1 or 2 or 3 depending on which i2c it is
+    i2c_address: 0x73
+    measurements:
+        - measurement_id: 1
+          name: "pm1"
+          unit: "ppm"

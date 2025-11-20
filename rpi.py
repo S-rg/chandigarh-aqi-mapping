@@ -38,7 +38,7 @@ if __name__ == "__main__":
                 url = f"http://10.1.40.45/api/postdata/{node_id}/{sensor}/{measurement}"
                 data = {
                     "value": value,
-                    "ts": None
+                    "timestamp": None
                 }
                 send_curl(url, data)
                 print(f"Sent data to {url}: {data}")
