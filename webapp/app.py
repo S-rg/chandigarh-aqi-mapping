@@ -3,18 +3,17 @@ from mysql.connector import connect, Error
 import os
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
+from utils import get_index_stats, get_node_stats
 
 
 app = Flask(__name__)
 
 
 @app.route("/")
-def hello():            
-    return render_template('index.html')
-
-@app.route('/winsen')
-def winsen():
-    return render_template('winsen_plot.html')
+def hello():
+    stats = get_index_stats()
+    print(stats)
+    return render_template('index.html', stats=stats)
 
 @app.route('/plot/<string:node_id>')
 def plot(node_id):

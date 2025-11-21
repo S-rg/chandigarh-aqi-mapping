@@ -187,7 +187,7 @@ def get_all_sensors(node_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
 
-    cursor.execute(f"""SELECT sensor_id FROM Sensor WHERE node_id = {node_id};""")
+    cursor.execute("SELECT sensor_id FROM Sensor WHERE node_id = %s;", (node_id,))
 
     result = cursor.fetchall()
     return {"sensors": [row[0] for row in result]}, 200
@@ -197,7 +197,10 @@ def get_all_measurements(node_id, sensor_id):
     connection = get_connection()
     cursor = connection.cursor(buffered=True)
 
-    cursor.execute(f"""SELECT measurement_id FROM Sensor WHERE node_id = {node_id} AND sensor_id = {sensor_id};""")
+    cursor.execute(
+        "SELECT measurement_id FROM Sensor WHERE node_id = %s AND sensor_id = %s;",
+        (node_id, sensor_id)
+    )
 
     result = cursor.fetchall()
     return {"measurements": [row[0] for row in result]}, 200
@@ -227,11 +230,15 @@ def post_data(node_id, sensor_id, measurement_id):
         connection = get_connection()
         cursor = connection.cursor()
 
-        query = f"""
-            INSERT INTO {node_id}_{sensor_id}_{measurement_id} (timestamp, value)
-            VALUES (%s, %s);
-        """
-        cursor.execute(query, (timestamp, value))
+        table_name = f"{node_id}_{sensor_id}_{measurement_id}"
+
+        if not timestamp:
+            query = f"INSERT INTO {table_name} (timestamp, value) VALUES (CURRENT_TIMESTAMP, %s);"
+            cursor.execute(query, (value,))
+        else:
+            query = f"INSERT INTO {table_name} (timestamp, value) VALUES (%s, %s);"
+            cursor.execute(query, (timestamp, value))
+
         connection.commit()
 
         return {"message": "Data inserted successfully"}, 200

@@ -7,16 +7,16 @@ from logging_config import setup_logging
 import logging
 
 def initialize_node(node, cursor, logger):
-    query = f"""INSERT INTO Node (node_id, location, latitude, longitude) 
-    VALUES ({node['id']}, '{node['location_name']}', {node['lat']}, {node['lon']});"""
-    cursor.execute(query)
+    query = """INSERT INTO Node (node_id, location, latitude, longitude) 
+               VALUES (%s, %s, %s, %s);"""
+    cursor.execute(query, (node['id'], node['location_name'], node['lat'], node['lon']))
     logger.info(f"Inserted Node {node['id']} into Node")
     
 
 def insert_measurement(sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit, node_id, cursor, logger):
-    query = f"""INSERT INTO Sensor (node_id, sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit) 
-    VALUES ({node_id}, {sensor_id}, {measurement_id}, '{sensor_type}', '{sensor_model}', '{measurement_name}', '{unit}');"""
-    cursor.execute(query)
+    query = """INSERT INTO Sensor (node_id, sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit) 
+               VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+    cursor.execute(query, (node_id, sensor_id, measurement_id, sensor_type, sensor_model, measurement_name, unit))
     logger.info(f"Inserted Sensor {node_id}_{sensor_id}_{measurement_id} into Sensor")
 
 def create_sensor_table(node_id, sensor_id, measurement_id, cursor, logger):
