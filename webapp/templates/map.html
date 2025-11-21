@@ -37,8 +37,8 @@
                     </svg>
                 </div>
                 <div class="header-text">
-                    <h1 class="page-title">AQI Monitoring Map</h1>
-                    <p class="page-subtitle">Real-time air quality data by location</p>
+                    <h1 class="page-title">{{ map_title or "AQI Monitoring Map" }}</h1>
+                    <p class="page-subtitle">{{ map_subtitle or "Real-time air quality data by location" }}</p>
                 </div>
             </div>
         </div>
@@ -118,6 +118,9 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     
+    <script>
+        window.MAP_CONFIG = {{ (map_config or {}) | tojson | safe }};
+    </script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='map.js') }}"></script>
 </body>

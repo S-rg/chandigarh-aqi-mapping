@@ -1,6 +1,14 @@
 // Map initialization and AQI location management
+const MAP_CONFIG = window.MAP_CONFIG || {};
+const API_URL = MAP_CONFIG.apiUrl || '/api/get_latest_aqi_data';
+const DEFAULT_CENTER = MAP_CONFIG.defaultCenter || [27.7, 85.3];
+const DEFAULT_ZOOM = MAP_CONFIG.defaultZoom || 11;
+const USE_CLUSTERING = MAP_CONFIG.useClustering !== false;
+const SHOW_NUMERIC_MARKERS = MAP_CONFIG.showNumericMarkers === true;
+const COUNT_LABEL = MAP_CONFIG.countLabel || 'locations';
+
 let map;
-let markerCluster;
+let markerCluster = null;
 let markers = [];
 let locationData = [];
 let selectedMarker = null;
@@ -42,14 +50,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize Leaflet map
 function initializeMap() {
-    // Default center (Nepal/Kathmandu area based on your data)
-    const defaultCenter = [27.7, 85.3];
-    const defaultZoom = 11;
-
     // Create map
     map = L.map('map', {
-        center: defaultCenter,
-        zoom: defaultZoom,
+        center: DEFAULT_CENTER,
+        zoom: DEFAULT_ZOOM,
         zoomControl: true
     });
 
@@ -62,12 +66,14 @@ function initializeMap() {
     // Add custom controls
     L.control.scale({ imperial: false }).addTo(map);
     
-    // Initialize marker cluster group
-    markerCluster = L.markerClusterGroup({
-        chunkedLoading: true,
-        maxClusterRadius: 50
-    });
-    map.addLayer(markerCluster);
+    // Initialize marker cluster group if enabled
+    if (USE_CLUSTERING) {
+        markerCluster = L.markerClusterGroup({
+            chunkedLoading: true,
+            maxClusterRadius: 50
+        });
+        map.addLayer(markerCluster);
+    }
 }
 
 // Load AQI data from API
@@ -78,7 +84,7 @@ async function loadAQIData() {
     try {
         nodeList.innerHTML = '<div class="loading-message">Loading AQI data...</div>';
         
-        const response = await fetch('/api/get_latest_aqi_data');
+        const response = await fetch(API_URL);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -92,13 +98,17 @@ async function loadAQIData() {
         locationData = data.locations || [];
         
         if (locationData.length === 0) {
-            nodeList.innerHTML = '<div class="empty-message">No AQI data found in database</div>';
-            nodeCount.textContent = '0 locations';
+        nodeList.innerHTML = '<div class="empty-message">No AQI data found in database</div>';
+        nodeCount.textContent = `0 ${COUNT_LABEL}`;
             return;
         }
         
         // Update location count
-        nodeCount.textContent = `${locationData.length} ${locationData.length === 1 ? 'location' : 'locations'}`;
+        let label = COUNT_LABEL;
+        if (locationData.length === 1 && COUNT_LABEL.endsWith('s')) {
+            label = COUNT_LABEL.slice(0, -1);
+        }
+        nodeCount.textContent = `${locationData.length} ${label}`;
         
         // Clear existing markers
         clearMarkers();
@@ -127,7 +137,7 @@ function addMarker(location) {
     const color = getAQIColor(aqi);
     
     // Create custom colored marker icon
-    const icon = createColoredIcon(color, aqi);
+    const icon = SHOW_NUMERIC_MARKERS ? createNumericBadgeIcon(aqi) : createColoredIcon(color, aqi);
     
     const marker = L.marker([location.lat, location.lon], {
         icon: icon
@@ -147,8 +157,12 @@ function addMarker(location) {
     marker.locationData = location;
     markers.push(marker);
     
-    // Add to cluster group
-    markerCluster.addLayer(marker);
+    // Add to cluster group or directly to map
+    if (USE_CLUSTERING && markerCluster) {
+        markerCluster.addLayer(marker);
+    } else {
+        marker.addTo(map);
+    }
 }
 
 // Create colored marker icon
@@ -171,6 +185,23 @@ function createColoredIcon(color, aqi) {
         iconSize: [size, size],
         iconAnchor: [size/2, size/2],
         popupAnchor: [0, -size/2]
+    });
+}
+
+function createNumericBadgeIcon(aqi) {
+    const color = getAQIColor(aqi);
+    const text = (aqi !== null && aqi !== undefined) ? aqi : 'NA';
+    const html = `
+        <div class="aqi-badge-marker" style="background-color: ${color};">
+            <span>${text}</span>
+        </div>
+    `;
+    return L.divIcon({
+        className: 'aqi-badge-wrapper',
+        html: html,
+        iconSize: [42, 42],
+        iconAnchor: [21, 21],
+        popupAnchor: [0, -21]
     });
 }
 
@@ -416,7 +447,15 @@ function showLocationModal(location) {
 
 // Clear all markers
 function clearMarkers() {
-    markerCluster.clearLayers();
+    if (USE_CLUSTERING && markerCluster) {
+        markerCluster.clearLayers();
+    } else {
+        markers.forEach(marker => {
+            if (map.hasLayer(marker)) {
+                map.removeLayer(marker);
+            }
+        });
+    }
     markers = [];
 }
 

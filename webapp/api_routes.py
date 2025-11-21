@@ -119,10 +119,35 @@ def get_latest_aqi_data():
     connection = get_connection()
     try:
         cursor = connection.cursor(buffered=True)
-        
+
+        min_lat = request.args.get("min_lat", type=float)
+        max_lat = request.args.get("max_lat", type=float)
+        min_lon = request.args.get("min_lon", type=float)
+        max_lon = request.args.get("max_lon", type=float)
+
+        where_clauses = []
+        params = []
+
+        if min_lat is not None:
+            where_clauses.append("a.lat >= %s")
+            params.append(min_lat)
+        if max_lat is not None:
+            where_clauses.append("a.lat <= %s")
+            params.append(max_lat)
+        if min_lon is not None:
+            where_clauses.append("a.lon >= %s")
+            params.append(min_lon)
+        if max_lon is not None:
+            where_clauses.append("a.lon <= %s")
+            params.append(max_lon)
+
+        where_sql = ""
+        if where_clauses:
+            where_sql = "WHERE " + " AND ".join(where_clauses)
+
         # Get the most recent record for each locationId
         # Using a subquery to find max scrape_id for each locationId
-        query = """
+        query = f"""
             SELECT a.* 
             FROM AqiInScrape a
             INNER JOIN (
@@ -131,10 +156,11 @@ def get_latest_aqi_data():
                 WHERE lat IS NOT NULL AND lon IS NOT NULL
                 GROUP BY locationId
             ) b ON a.locationId = b.locationId AND a.scrape_id = b.max_scrape_id
+            {where_sql}
             ORDER BY a.locationId;
         """
         
-        cursor.execute(query)
+        cursor.execute(query, params)
         result = cursor.fetchall()
         
         # Get column names
