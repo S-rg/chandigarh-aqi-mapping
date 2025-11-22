@@ -119,6 +119,83 @@
                                     </p>
                                 </div>
                             </div>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 py-2">
+                                <!-- Geospatial Overview Tile -->
+                                <div class="lg:col-span-2 flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
+                                    <p class="text-white text-lg font-medium leading-normal">Geospatial Overview</p>
+                                    <p class="text-white/60 text-sm font-normal leading-normal">Node status across the globe</p>
+                                    <div class="flex-1 mt-4 rounded-lg overflow-hidden min-h-[300px] bg-center bg-cover" data-location="World map" style="background-image: url('https://placeholder.pics/svg/300');">
+                                        <!-- Mock pins on map -->
+                                        <div class="relative w-full h-full">
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 45%; left: 20%;"></div>
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#FFFF00] ring-2 ring-white/50" style="top: 52%; left: 48%;"></div>
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#FF7E00] ring-2 ring-white/50" style="top: 38%; left: 80%;"></div>
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#FF0000] ring-2 ring-white/50" style="top: 65%; left: 75%;"></div>
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 30%; left: 55%;"></div>
+                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 70%; left: 30%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Worst Performing Nodes Tile -->
+                                <div class="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
+                                    <p class="text-white text-lg font-medium leading-normal">Worst Performing Nodes</p>
+                                    <p class="text-white/60 text-sm font-normal leading-normal">Top 5 nodes with highest AQI</p>
+                                    <div class="flex flex-col gap-3 mt-4">
+                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer" onclick="window.location='/node/{{stats.worst1.name}}'">
+                                            <div>
+                                                <p class="text-white font-medium">Node {{stats.worst1.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst1.location}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst1.aqi}}</p>
+                                                <p class="text-white/60 text-xs">AQI</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer"  onclick="window.location='/node/{{stats.worst2.name}}'">
+                                            <div>
+                                                <p class="text-white font-medium">Node {{stats.worst2.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst2.location}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst2.aqi}}</p>
+                                                <p class="text-white/60 text-xs">AQI</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer" onclick="window.location='/node/{{stats.worst3.name}}'">
+                                            <div>
+                                                <p class="text-white font-medium">Node {{stats.worst3.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst3.location}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst3.aqi}}</p>
+                                                <p class="text-white/60 text-xs">AQI</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer" onclick="window.location='/node/{{stats.worst4.name}}'">
+                                            <div>
+                                                <p class="text-white font-medium">Node {{stats.worst4.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst4.location}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst4.aqi}}</p>
+                                                <p class="text-white/60 text-xs">AQI</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer" onclick="window.location='/node/{{stats.worst5.name}}'">
+                                            <div>
+                                                <p class="text-white font-medium">Node {{stats.worst5.name}}</p>
+                                                <p class="text-white/60 text-sm">{{stats.worst5.location}}</p>
+                                            </div>
+                                            <div class="text-center">
+                                                <p class="text-[#FFFF00] font-bold text-lg">{{stats.worst5.aqi}}</p>
+                                                <p class="text-white/60 text-xs">AQI</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 py-2">
                                 <!-- AQI Trend Tile -->
                                 <div class="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
@@ -183,81 +260,6 @@
                                         <div class="flex items-center gap-2">
                                             <div class="w-3 h-3 rounded-full bg-[#FF0000]"></div>
                                             <span class="text-white text-sm">Hazardous ({{ stats.hazardous }}%)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 py-2">
-                                <!-- Geospatial Overview Tile -->
-                                <div class="lg:col-span-2 flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
-                                    <p class="text-white text-lg font-medium leading-normal">Geospatial Overview</p>
-                                    <p class="text-white/60 text-sm font-normal leading-normal">Node status across the globe</p>
-                                    <div class="flex-1 mt-4 rounded-lg overflow-hidden min-h-[300px] bg-center bg-cover" data-location="World map" style="background-image: url('https://placeholder.pics/svg/300');">
-                                        <!-- Mock pins on map -->
-                                        <div class="relative w-full h-full">
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 45%; left: 20%;"></div>
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#FFFF00] ring-2 ring-white/50" style="top: 52%; left: 48%;"></div>
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#FF7E00] ring-2 ring-white/50" style="top: 38%; left: 80%;"></div>
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#FF0000] ring-2 ring-white/50" style="top: 65%; left: 75%;"></div>
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 30%; left: 55%;"></div>
-                                            <div class="absolute w-3 h-3 rounded-full bg-[#00E400] ring-2 ring-white/50" style="top: 70%; left: 30%;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Worst Performing Nodes Tile -->
-                                <div class="flex flex-col gap-2 rounded-xl border border-white/10 bg-white/5 p-6 dashboard-tile">
-                                    <p class="text-white text-lg font-medium leading-normal">Worst Performing Nodes</p>
-                                    <p class="text-white/60 text-sm font-normal leading-normal">Top 5 nodes with highest AQI</p>
-                                    <div class="flex flex-col gap-3 mt-4">
-                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
-                                            <div>
-                                                <p class="text-white font-medium">{{stats.worst1.name}}</p>
-                                                <p class="text-white/60 text-sm">{{stats.worst1.location}}</p>
-                                            </div>
-                                            <div class="text-center">
-                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst1.aqi}}</p>
-                                                <p class="text-white/60 text-xs">AQI</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
-                                            <div>
-                                                <p class="text-white font-medium">{{stats.worst2.name}}</p>
-                                                <p class="text-white/60 text-sm">{{stats.worst2.location}}</p>
-                                            </div>
-                                            <div class="text-center">
-                                                <p class="text-[#FF0000] font-bold text-lg">{{stats.worst2.aqi}}</p>
-                                                <p class="text-white/60 text-xs">AQI</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
-                                            <div>
-                                                <p class="text-white font-medium">{{stats.worst3.name}}</p>
-                                                <p class="text-white/60 text-sm">{{stats.worst3.location}}</p>
-                                            </div>
-                                            <div class="text-center">
-                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst3.aqi}}</p>
-                                                <p class="text-white/60 text-xs">AQI</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
-                                            <div>
-                                                <p class="text-white font-medium">{{stats.worst4.name}}</p>
-                                                <p class="text-white/60 text-sm">{{stats.worst4.location}}</p>
-                                            </div>
-                                            <div class="text-center">
-                                                <p class="text-[#FF7E00] font-bold text-lg">{{stats.worst4.aqi}}</p>
-                                                <p class="text-white/60 text-xs">AQI</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center p-3 rounded-lg hover:bg-white/10 cursor-pointer">
-                                            <div>
-                                                <p class="text-white font-medium">{{stats.worst5.name}}</p>
-                                                <p class="text-white/60 text-sm">{{stats.worst5.location}}</p>
-                                            </div>
-                                            <div class="text-center">
-                                                <p class="text-[#FFFF00] font-bold text-lg">{{stats.worst5.aqi}}</p>
-                                                <p class="text-white/60 text-xs">AQI</p>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

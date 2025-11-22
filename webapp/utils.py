@@ -271,7 +271,7 @@ def get_index_stats():
                 continue
             worst_list.append({
                 "node_id": node_id,
-                "name": f"Node {node_id}",
+                "name": f"{node_id}",
                 "aqi": row["value"],
                 "location": node_locations.get(node_id, "Unknown")
             })
