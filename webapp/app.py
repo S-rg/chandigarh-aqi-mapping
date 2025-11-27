@@ -19,6 +19,10 @@ def hello():
 def plot(node_id):
     return render_template('plot.html', node_id=node_id)
 
+@app.route('/node/<string:node_id>')
+def node(node_id):
+    return render_template('node.html', stats=get_node_stats(node_id), node_id=node_id)
+
 @app.route('/map')
 def map_redirect():
     return redirect(url_for('map_india'))
