@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from mysql.connector import connect, Error
 import os
 from dotenv import load_dotenv
@@ -11,7 +11,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    stats = get_index_stats()
+    hours = request.args.get("hours", default=24, type=int)
+    stats = get_index_stats(hours)
     print(stats)
     return render_template('index.html', stats=stats)
 

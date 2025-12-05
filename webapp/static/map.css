@@ -15,6 +15,18 @@
     --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+body.in-iframe > *:not(#map-big-wrapper) {
+    display: none;
+}
+
+body.in-iframe .sidebar {
+    display: none;
+}
+
+body.in-iframe .col-md-12 {
+    padding: 0 !important;
+}
+
 * {
     margin: 0;
     padding: 0;

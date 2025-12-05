@@ -44,7 +44,7 @@
         </div>
     </div>
 
-    <div class="container-fluid map-container">
+    <div class="container-fluid map-container" id="map-big-wrapper">
         <div class="row">
             <!-- Map Section -->
             <div class="col-lg-9 col-md-12">
@@ -120,9 +120,13 @@
     
     <script>
         window.MAP_CONFIG = {{ (map_config or {}) | tojson | safe }};
+
+        if (window !== window.top) {
+            // This page is inside an iframe
+            document.body.classList.add('in-iframe');
+        }
     </script>
     <!-- Custom JS -->
     <script src="{{ url_for('static', filename='map.js') }}"></script>
 </body>
 </html>
-
