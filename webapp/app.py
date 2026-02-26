@@ -1,20 +1,75 @@
 from flask import Flask, render_template, redirect, url_for, request
-from mysql.connector import connect, Error
+from mysql.connector import Error as MySQLError
+import logging
 import os
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
-from utils import get_index_stats, get_node_stats
+from utils import get_index_stats, get_node_stats, get_mock_stats, sanitize_stats
 
 
 app = Flask(__name__)
 
 
+# Load environment variables early so configuration flags are available.
+load_dotenv()
+
+# Environment-aware configuration for mock data usage.
+# MOCK_DATA_ENABLED can be toggled via environment; by default it's enabled
+# when running in debug/development mode.
+default_mock_flag = "true" if app.debug or os.getenv("FLASK_ENV", "").lower() != "production" else "false"
+app.config["MOCK_DATA_ENABLED"] = os.getenv("MOCK_DATA_ENABLED", default_mock_flag).lower() == "true"
+
+
+# Configure logging with timestamps and levels for better observability.
+handler = logging.StreamHandler()
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
+handler.setFormatter(formatter)
+if not app.logger.handlers:
+    app.logger.addHandler(handler)
+app.logger.setLevel(logging.INFO)
+
+
 @app.route("/")
 def hello():
     hours = request.args.get("hours", default=24, type=int)
-    stats = get_index_stats(hours)
-    print(stats)
-    return render_template('index.html', stats=stats)
+    app.logger.info("Handling dashboard request for last %s hours", hours)
+
+    use_mock = app.config.get("MOCK_DATA_ENABLED", False) and (
+        app.debug or os.getenv("FLASK_ENV", "").lower() != "production"
+    )
+
+    stats = None
+
+    try:
+        app.logger.info("Attempting to fetch index statistics from database")
+        stats = get_index_stats(hours)
+        app.logger.info("Successfully fetched index statistics from database")
+    except MySQLError as db_err:
+        app.logger.warning("Database error while fetching index stats: %s", db_err)
+        if use_mock:
+            app.logger.warning("Falling back to mock statistics due to database error")
+            print("⚠️ Using mock data - database connection failed")
+            stats = get_mock_stats(hours)
+        else:
+            # In production without mock data enabled, re-raise to fail fast.
+            raise
+    except Exception as exc:
+        app.logger.error("Unexpected error while fetching index stats", exc_info=True)
+        if use_mock:
+            app.logger.warning("Falling back to mock statistics due to unexpected error")
+            print("⚠️ Using mock data - database connection failed")
+            stats = get_mock_stats(hours)
+        else:
+            raise
+
+    # If we didn't hit an exception but the stats are None/partial or contain
+    # None values, sanitize them before passing to the template. This also
+    # covers the case where get_index_stats internally handled DB errors and
+    # returned a partially-populated structure.
+    stats = sanitize_stats(stats or {}, interval_hours=hours)
+
+    return render_template("index.html", stats=stats)
 
 @app.route('/plot/<string:node_id>')
 def plot(node_id):

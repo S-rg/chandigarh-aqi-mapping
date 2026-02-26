@@ -1,47 +1,158 @@
 import mysql.connector
 import os
 from dotenv import load_dotenv
+from typing import Any, Dict
 
-def get_index_stats_dummy():
-    import random
-    # Dummy implementation for illustration purposes
-    return {
-        'avg_aqi': 40,
-        'active_nodes': 3,
-        'alerts': 0,
-        'most_common_pollutant': 'PM2.5',
-        'aqi_trend_path': generate_smooth_path([random.randint(10, 100) for _ in range(24)]),
-        'aqi_time': [f"{str(h).zfill(2)}" for h in range(0, 25, 4)],
-        'good': 70,
-        'moderate': 20,
-        'unhealthy': 5,
-        'hazardous': 5,
-        'worst1': {
-            'name': 'Node A',
-            'aqi': 80,
-            'location': 'California, USA'
-        },
-        'worst2': {
-            'name': 'Node B',
-            'aqi': 75,
-            'location': 'Texas, USA'
-        },
-        'worst3': {
-            'name': 'Node C',
-            'aqi': 70,
-            'location': 'Florida, USA'
-        },
-        'worst4': {
-            'name': 'Node D',
-            'aqi': 65,
-            'location': 'New York, USA'
-        },
-        'worst5': {
-            'name': 'Node E',
-            'aqi': 60,
-            'location': 'Illinois, USA'
-        }
+
+def get_mock_stats(interval_hours: int = 24) -> Dict[str, Any]:
+    """
+    Production-grade mock statistics used when the database is unavailable.
+
+    This returns a dictionary that:
+      - Includes the core AQI / PM2.5 summary metrics requested
+      - Matches the structure expected by the dashboard template
+      - Uses zero / safe defaults and static timestamp for reproducibility
+    """
+    # Core summary metrics (AQI + PM2.5)
+    stats: Dict[str, Any] = {
+        # Core AQI metrics
+        "avg_aqi": 0.0,
+        "max_aqi": 0.0,
+        "min_aqi": 0.0,
+        "total_readings": 0,
+        # Core PM2.5 metrics
+        "avg_pm25": 0.0,
+        "max_pm25": 0.0,
+        "min_pm25": 0.0,
+        "total_pm25_readings": 0,
+        # Static timestamp for consistency across runs
+        "timestamp": "2024-01-01T00:00:00",
+        # Fields used by the existing dashboard template
+        "active_nodes": 0,
+        "alerts": 0,
+        "most_common_pollutant": "PM2.5",
+        "good": 0.0,
+        "moderate": 0.0,
+        "unhealthy": 0.0,
+        "hazardous": 0.0,
+        # Worst nodes (keep structure consistent with DB-backed stats)
+        "worst1": {"name": "N/A", "aqi": 0.0, "location": "Unknown"},
+        "worst2": {"name": "N/A", "aqi": 0.0, "location": "Unknown"},
+        "worst3": {"name": "N/A", "aqi": 0.0, "location": "Unknown"},
+        "worst4": {"name": "N/A", "aqi": 0.0, "location": "Unknown"},
+        "worst5": {"name": "N/A", "aqi": 0.0, "location": "Unknown"},
+        # Selected time window
+        "hours": interval_hours,
     }
+
+    # Provide sensible defaults for chart data so the SVG renders correctly
+    zero_series = [0] * 24
+    stats["aqi_trend_path"] = generate_smooth_path(zero_series)
+    stats["aqi_time"] = [f"{str(h).zfill(2)}" for h in range(0, 25, 4)]
+
+    return stats
+
+
+def sanitize_stats(raw_stats: Dict[str, Any], interval_hours: int = 24) -> Dict[str, Any]:
+    """
+    Ensure the stats object is safe for use in templates:
+      - All expected keys are present
+      - No value is None (fallback to defaults)
+      - Numeric values are proper ints/floats, not strings
+      - Nested worst-node structures are normalized
+    """
+    if raw_stats is None or not isinstance(raw_stats, dict):
+        raw_stats = {}
+
+    # Start from a fully-populated mock stats dict and overlay any real values
+    # This guarantees that all required keys exist.
+    base = get_mock_stats(interval_hours)
+    merged: Dict[str, Any] = {**base, **raw_stats}
+
+    # Handle nested worst1–worst5 structures explicitly so that partial data
+    # from the DB cannot break the template.
+    for i in range(1, 6):
+        key = f"worst{i}"
+        nested_default = base[key]
+        nested_val = merged.get(key) or {}
+        if not isinstance(nested_val, dict):
+            nested_val = {}
+
+        normalized = {
+            "name": nested_val.get("name") if nested_val.get("name") is not None else nested_default["name"],
+            "location": nested_val.get("location")
+            if nested_val.get("location") is not None
+            else nested_default["location"],
+        }
+
+        # Ensure AQI is numeric and non-None
+        aqi_val = nested_val.get("aqi")
+        if aqi_val is None:
+            normalized["aqi"] = nested_default["aqi"]
+        else:
+            try:
+                normalized["aqi"] = float(aqi_val)
+            except (TypeError, ValueError):
+                normalized["aqi"] = nested_default["aqi"]
+
+        merged[key] = normalized
+
+    # Keys that should always be numeric (int/float)
+    numeric_keys = [
+        "avg_aqi",
+        "max_aqi",
+        "min_aqi",
+        "total_readings",
+        "avg_pm25",
+        "max_pm25",
+        "min_pm25",
+        "total_pm25_readings",
+        "active_nodes",
+        "alerts",
+        "good",
+        "moderate",
+        "unhealthy",
+        "hazardous",
+    ]
+
+    for key in numeric_keys:
+        val = merged.get(key)
+        default_val = base[key]
+
+        if val is None:
+            merged[key] = default_val
+            continue
+
+        # Safely coerce strings or other scalar types into a float/int
+        try:
+            # total_* and alerts/active_nodes are counts → int; others can be float
+            if key in ["total_readings", "total_pm25_readings", "active_nodes", "alerts"]:
+                merged[key] = int(float(val))
+            else:
+                merged[key] = float(val)
+        except (TypeError, ValueError):
+            merged[key] = default_val
+
+    # Ensure hours is present and numeric
+    hours_val = merged.get("hours", interval_hours)
+    try:
+        merged["hours"] = int(hours_val)
+    except (TypeError, ValueError):
+        merged["hours"] = interval_hours
+
+    # AQI trend path and time labels must have usable fallbacks
+    if not merged.get("aqi_trend_path"):
+        zero_series = [0] * 24
+        merged["aqi_trend_path"] = generate_smooth_path(zero_series)
+
+    if not merged.get("aqi_time"):
+        merged["aqi_time"] = [f"{str(h).zfill(2)}" for h in range(0, 25, 4)]
+
+    # Timestamp: ensure it is at least a string
+    if merged.get("timestamp") is None:
+        merged["timestamp"] = base["timestamp"]
+
+    return merged
 
 def get_node_stats(node_id):
     result = {}
