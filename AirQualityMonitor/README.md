@@ -14,26 +14,6 @@ The user only has to configure a single `yaml` config file and the library takes
 This library utilizes `platformio` and the Arduino framework. You can run this on any microcontroller which supports the Arduino framework. 
 Consider making doxygen documentation for this project.
 
-## TODO
-- [x] Fix: Config file's sensor table should have an i2c address for each sensor.
-- [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
-- [x] FUNC: Sensor Factory
-- [x] FUNC: Sensor Manager
-- ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
-  - [x] simply hardcode this inside sensor factory
-- [x] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
-  - Problem was with the yaml having repeated keys `measurement_id`, to fix there needed to be a `-` before the key, so they appear as a list or something, like: `- measurement_id` when having multiple measurements. 
-- [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
-  - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
-  - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
-- [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
-- [ ] Handle buffer being full in the manager
-- [ ] Print last updated measuremt buffer's `RuntimeMeasurement` object
-- [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
-- [ ] Other printing stuff
-- [ ] Confirm the checksums for the sensors
-- [ ] Add debug stuff everywhere
-
 ## Library Design
 Initial Plan:
 - Inside of each sensor class have an array of `Measurement` which is a struct containing the values, units, timestamp, etc.
@@ -57,6 +37,26 @@ Initial Plan:
 
 #### Notes:
 - The `measurement_id` for each unit of each measurement of a sensor should remain constant.
+
+## TODO
+- [x] Fix: Config file's sensor table should have an i2c address for each sensor.
+- [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
+- [x] FUNC: Sensor Factory
+- [x] FUNC: Sensor Manager
+- ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
+  - [x] simply hardcode this inside sensor factory
+- [x] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
+  - Problem was with the yaml having repeated keys `measurement_id`, to fix there needed to be a `-` before the key, so they appear as a list or something, like: `- measurement_id` when having multiple measurements. 
+- [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
+  - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
+  - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
+- [ ] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+- [ ] Handle buffer being full in the manager
+- [ ] Print last updated measuremt buffer's `RuntimeMeasurement` object
+- [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
+- [ ] Other printing stuff
+- [ ] Confirm the checksums for the sensors
+- [ ] Add debug stuff everywhere
 
 ## Reference Tables:
 
