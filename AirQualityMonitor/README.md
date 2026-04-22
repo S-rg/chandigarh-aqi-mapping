@@ -1,9 +1,18 @@
-# Sensors
+# Air-Eye Sensor Library
+
+This repo contains the source code for the Air-Eye Air Quality Monitor's software. It includes a scalable and almost no code approach for quickly setting up similar sensor nodes abstracting away the communication, polling, and logging of the system. 
+
+The user only has to configure a single `yaml` config file and the library takes care of the rest!
 
 ## Common Mistakes
 
 - ~~ Not initializaing your comms method [wire / stream] ~~
   - Fixed with new design
+
+## Usage
+
+This library utilizes `platformio` and the Arduino framework. You can run this on any microcontroller which supports the Arduino framework. 
+Consider making doxygen documentation for this project.
 
 ## TODO
 - [x] Fix: Config file's sensor table should have an i2c address for each sensor.
