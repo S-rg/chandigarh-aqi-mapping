@@ -223,10 +223,10 @@ public:
 			return;
 		}
 
-		uint16_t conc = (responseBuffer[2] << 8) | responseBuffer[3]; // ppm
+		float conc = ((responseBuffer[2] << 8) | responseBuffer[3]) * RESOLUTION; // ppm
 
 		buffer->timestamp = SensorBase::getCurrentTime();
-		buffer->value = static_cast<float>(conc);
+		buffer->value = conc;
 
 		return;
 	}
@@ -234,6 +234,7 @@ public:
 private:
 	static byte qaModeOnCommand[commandSize];
 	static byte getValueCommand[commandSize];
+	static float RESOLUTION;
 
 	void _startQAMode()
 	{
@@ -243,12 +244,22 @@ private:
 
 			commInterface->sendBuffer(qaModeOnCommand, commandSize);
 			delay(delayTime);
+
+			byte response[responseSize] = {0};
+			commInterface->receiveBuffer(response, responseSize);
+			if (response[2] == 0 && SENSORS_DEBUG) 
+				Serial.printf("[COMMS] Swith to QA Mode failed for SO2 Sensor with id %d\n", _cfg->sensor_id);
 		}
 	}
 
-	uint8_t _verifyChecksum(byte *responseBuffer)
-	{
-		return 1;
+	uint8_t _verifyChecksum(byte *responseBuffer) {
+		unsigned char checksum = 0;
+		for (unsigned char i = 1; i < responseSize - 1; i++) {
+			checksum += responseBuffer[i];
+		}
+		checksum = (~checksum) + 1;
+
+		return checksum == responseBuffer[responseSize - 1];
 	}
 };
 
@@ -343,12 +354,23 @@ public:
 			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
 
 			commInterface->sendBuffer(getValueCommand, commandSize);
-			delay(delayTime);
+			delay(delayTime + 400);
 
 			byte frame[responseSize];
-			commInterface->receiveBuffer(frame, responseSize);
+			// Replace commInterface->receiveBuffer(frame, responseSize) with frame sync logic
+			int frameIdx = 0;
+			while (frameIdx < responseSize) {
+				int b = commInterface->readByte();
+				if (frameIdx == 0 && b != 0x42) continue;
+				if (frameIdx == 1 && b != 0x4D) { frameIdx = 0; continue; }
+				frame[frameIdx++] = b;
+			}
 
-			if (!_verifyChecksum(frame)) return;
+			if (!_verifyChecksum(frame)) {
+				if(SENSORS_DEBUG) {
+					Serial.printf("[DEBUG] Checksum failed for PMS7003 with ID = %i\n", _cfg->sensor_id);
+				}
+			}
 
 			switch (measurement_id) {
 				case 1: read_measurement_1(frame, buffer); break;
@@ -368,18 +390,18 @@ public:
 		}
 	}
 
-	void read_measurement_1(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 4, buffer); }
-	void read_measurement_2(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 6, buffer); }
-	void read_measurement_3(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 8, buffer); }
-	void read_measurement_4(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 10, buffer); }
-	void read_measurement_5(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 12, buffer); }
-	void read_measurement_6(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 14, buffer); }
-	void read_measurement_7(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 16, buffer); }
-	void read_measurement_8(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 18, buffer); }
-	void read_measurement_9(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 20, buffer); }
-	void read_measurement_10(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 22, buffer); }
-	void read_measurement_11(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 24, buffer); }
-	void read_measurement_12(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 26, buffer); }
+	void read_measurement_1(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 10, buffer); }
+	void read_measurement_2(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 12, buffer); }
+	void read_measurement_3(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 14, buffer); }
+	void read_measurement_4(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 16, buffer); }
+	void read_measurement_5(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 18, buffer); }
+	void read_measurement_6(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 20, buffer); }
+	void read_measurement_7(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 22, buffer); }
+	void read_measurement_8(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 24, buffer); }
+	void read_measurement_9(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 26, buffer); }
+	void read_measurement_10(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 4, buffer); }
+	void read_measurement_11(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 6, buffer); }
+	void read_measurement_12(byte *frame, RuntimeMeasurement *buffer) { set_uint16_value(frame, 8, buffer); }
 
 private:
 	static byte qaModeOnCommand[commandSize];
@@ -410,6 +432,204 @@ private:
 	}
 };
 
+/**
+ * @class DFRobotOxygen
+ * @brief Sensor driver class for I2C DFRobot Oxygen sensor.
+ * Register numbers and reading mechanism from https://github.com/DFRobot/DFRobot_OxygenSensor/
+ */
+class DFRobotOxygenSensor : public SensorBase {
+public:
+	DFRobotOxygenSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {}
+	
+	bool begin() override
+	{
+		_comm->begin();
+		return true;
+	}
+
+	
+
+	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
+	{
+		if (_cfg->comms == COMM_I2C)
+		{
+			I2CInterface *commInterface = static_cast<I2CInterface *>(_comm);
+			loadKey(commInterface->getWire(), commInterface->getAddress());
+			// The sensor manager can update the sensor_id and measurement_id field
+			// of RuntimeMeasurement
+			if (measurement_id == 1)
+			{
+				read_measurement_1(commInterface, buffer);
+			}
+		}
+	}
+
+	void loadKey(TwoWire& _pWire, int _addr) {
+		uint8_t value[2] = {0};
+
+		// Use I2CInterface-style communication
+		_pWire.beginTransmission(_addr);
+		_pWire.write(GET_KEY_REGISTER);
+		if (_pWire.endTransmission() != 0) {
+			// Handle transmission error
+			this->_Key = 20.9 / 120.0;
+			return;
+		}
+
+		delay(50);
+
+		if (_pWire.requestFrom(_addr, 2) != 2) {
+			// Handle request error
+			this->_Key = 20.9 / 120.0;
+			return;
+		}
+
+		for (int i = 0; i < 2 && _pWire.available(); ++i) {
+			value[i] = _pWire.read();
+		}
+
+		uint16_t temp = (static_cast<uint16_t>(value[1]) << 8) | value[0];
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotOxygenSensor: temp (key register value): %u\n", temp);
+		}
+		this->_Key = (temp == 0) ? (20.9 / 120.0) : (static_cast<float>(temp) / 1000.0);
+	}
+
+	void read_measurement_1(I2CInterface *commInterface, RuntimeMeasurement *buffer)
+	{
+		// Write the register address to the sensor
+		commInterface->writeRegister(OXYGEN_DATA_REGISTER, 0x00);
+
+		// Read 2 bytes of oxygen data from the sensor
+		float byte1 = commInterface->readRegister(OXYGEN_DATA_REGISTER);
+		float byte2 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 1);
+		float byte3 = commInterface->readRegister(OXYGEN_DATA_REGISTER + 2);
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotOxygenSensor: Key: %f| Read bytes: %.2f %.2f %.2f\n", _Key, byte1, byte2, byte3);
+		}
+		// Combine the high and low bytes to form the oxygen concentration value
+		float oxygenConcentration = _Key * (byte1 + byte2 / 10 + byte3 / 100);
+
+		// Populate the buffer with the timestamp and oxygen concentration value
+		buffer->timestamp = SensorBase::getCurrentTime();
+		buffer->value = oxygenConcentration;
+	}
+
+private:
+	// From the DFRobot library 
+	static int OXYGEN_DATA_REGISTER;   ///< register for oxygen data
+	static int GET_KEY_REGISTER; /// There is some compensation happening from this key
+	float _Key = 20.9 / 120.0;
+};
+
+
+/**
+ * @class DFRobotCOSensor
+ * @brief Sensor driver class for Serial (UART) DFRobot CO (Carbon Monoxide) gas sensor.
+ * Refer to DFRobot CO datasheet and https://github.com/DFRobot/DFRobot_MultiGasSensor for more info
+ * I think the actual sensor used is a winsen one from the same lineup as the above SO2 sensor.
+ */
+class DFRobotCOSensor : public SensorBase {
+public:
+	static const int commandSize = 9;
+	static const int responseSize = 9;
+
+	DFRobotCOSensor(SensorInfo *cfg, CommsInterface *comm) : SensorBase(cfg, comm) {}
+	
+	bool begin() override
+	{
+		_comm->begin();
+		_startQAMode();
+		return true;
+	}
+
+	void read(uint8_t measurement_id, RuntimeMeasurement *buffer) override
+	{
+		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
+		{
+			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
+
+			if (measurement_id == 1)
+			{
+				read_measurement_1(commInterface, buffer);
+			}
+		}
+	}
+
+	void read_measurement_1(SerialInterface *commInterface, RuntimeMeasurement *buffer)
+	{
+		// Send command to get CO gas concentration (0x86)
+		commInterface->sendBuffer(getValueCommand, commandSize);
+		delay(delayTime * 2);
+
+		// Read response from sensor
+		byte responseBuffer[responseSize];
+		commInterface->receiveBuffer(responseBuffer, responseSize);
+
+		// Verify checksum
+		if (_verifyChecksum(responseBuffer) != true)
+		{
+			if (SENSORS_DEBUG) {
+				Serial.printf("[DEBUG] DFRobotCOSensor: Checksum failed for sensor ID %d\n", _cfg->sensor_id);
+			}
+			return;
+		}
+
+		float conc = ((responseBuffer[2] << 8) | responseBuffer[3]) * RESOLUTION;
+		
+
+		buffer->timestamp = SensorBase::getCurrentTime();
+		buffer->value = conc; // Units: ppm
+
+		if (SENSORS_DEBUG) {
+			Serial.printf("[DEBUG] DFRobotCOSensor ID %d: CO concentration = %.2f ppm\n", _cfg->sensor_id, conc);
+		}
+	}
+
+private:
+	static byte qaModeOnCommand[commandSize];
+	static byte getValueCommand[commandSize];
+	static float RESOLUTION;
+
+	void _startQAMode()
+	{
+		if (SENSORS_DEBUG) printf("Entered Start QA MOde");
+		if (_cfg->comms == COMM_HARDWARE_SERIAL || _cfg->comms == COMM_SOFTWARE_SERIAL)
+		{
+			SerialInterface *commInterface = static_cast<SerialInterface *>(_comm);
+
+			commInterface->sendBuffer(qaModeOnCommand, commandSize);
+			delay(delayTime * 4); // Needed longer time to switch tgo QA mode
+
+			byte response[responseSize] = {0};
+			commInterface->receiveBuffer(response, responseSize);
+			if (!_verifyChecksum(response)) {
+				if (SENSORS_DEBUG) Serial.printf("[COMMS] Swith to QA Mode Response Buffer Checksum Failed for CO Sensor with id %d\n", _cfg->sensor_id);
+				_startQAMode();
+			}
+			else if (response[2] == 0 && SENSORS_DEBUG) {
+				Serial.printf("[COMMS] Swith to QA Mode FAILED for CO Sensor with id %d\n", _cfg->sensor_id);
+			}
+			else if (response[2] == 1 && SENSORS_DEBUG) {
+				Serial.printf("[COMMS] Swith to QA Mode SUCCESSFULL for CO Sensor with id %d\n", _cfg->sensor_id);
+			}
+		}
+	}
+
+	uint8_t _verifyChecksum(byte *responseBuffer)
+	{
+		unsigned char checksum = 0;
+		// Sum all bytes except the first (header) and last (checksum)
+		for (unsigned char i = 1; i < responseSize - 1; i++)
+		{
+			checksum += responseBuffer[i];
+		}
+		// Apply two's complement: invert and add 1
+		checksum = (~checksum) + 1;
+
+		return checksum == responseBuffer[responseSize - 1];
+	}
+};
 
 byte TVOCSensor::qaModeOnCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x78, 0x41, 0x00, 0x00, 0x00, 0x00, 0x46};
 byte TVOCSensor::getValueCommand[TVOCSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
@@ -419,8 +639,16 @@ byte CH2OSensor::getValueCommand[CH2OSensor::commandSize] = {0xff, 0x01, 0x86, 0
 
 byte SO2Sensor::qaModeOnCommand[SO2Sensor::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
 byte SO2Sensor::getValueCommand[SO2Sensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+float SO2Sensor::RESOLUTION = 0.1; // ppm
 
 byte CO2Sensor::getValueCommand[CO2Sensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
 
-byte PMS7003Sensor::qaModeOnCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe1, 0x00, 0x01}; // passive read command example
-byte PMS7003Sensor::getValueCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe2, 0x00, 0x01}; // read data command example
+byte PMS7003Sensor::qaModeOnCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe1, 0x00, 0x01};
+byte PMS7003Sensor::getValueCommand[PMS7003Sensor::commandSize] = {0x42, 0x4d, 0x00, 0x04, 0xe2, 0x00, 0x01};
+
+int DFRobotOxygenSensor::OXYGEN_DATA_REGISTER = 0x03;
+int DFRobotOxygenSensor::GET_KEY_REGISTER = 0x0A;
+
+byte DFRobotCOSensor::qaModeOnCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x78, 0x04, 0x00, 0x00, 0x00, 0x00, 0x83};
+byte DFRobotCOSensor::getValueCommand[DFRobotCOSensor::commandSize] = {0xff, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79};
+float DFRobotCOSensor::RESOLUTION = 0.1; // ppm

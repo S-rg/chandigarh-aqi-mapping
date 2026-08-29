@@ -9,6 +9,29 @@ The user only has to configure a single `yaml` config file and the library takes
 - ~~ Not initializaing your comms method [wire / stream] ~~
   - Fixed with new design
 
+## TODO
+- [x] Make PMSensor Measurement ID consistent with Arnav's db config id he has used. 
+- [x] Fix: Config file's sensor table should have an i2c address for each sensor.
+- [x] FUNC: The switch cases for Serial1,2,3... and Wire1,2,3..
+- [x] FUNC: Sensor Factory
+- [x] FUNC: Sensor Manager
+- ~~[ ] FUNC: Make the config generator add the lookup table for String name to class to create for usage inside sensor factory~~
+  - [x] simply hardcode this inside sensor factory
+- [x] FIX: Config generator does not take into account multiple measurements [see PM sensor config in header]
+  - Problem was with the yaml having repeated keys `measurement_id`, to fix there needed to be a `-` before the key, so they appear as a list or something, like: `- measurement_id` when having multiple measurements. 
+- [x] Redo the whole library with better anstraction for units, multiple measurements, etc.
+  - Check out [this GPT chat](https://chatgpt.com/share/68deb952-05b4-8005-9f38-077af74053e9).
+  - [x] Decide on dynamic or static arrays to store Measurements (per sensor basis)
+- [x] Figure out if we using the `Manager` object's buffer to store readings, or having an external buffer which the manager refers to
+  - Just using a buffer which is part of Manager object and the object only manages it.
+- [x] Handle buffer being full in the manager
+  - [ ] Handle this in a smarter way than ignoring as it is right now
+- [x] Print last updated measuremt buffer's `RuntimeMeasurement` object
+- [ ] Print all `RuntimeMeasurement` objects of the last poll of one sensor
+- [x] Other printing stuff
+- [x] Confirm the checksums for the sensors
+- [ ] Add debug stuff everywhere
+  - [x] Added it in places, where i needed to debug stuff.
 ## Usage
 
 This library utilizes `platformio` and the Arduino framework. You can run this on any microcontroller which supports the Arduino framework. 
@@ -85,18 +108,23 @@ Initial Plan:
 #### PMS7003Sensor (Plantower PMS7003)
 | Measurement ID | Measurement name | Unit |
 |---:|---|---|
-| 1 | PM1.0 (standard, CF=1) | µg/m³ |
-| 2 | PM2.5 (standard, CF=1) | µg/m³ |
-| 3 | PM10 (standard, CF=1) | µg/m³ |
-| 4 | PM1.0 (atmospheric) | µg/m³ |
-| 5 | PM2.5 (atmospheric) | µg/m³ |
-| 6 | PM10 (atmospheric) | µg/m³ |
-| 7 | Particle count ≥ 0.3 µm | particles / 0.1 L |
-| 8 | Particle count ≥ 0.5 µm | particles / 0.1 L |
-| 9 | Particle count ≥ 1.0 µm | particles / 0.1 L |
-| 10 | Particle count ≥ 2.5 µm | particles / 0.1 L |
-| 11 | Particle count ≥ 5.0 µm | particles / 0.1 L |
-| 12 | Particle count ≥ 10 µm | particles / 0.1 L |
+| 1 | PM1.0 (atmospheric) | µg/m³ |
+| 2 | PM2.5 (atmospheric) | µg/m³ |
+| 3 | PM10 (atmospheric) | µg/m³ |
+| 4 | Particle count ≥ 0.3 µm | particles / 0.1 L |
+| 5 | Particle count ≥ 0.5 µm | particles / 0.1 L |
+| 6 | Particle count ≥ 1.0 µm | particles / 0.1 L |
+| 7 | Particle count ≥ 2.5 µm | particles / 0.1 L |
+| 8 | Particle count ≥ 5.0 µm | particles / 0.1 L |
+| 9 | Particle count ≥ 10 µm | particles / 0.1 L |
+| 10 | PM1.0 (standard, CF=1) | µg/m³ |
+| 11 | PM2.5 (standard, CF=1) | µg/m³ |
+| 12 | PM10 (standard, CF=1) | µg/m³ |
+
+#### Oxygen Sensor (DFRobotOxygen with Winsen MEO2)
+| Measurement ID | Measurement name | Unit | Min-Max
+|---:|---|---|---|
+| 1 | O2 | %Vol | 0% - 25% |
 
 
 ### Sensors
@@ -134,6 +162,11 @@ All Tasks and TODOs at the top
 
   - Air flushing
 
+## PMSensor
+- **Comms:** Serial
+- **Problems:**
+  - The manager did not recieve the frame in order and needed to be changed such that it waits to get the correct starting bytes.
+  - Even after that, the checksum fails half the time.
 
 ## TVOC
 
@@ -161,6 +194,12 @@ All Tasks and TODOs at the top
 
 - **Comms:** I2C
 - Has library, but needs integration with our commands
+- Upon seeing the library, it looks like they get a 'key' from the sensor. This key is calculated based on the temp for sensors which support temperature compensation. The sensor we have, doesn't support it and the query to the temp registor and the subsequent calculations return a constant number which i didn't bother hardcoding. The key which is hardcoded in my sensor library code is the fallback in the DFrobot library as well, which i think is for 0 deg C (just a guess).
+
+## CO
+- **Comms:** Serial
+- **Problems:**
+  - The sensor takes some time to switch into QA mode and that was messing up some of the logic in my code.
 
 ## Pressure Sensor
 
