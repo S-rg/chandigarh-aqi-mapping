@@ -1,0 +1,83 @@
+DEBUG: false
+Node:
+  id: 2
+  location_name: "Pranasense Outdoor Monitor 1 (48F6EE5481E0)"
+  lat: 30.63231050099808
+  lon: 76.72565571239421
+  
+sampling_rate: 3000 # ms
+  
+Sensors:
+  AQIIN:
+    id: 1
+    type: "AQI-IN"
+    measurements:
+        measurement_id: 1
+        name: "AQI-IN"
+        unit: "in-aqi"
+  AQIUS:
+    id: 2
+    type: "AQI-US"
+    measurements:
+        measurement_id: 1
+        name: "AQI-US"
+        unit: "us-aqi"
+  PMSensor:
+    id: 3
+    type: "PMSensor"
+    measurements:
+        - measurement_id: 1
+          name: "PM25"
+          unit: "µg/m³"
+        - measurement_id: 2
+          name: "PM10"
+          unit: "µg/m³"
+        - measurement_id: 3
+          name: "PM1"
+          unit: "µg/m³"
+        - measurement_id: 4
+          name: "Particle Count >0.3μm"
+          unit: "μm"
+        - measurement_id: 5
+          name: "Particle Count >0.5μm"
+          unit: "μm"
+        - measurement_id: 6
+          name: "Particle Count >1.0μm"
+          unit: "μm"
+        - measurement_id: 7
+          name: "Particle Count >3.0μm"
+          unit: "μm"
+        - measurement_id: 8
+          name: "Particle Count >5.0μm"
+          unit: "μm"
+        - measurement_id: 9
+          name: "Particle Count >10μm"
+          unit: "μm"
+  Thermometer:
+    id: 4
+    type: "Thermometer"
+    measurements:
+        measurement_id: 1
+        name: "Temperature"
+        unit: "°C"
+  HumiditySensor:
+    id: 5
+    type: "Humidity Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Humidity"
+        unit: "%"
+  NoiseSensor:
+    id: 6
+    type: "Noise Sensor"
+    measurements:
+        measurement_id: 1
+        name: "Noise Level"
+        unit: "dB"
+  TVOCSensor:
+    id: 7
+    type: "TVOC Sensor"
+    measurements:
+        measurement_id: 1
+        name: "TVOC"
+        unit: "ppm"
